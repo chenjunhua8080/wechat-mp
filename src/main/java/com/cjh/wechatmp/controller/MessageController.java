@@ -1,9 +1,13 @@
 package com.cjh.wechatmp.controller;
 
-import com.cjh.wechatmp.sign.SignEntity;
-import com.cjh.wechatmp.sign.SignService;
+import com.cjh.wechatmp.service.MessageService;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,16 +18,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/message")
 public class MessageController {
 
-    private SignService signService;
+    private MessageService messageService;
 
     @PostMapping("/in")
-    public String sign(SignEntity signEntity) {
-        log.info("*******************收到微信服务器消息*******************");
-        log.info("参数：{}", signEntity.toString());
-        String sign = signService.sign(signEntity);
-        log.info("结果：{}", sign != null);
+    public String sign(HttpServletRequest request) {
+        log.info("*****************收到微信服务器推送消息******************");
+        //客户端的IP地址
+        log.info("Remote Addr: {}", request.getRemoteAddr());
+        //请求的字符编码
+        log.info("Character Encoding: {}", request.getCharacterEncoding());
+        //请求的消息体（body）的大小 字节数，没有消息体的，返回-1
+        log.info("Content Length: {}", request.getContentLength());
+        //返回请求的消息体的MIME类型，MIME是描述消息内容类型的因特网标准
+        log.info("Content Type: {}", request.getContentType());
+        //获取请求方式获取请求方式(GET与POST为主,也会有PUT、DELETE、INPUT)
+        log.info("HTTP Method: {}", request.getMethod());
+        //获取完整的url，不带参数的
+        log.info("Request URI: {}", request.getRequestURI());
+        //获取url中参数的部分
+        log.info("Query String: {}", request.getQueryString());
+        //获取body
+        BufferedReader reader;
+        String body = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+            body = IOUtils.toString(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        log.info("body: {}", body);
+        String resp = messageService.handleMessage(body);
+        log.info("待响应: {}", resp);
         log.info("**********************消息处理结束**********************");
-        return sign;
+        return resp;
     }
 
 }

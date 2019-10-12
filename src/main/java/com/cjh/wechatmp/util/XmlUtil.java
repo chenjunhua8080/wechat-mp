@@ -61,6 +61,25 @@ public class XmlUtil {
     }
 
     /**
+     * xml2json
+     */
+    public static <T> JSONObject xml2json(String xml) {
+
+        JSONObject jsonObject = null;
+        try {
+            Document document = DocumentHelper.parseText(xml);
+            Element rootElement = document.getRootElement();
+            jsonObject = new JSONObject();
+            recursion(jsonObject, rootElement.elements());
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(jsonObject);
+        return jsonObject;
+    }
+
+    /**
      * xml2java
      */
     public static <T> T xml2java(String xml, Class<T> clazz) {
