@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    nacos:
+      #服务发现
+      discovery:
+        server-addr: 127.0.0.1:8048
+        namespace: 1dc901c1-355b-408c-a685-bac05e382565
+  #redis
+  redis:
+    database: 2
+    host: localhost
+    port: 6379
+    password:

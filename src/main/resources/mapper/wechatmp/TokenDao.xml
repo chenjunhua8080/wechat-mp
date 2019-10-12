@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cjh.wechatmp.dao.TokenDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.cjh.wechatmp.po.TokenPO" id="tokenMap">
+        <result property="id" column="id"/>
+        <result property="createDate" column="create_date"/>
+        <result property="time" column="time"/>
+        <result property="value" column="value"/>
+    </resultMap>
+
+    <sql id="baseColumnList">
+        id,create_date,time,value
+    </sql>
+
+    <sql id="baseWhereSql">
+        <where>
+            <if test="params.id != null">
+                and t.id = #{params.id}
+            </if>
+            <if test="params.createDate != null">
+                and t.create_date = #{params.createDate}
+            </if>
+            <if test="params.time != null">
+                and t.time = #{params.time}
+            </if>
+            <if test="params.value != null">
+                and t.value = #{params.value}
+            </if>
+        </where>
+    </sql>
+
+    <select id="listByPage" resultType="com.cjh.wechatmp.po.TokenPO">
+        select
+        <include refid="baseColumnList"/>
+        from token t
+        <include refid="baseWhereSql"/>
+    </select>
+
+</mapper>
