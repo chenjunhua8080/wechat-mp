@@ -1,7 +1,7 @@
 package com.cjh.wechatmp.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cjh.wechatmp.po.message.in.TextMessage;
+import com.cjh.wechatmp.message.InTextMessageIn;
 import com.google.gson.Gson;
 import java.util.List;
 import org.dom4j.Document;
@@ -120,7 +120,7 @@ public class XmlUtil {
 
     public static void main(String[] args) {
         String xml = "<xml>\n  <ToUserName><![CDATA[toUser]]></ToUserName>\n  <FromUserName><![CDATA[fromUser]]></FromUserName>\n  <CreateTime>1348831860</CreateTime>\n  <MsgType><![CDATA[text]]></MsgType>\n  <Content><![CDATA[this is a test]]></Content>\n  <MsgId>1234567890123456</MsgId>\n  <user>\n  <name>zhangsan</name>\n  <age>18</age>\n  </user>\n</xml>";
-        TextMessage inMessageText = xml2java(xml, TextMessage.class);
+        InTextMessageIn inMessageText = xml2java(xml, InTextMessageIn.class);
         System.out.println(inMessageText.getMsgType());
         xml = java2xml(inMessageText);
         System.out.println(xml);

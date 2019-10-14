@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cjh.wechatmp.dao.MessageDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.cjh.wechatmp.po.MessagePO" id="messageMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="disable" column="disable"/>
+        <result property="inOut" column="in_out"/>
+        <result property="type" column="type"/>
+        <result property="msgId" column="msg_id"/>
+        <result property="body" column="body"/>
+    </resultMap>
+
+    <sql id="baseColumnList">
+        id,create_time,update_time,disable,in_out,type,body
+    </sql>
+
+    <sql id="baseWhereSql">
+        <where>
+            <if test="params.id != null">
+                and t.id = #{params.id}
+            </if>
+            <if test="params.createTime != null">
+                and t.create_time = #{params.createTime}
+            </if>
+            <if test="params.updateTime != null">
+                and t.update_time = #{params.updateTime}
+            </if>
+            <if test="params.disable != null">
+                and t.disable = #{params.disable}
+            </if>
+            <if test="params.inOut != null">
+                and t.in_out = #{params.inOut}
+            </if>
+            <if test="params.type != null">
+                and t.type = #{params.type}
+            </if>
+            <if test="params.body != null">
+                and t.body = #{params.body}
+            </if>
+        </where>
+    </sql>
+
+    <select id="listByPage" resultType="com.cjh.wechatmp.po.MessagePO">
+        select
+        <include refid="baseColumnList"/>
+        from message t
+        <include refid="baseWhereSql"/>
+    </select>
+
+    <select id="getByMsgId" resultType="java.lang.Integer">
+        select count(*) from message t where t.msg_id = ${msgId}
+    </select>
+
+</mapper>

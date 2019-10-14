@@ -8,15 +8,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
+ * 消息表
  * 
  * @author cjh
  * @email 
- * @date 2019-10-11 15:10:33
+ * @date 2019-10-14 11:23:26
  */
 @Data
-//@TableName("token")
-public class TokenPO implements Serializable {
+@TableName("message")
+public class MessagePO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -27,14 +27,31 @@ public class TokenPO implements Serializable {
 	/**
 	 * 
 	 */
-	private Date createDate;
+	private Date createTime;
 	/**
 	 * 
 	 */
-	private Integer time;
+	private Date updateTime;
+	/**
+	 * 0有效，1无效
+	 */
+	private Integer disable;
+	/**
+	 * 1进，2出
+	 */
+	private Integer inOut;
 	/**
 	 * 
 	 */
-	private String value;
+	private String type;
+	/**
+	 *
+	 */
+	private String msgId;
+
+	/**
+	 * 
+	 */
+	private String body;
 
 }

@@ -1,12 +1,12 @@
-package com.cjh.wechatmp.po.message;
+package com.cjh.wechatmp.message;
 
 import lombok.Data;
 
 @Data
-public class BaseMessage {
+public class InBaseMessage {
 
     private String toUserName;
-    private String FromUserName;
+    private String fromUserName;
     private String createTime;
     private String msgType;
     private String msgId;
