@@ -4,7 +4,7 @@ spring:
       #服务发现
       discovery:
         server-addr: 127.0.0.1:8048
-        namespace: a8f9a937-cccb-4b91-a30e-fba77400cc32
+        namespace: d892e55a-3aea-4bcf-a642-77f2135cee97
   #redis
   redis:
     database: 1
