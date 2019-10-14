@@ -3,4 +3,4 @@ spring:
     #配置中心
     nacos:
       config:
-        namespace: 825e5cf7-76e8-4423-bec8-5d1432cc5971
+        namespace: a8f9a937-cccb-4b91-a30e-fba77400cc32
