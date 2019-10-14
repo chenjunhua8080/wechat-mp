@@ -1,25 +1,25 @@
 package com.cjh.wechatmp.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.cjh.wechatmp.po.message.in.TextMessage;
-import com.cjh.wechatmp.util.XmlUtil;
-import org.springframework.stereotype.Component;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.cjh.wechatmp.po.MessagePO;
+import com.cjh.wechatmp.request.MessageRequest;
+import com.cjh.wechatmp.request.PageRequest;
 
-@Component
-public class MessageService {
+/**
+ * 消息表
+ *
+ * @author cjh
+ * @email
+ * @date 2019-10-14 11:23:26
+ */
+public interface MessageService extends IService<MessagePO> {
 
-    public String handleMessage(String xml) {
-        JSONObject jsonObject = XmlUtil.xml2json(xml);
-        TextMessage textMessage = jsonObject.toJavaObject(TextMessage.class);
-        if (jsonObject.getString("msgType").equals("text")) {
+    /**
+     * 分页查询消息表
+     */
+    IPage<MessagePO> listByPage(MessageRequest messageRequest, PageRequest pageRequest);
 
-        } else {
-            textMessage.setContent("嗯嗯");
-        }
-        textMessage.setMsgType("text");
-        textMessage.setFromUserName(jsonObject.getString("toUserName"));
-        textMessage.setToUserName(jsonObject.getString("fromUserName"));
-        return XmlUtil.java2xml(textMessage);
-    }
-
+    boolean isExist(String msgId);
 }
+
