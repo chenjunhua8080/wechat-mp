@@ -1,6 +1,6 @@
 package com.cjh.wechatmp.controller;
 
-import com.cjh.wechatmp.service.MessageService;
+import com.cjh.wechatmp.message.MessageHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/message")
 public class MessageController {
 
-    private MessageService messageService;
+    private MessageHandler messageHandler;
 
     @PostMapping("/in")
     public String sign(HttpServletRequest request) {
@@ -47,7 +47,7 @@ public class MessageController {
             e.printStackTrace();
         }
         log.info("body: {}", body);
-        String resp = messageService.handleMessage(body);
+        String resp = messageHandler.handle(body);
         log.info("待响应: {}", resp);
         log.info("**********************消息处理结束**********************");
         return resp;
