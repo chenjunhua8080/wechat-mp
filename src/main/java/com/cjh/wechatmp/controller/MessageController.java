@@ -1,6 +1,11 @@
 package com.cjh.wechatmp.controller;
 
+import com.cjh.wechatmp.message.BaseMessage;
 import com.cjh.wechatmp.message.MessageHandler;
+import com.cjh.wechatmp.message.MessageUtil;
+import com.cjh.wechatmp.message.handler.AbstractMessageHandler;
+import com.cjh.wechatmp.message.handler.MessageHandlerAdapter;
+import com.cjh.wechatmp.util.XmlUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
     private MessageHandler messageHandler;
+    private MessageHandlerAdapter messageHandlerAdapter;
 
     @PostMapping("/in")
     public String sign(HttpServletRequest request) {
@@ -47,7 +53,14 @@ public class MessageController {
             e.printStackTrace();
         }
         log.info("body: {}", body);
-        String resp = messageHandler.handle(body);
+//        String resp = messageHandler.handle(body);
+        String msgType = MessageUtil.getMessageType(body);
+        AbstractMessageHandler messageHandler = messageHandlerAdapter.findMessageHandler(msgType);
+        BaseMessage outMessage = messageHandler.handleMessage(MessageUtil.convert(body));
+        String resp = null;
+        if (outMessage != null) {
+            resp = XmlUtil.java2xml(outMessage);
+        }
         log.info("待响应: {}", resp);
         log.info("**********************消息处理结束**********************");
         return resp;
