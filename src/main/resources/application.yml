@@ -18,3 +18,17 @@ mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
   #po位置
   type-aliases-package: com.cjh.wechatmp.po
+mp:
+  menu:
+    button:
+      - name: 菜单1呀
+        type: click
+        key: menu_1
+      - name: 菜单2呀
+        subButton:
+          - name: 菜单2_1呀
+            type: click
+            key: menu_2_1
+          - name: 菜单2_2呀
+            type: view
+            url: https://developers.weixin.qq.com
