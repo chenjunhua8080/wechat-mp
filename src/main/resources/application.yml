@@ -21,14 +21,14 @@ mybatis-plus:
 mp:
   menu:
     button:
-      - name: 菜单1呀
+      - name: 绑定账号
         type: click
         key: menu_1
-      - name: 菜单2呀
+      - name: 更多
         subButton:
-          - name: 菜单2_1呀
+          - name: click
             type: click
             key: menu_2_1
-          - name: 菜单2_2呀
+          - name: 页面跳转
             type: view
-            url: https://developers.weixin.qq.com
+            url: http://fzmc65.natappfree.cc/mp/login.html

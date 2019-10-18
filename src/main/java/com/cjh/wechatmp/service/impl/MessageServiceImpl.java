@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cjh.wechatmp.dao.MessageDao;
+import com.cjh.wechatmp.message.BaseMessage;
 import com.cjh.wechatmp.po.MessagePO;
 import com.cjh.wechatmp.request.MessageRequest;
 import com.cjh.wechatmp.request.PageRequest;
@@ -31,8 +32,11 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessagePO> imple
     }
 
     @Override
-    public boolean isExist(String msgId) {
-        return baseMapper.getByMsgId(msgId) > 0;
+    public boolean isExist(BaseMessage baseMessage) {
+        if (baseMessage.getMsgId() == null) {
+            baseMessage.setMsgId(String.valueOf(System.currentTimeMillis()));
+        }
+        return baseMapper.getByMsgId(baseMessage.getMsgId()) > 0;
     }
 
 }

@@ -14,14 +14,6 @@ public class JsonUtil {
     }
 
     /**
-     * java2json
-     */
-    public static String java2Json2_(Object object) {
-        String json = JSONObject.toJSONString(object);
-        return UnderlineToCamelUtils.camelToUnderline(json);
-    }
-
-    /**
      * json2java
      */
     public static <T> T json2java(String json, Class<T> clazz) {

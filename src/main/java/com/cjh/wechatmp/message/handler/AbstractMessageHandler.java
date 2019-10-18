@@ -50,7 +50,7 @@ public abstract class AbstractMessageHandler implements MessageHandler {
     protected boolean accept(BaseMessage inMessage) {
         log.info("前置检查: {}", inMessage);
         //避免重复处理
-        boolean exist = messageService.isExist(inMessage.getMsgId());
+        boolean exist = messageService.isExist(inMessage);
         if (exist) {
             log.info("已处理: msgId= {}", inMessage.getMsgId());
             try {
@@ -88,6 +88,7 @@ public abstract class AbstractMessageHandler implements MessageHandler {
      */
     protected void postHandle(BaseMessage inMessage, BaseMessage outMessage) {
         log.info("处理消息后操作: {}", outMessage);
+        outMessage.setMsgId(inMessage.getMsgId());
         save(outMessage, MessageConstant.MESSAGE_OUT);
     }
 

@@ -43,22 +43,25 @@ public class UnderlineToCamelUtils {
     /**
      * 驼峰法转下划线
      *
-     * @param line 源字符串
+     * @param str 源字符串
      * @return 转换后的字符串
      */
-    public static String camelToUnderline(String line) {
-        if (line == null || "".equals(line)) {
+    public static String camelToUnderline(String str) {
+        if (str == null || "".equals(str)) {
             return "";
         }
-        line = String.valueOf(line.charAt(0)).toUpperCase().concat(line.substring(1));
-        StringBuffer sb = new StringBuffer();
+        str = String.valueOf(str.charAt(0)).toLowerCase().concat(str.substring(1));
         Pattern pattern = Pattern.compile("[A-Z]([a-z\\d]+)?");
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = pattern.matcher(str);
         while (matcher.find()) {
             String word = matcher.group();
-            sb.append(word.toUpperCase());
-            sb.append(matcher.end() == line.length() ? "" : "_");
+            str = str.replace(word, "_" + word.toLowerCase());
         }
-        return sb.toString();
+        return str;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(UnderlineToCamelUtils.camelToUnderline(
+            "{\"button\":[{\"key\":\"menu_1\",\"name\":\"菜单1呀\",\"type\":\"click\"},{\"name\":\"菜单2呀\",\"subButton\":[{\"key\":\"menu_2_1\",\"name\":\"菜单2_1呀\",\"type\":\"click\"},{\"name\":\"菜单2_2呀\",\"type\":\"view\",\"url\":\"https://developers.weixin.qq.com\"}]}]}"));
     }
 }

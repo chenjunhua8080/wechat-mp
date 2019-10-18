@@ -1,6 +1,7 @@
 package com.cjh.wechatmp.message;
 
 import com.cjh.wechatmp.exception.ServiceException;
+import com.cjh.wechatmp.message.in.EventMessage;
 import com.cjh.wechatmp.message.in.ImgInMessage;
 import com.cjh.wechatmp.message.in.TextInMessage;
 import com.cjh.wechatmp.message.out.Image;
@@ -54,7 +55,8 @@ public class MessageUtil {
         }
         String messageType = MessageUtil.getMessageType(xml);
         if (messageType == null) {
-            throw new ServiceException("xml中为找匹配到messageType");
+            log.error("xml中为找未匹配到messageType");
+            throw new ServiceException("xml中为找未匹配到messageType");
         }
         switch (messageType) {
             //文本消息
@@ -63,8 +65,12 @@ public class MessageUtil {
             //图片消息
             case MessageConstant.MESSAGE_TYPE_IMG:
                 return XmlUtil.xml2java(xml, ImgInMessage.class);
+            //事件消息
+            case MessageConstant.MESSAGE_TYPE_EVENT:
+                return XmlUtil.xml2java(xml, EventMessage.class);
             default:
-                throw new ServiceException("未知消息类型：" + messageType);
+                log.error("未知消息类型: {}" + messageType);
+                throw new ServiceException("未知消息类型: " + messageType);
         }
     }
 

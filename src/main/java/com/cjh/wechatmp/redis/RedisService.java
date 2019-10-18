@@ -95,7 +95,7 @@ public class RedisService {
     }
 
     /**
-     * 普通缓存拿出并刷新时间
+     * 普通缓存拿出
      *
      * @param key 键
      * @return true成功 false 失败

@@ -56,7 +56,8 @@ public class MessageController {
 //        String resp = messageHandler.handle(body);
         String msgType = MessageUtil.getMessageType(body);
         AbstractMessageHandler messageHandler = messageHandlerAdapter.findMessageHandler(msgType);
-        BaseMessage outMessage = messageHandler.handleMessage(MessageUtil.convert(body));
+        BaseMessage inMessage = MessageUtil.convert(body);
+        BaseMessage outMessage = messageHandler.handleMessage(inMessage);
         String resp = null;
         if (outMessage != null) {
             resp = XmlUtil.java2xml(outMessage);

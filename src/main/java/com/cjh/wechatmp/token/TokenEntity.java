@@ -13,7 +13,7 @@ public class TokenEntity {
     private String accessToken;
     private int expiresIn;
     /**
-     * jssdk支持
+     * 网页授权/jsSDK支持
      */
     private String refreshToken;
     private String openid;

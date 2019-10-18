@@ -39,8 +39,15 @@ public class RedisConstant {
     public final static long EXIST_SEC_7200 = 7200;
 
     /**
-     * base_token
+     * base_token_ + appId
      */
-    public final static String BASE_TOKEN = "base_token";
-
+    public final static String BASE_TOKEN = "base_token_";
+    /**
+     * oauth2_token_ + openId
+     */
+    public final static String OAUTH2_TOKEN = "oauth2_token_";
+    /**
+     * user_token_ + userId
+     */
+    public final static String USER_TOKEN = "user_token_";
 }

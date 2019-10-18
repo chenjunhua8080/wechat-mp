@@ -15,7 +15,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MessageProcessor {
 
-    //标识要处理的消息类型
+    /**
+     * 标识要处理的消息类型
+     */
     String messageType() default MessageConstant.MESSAGE_TYPE_TEXT;
+
+    /**
+     * 标识要处理的事件类型，当messageType=event时有效
+     */
+    String eventType() default MessageConstant.EVENT_TYPE_CLICK;
 
 }

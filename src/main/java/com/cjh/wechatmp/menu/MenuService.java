@@ -5,6 +5,7 @@ import com.cjh.wechatmp.exception.WxErrorEntity;
 import com.cjh.wechatmp.token.TokenService;
 import com.cjh.wechatmp.util.JsonUtil;
 import com.cjh.wechatmp.util.RestTemplateUtil;
+import com.cjh.wechatmp.util.UnderlineToCamelUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,8 @@ public class MenuService {
 
     public String create() {
         String url = WxApi.MENU_CREATE.replace("ACCESS_TOKEN", tokenService.getBaseToken());
-        String resp = RestTemplateUtil.doPost(url, JsonUtil.java2Json2_(menuEntity));
+        String json = JsonUtil.java2Json(menuEntity);
+        String resp = RestTemplateUtil.doPost(url, UnderlineToCamelUtils.camelToUnderline(json));
         WxErrorEntity errorEntity = JsonUtil.json2java(resp, WxErrorEntity.class);
         if (errorEntity.getErrcode() == 0) {
             log.info("创建菜单成功: {}", menuEntity);

@@ -21,7 +21,7 @@ public class MessageHandler {
         //转换成消息
         BaseMessage inMessage = MessageUtil.convert(xml);
         //避免重复处理
-        if (messageService.isExist(inMessage.getMsgId())) {
+        if (messageService.isExist(inMessage)) {
             return null;
         }
         BaseMessage outMessage;
