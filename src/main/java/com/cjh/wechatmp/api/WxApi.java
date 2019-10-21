@@ -19,6 +19,10 @@ public class WxApi {
      * 刷新网页授权access_token
      */
     public static final String REFRESH_OAUTH2_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN";
+    /**
+     * 获取jsSDK授权token
+     */
+    public static final String JSSDK_TOKEN = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
 
     /**
      * 创建菜单

@@ -47,6 +47,10 @@ public class RedisConstant {
      */
     public final static String OAUTH2_TOKEN = "oauth2_token_";
     /**
+     * jsskd_token_ + encode(url)/appId
+     */
+    public final static String JSSKD_TOKEN = "jsskd_token_";
+    /**
      * user_token_ + userId
      */
     public final static String USER_TOKEN = "user_token_";

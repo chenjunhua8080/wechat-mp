@@ -7,8 +7,10 @@ import com.cjh.wechatmp.redis.RedisService;
 import com.cjh.wechatmp.sign.MpProperty;
 import com.cjh.wechatmp.util.JsonUtil;
 import com.cjh.wechatmp.util.RestTemplateUtil;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,8 +28,9 @@ public class TokenService {
      * 获取基础支持token
      */
     public String getBaseToken() {
-        String baseToken = redisService.get(RedisConstant.BASE_TOKEN);
-
+        String key = RedisConstant.BASE_TOKEN + mpProperty.getAppID();
+        String baseToken = redisService.get(key);
+        log.info("获取基础支持token: {}", baseToken);
         if (baseToken == null) {
             String url = WxApi.BASE_TOKEN
                 .replace("APPID", mpProperty.getAppID())
@@ -36,11 +39,10 @@ public class TokenService {
             TokenEntity tokenEntity = JsonUtil.json2java(resp, TokenEntity.class);
             baseToken = tokenEntity.getAccessToken();
             if (baseToken == null) {
-                log.error("获取{}失败: {}", RedisConstant.BASE_TOKEN, resp);
+                log.error("获取{}失败: {}", key, resp);
             } else {
-                log.info("更新{}: {}", RedisConstant.BASE_TOKEN, baseToken);
-                redisService.set(RedisConstant.BASE_TOKEN + mpProperty.getAppID(), baseToken,
-                    RedisConstant.EXIST_SEC_7200);
+                log.info("更新{}: {}", key, baseToken);
+                redisService.set(key, baseToken, RedisConstant.EXIST_SEC_7200);
             }
         }
         return baseToken;
@@ -95,6 +97,59 @@ public class TokenService {
             redisService.set(key, oauth2Token, RedisConstant.EXIST_DAY_30);
         }
         return oauth2Token;
+    }
+
+    /**
+     * 获取jsSDK授权token
+     */
+    private String getJsSDKToken() {
+        String key = RedisConstant.JSSKD_TOKEN + mpProperty.getAppID();
+        String jsSDKToken = redisService.get(key);
+        log.info("获取jsSDK授权token: {}", jsSDKToken);
+        if (jsSDKToken == null) {
+            String url = WxApi.JSSDK_TOKEN.replace("ACCESS_TOKEN", getBaseToken());
+            String resp = RestTemplateUtil.doGet(url);
+            TokenEntity tokenEntity = JsonUtil.json2java(resp, TokenEntity.class);
+            jsSDKToken = tokenEntity.getTicket();
+            if (jsSDKToken == null) {
+                log.error("获取{}失败: {}", key, resp);
+                throw new ServiceException(resp);
+            } else {
+                log.info("更新{}: {}", key, jsSDKToken);
+                redisService.set(key, jsSDKToken, RedisConstant.EXIST_SEC_7200);
+            }
+        }
+        return jsSDKToken;
+    }
+
+    /**
+     * 获取jsSDK授权token DTO
+     */
+    public JsSDKTokenDTO getJsSDKTokenDTO(String url) {
+        JsSDKTokenDTO dto;
+        String key = RedisConstant.JSSKD_TOKEN + url;
+        String jsonDTO = redisService.get(key);
+        if (jsonDTO == null) {
+            dto = new JsSDKTokenDTO();
+            dto.setAppId(mpProperty.getAppID());
+            dto.setNonceStr(UUID.randomUUID().toString());
+            dto.setTimestamp(System.currentTimeMillis());
+            dto.setUrl(url);
+            StringBuilder sb = new StringBuilder();
+            sb.append("jsapi_ticket=").append(getJsSDKToken())
+                .append("&noncestr=").append(dto.getNonceStr())
+                .append("&timestamp=").append(dto.getTimestamp())
+                .append("&url=").append(url);
+            String sign = DigestUtils.sha1Hex(sb.toString());
+            dto.setSignature(sign);
+            jsonDTO = JsonUtil.java2Json(dto);
+            log.info("更新{}: {}", key, jsonDTO);
+            redisService.set(key, jsonDTO, RedisConstant.EXIST_MIN_5);
+        } else {
+            log.info("获取{}: {}", key, jsonDTO);
+            dto = JsonUtil.json2java(jsonDTO, JsSDKTokenDTO.class);
+        }
+        return dto;
     }
 
     public static void main(String[] args) {
