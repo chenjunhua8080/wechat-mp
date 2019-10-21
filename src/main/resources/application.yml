@@ -18,17 +18,3 @@ mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
   #po位置
   type-aliases-package: com.cjh.wechatmp.po
-mp:
-  menu:
-    button:
-      - name: 绑定账号
-        type: click
-        key: menu_1
-      - name: 更多
-        subButton:
-          - name: click
-            type: click
-            key: menu_2_1
-          - name: 页面跳转
-            type: view
-            url: http://fzmc65.natappfree.cc/mp/login.html
