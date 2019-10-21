@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * View事件消息处理器
  */
 @AllArgsConstructor
-@MessageProcessor(messageType = MessageConstant.MESSAGE_TYPE_EVENT, eventType = MessageConstant.EVENT_TYPE_CLICK)
+@MessageProcessor(messageType = MessageConstant.MESSAGE_TYPE_EVENT, eventType = MessageConstant.EVENT_TYPE_VIEW)
 @Component
 public class ViewEventHandler extends AbstractMessageHandler {
 

@@ -20,7 +20,7 @@ public class SubscribeEventHandler extends AbstractMessageHandler {
     public BaseMessage doHandle(BaseMessage inMessage) {
         String content;
         content = "嗨, 终于等到你了~\t"
-            + "<a href=\"http://fzmc65.natappfree.cc/mp/test/testRedis/user/张三\">戳我</a>绑定手机号";
+            + "<a href=\"http://fzmc65.natappfree.cc/mp/login.html\">戳我</a>绑定手机号";
         return MessageUtil.buildTextOutMessage(inMessage, content);
     }
 }

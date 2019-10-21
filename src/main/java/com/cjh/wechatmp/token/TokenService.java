@@ -2,8 +2,10 @@ package com.cjh.wechatmp.token;
 
 import com.cjh.wechatmp.api.WxApi;
 import com.cjh.wechatmp.exception.ServiceException;
+import com.cjh.wechatmp.po.UserPO;
 import com.cjh.wechatmp.redis.RedisConstant;
 import com.cjh.wechatmp.redis.RedisService;
+import com.cjh.wechatmp.service.UserService;
 import com.cjh.wechatmp.sign.MpProperty;
 import com.cjh.wechatmp.util.JsonUtil;
 import com.cjh.wechatmp.util.RestTemplateUtil;
@@ -23,6 +25,7 @@ public class TokenService {
 
     private MpProperty mpProperty;
     private RedisService redisService;
+    private UserService userService;
 
     /**
      * 获取基础支持token
@@ -70,8 +73,18 @@ public class TokenService {
             redisService.set(key, oauth2Token, RedisConstant.EXIST_SEC_7200);
         }
         oauth2Token = refreshOAuth2Token(tokenEntity.getRefreshToken());
+        String openid = tokenEntity.getOpenid();
+
+        //创建用户
+        UserPO userPO = userService.getByOpenId(openid);
+        if (userPO == null) {
+            userPO = new UserPO();
+            userPO.setOpenId(openid);
+            userService.save(userPO);
+        }
+
         OAuth2TokenDTO tokenDTO = new OAuth2TokenDTO();
-        tokenDTO.setOpenId(tokenEntity.getOpenid());
+        tokenDTO.setOpenId(openid);
         tokenDTO.setAccessToken(oauth2Token);
         return tokenDTO;
     }
