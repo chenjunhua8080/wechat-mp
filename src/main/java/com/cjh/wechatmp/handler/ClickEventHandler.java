@@ -12,12 +12,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
- * 事件消息处理器
+ * Click事件消息处理器
  */
 @AllArgsConstructor
-@MessageProcessor(messageType = MessageConstant.MESSAGE_TYPE_EVENT)
+@MessageProcessor(messageType = MessageConstant.MESSAGE_TYPE_EVENT, eventType = MessageConstant.EVENT_TYPE_CLICK)
 @Component
-public class EventMessageHandler extends AbstractMessageHandler {
+public class ClickEventHandler extends AbstractMessageHandler {
 
     private RedisService redisService;
 
@@ -34,12 +34,6 @@ public class EventMessageHandler extends AbstractMessageHandler {
                 content = "未登录哦！<a href=\"http://fzmc65.natappfree.cc/mp/test/testRedis/user/张三\">戳我</a>去登陆";
             }
             return MessageUtil.buildTextOutMessage(inMessage, content);
-        } else if (MessageConstant.EVENT_TYPE_VIEW.equals(eventMessage.getEvent())) {
-            String userToken = redisService.get(RedisConstant.USER_TOKEN);
-            if (userToken == null) {
-                content = "未登录哦！<a href=\"http://fzmc65.natappfree.cc/mp/test/testRedis/user/张三\">戳我</a>去登陆";
-                return MessageUtil.buildTextOutMessage(inMessage, content);
-            }
         }
         return null;
     }

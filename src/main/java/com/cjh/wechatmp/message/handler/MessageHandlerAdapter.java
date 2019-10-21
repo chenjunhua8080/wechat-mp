@@ -13,8 +13,9 @@ public interface MessageHandlerAdapter {
      * 将不同类型的消息发送给对应的消息处理器
      *
      * @param messageType 用户发送给公众号的消息类型
+     * @param eventType   事件类型
      * @return 对应的消息处理器
      */
-    AbstractMessageHandler findMessageHandler(String messageType);
+    AbstractMessageHandler findMessageHandler(String messageType, String eventType);
 
 }

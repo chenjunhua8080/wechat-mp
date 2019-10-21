@@ -12,6 +12,9 @@ public class MessageConstant {
     /**
      * 事件类型
      */
+    public static final String EVENT_TYPE_SUBSCRIBE = "subscribe";
+    public static final String EVENT_TYPE_UNSUBSCRIBE = "unsubscribe";
+    public static final String EVENT_TYPE_LOCATION = "LOCATION";
     public static final String EVENT_TYPE_CLICK = "CLICK";
     public static final String EVENT_TYPE_VIEW = "VIEW";
 

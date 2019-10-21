@@ -20,7 +20,7 @@ public class SpringMessageHandlerAdapter implements MessageHandlerAdapter, Appli
     private ApplicationContext context;
 
     @Override
-    public AbstractMessageHandler findMessageHandler(String messageType) {
+    public AbstractMessageHandler findMessageHandler(String messageType, String eventType) {
         log.info("寻找 {} 消息处理器", messageType);
 
         //获取到所有拥有特定注解的Beans集合
@@ -39,10 +39,19 @@ public class SpringMessageHandlerAdapter implements MessageHandlerAdapter, Appli
                 continue;
             }
             MessageProcessor annotation = annotationBeanClass.getAnnotation(MessageProcessor.class);
-            //比对类型
+            //精准匹配处理器
             if (messageType.equals(annotation.messageType())) {
-                log.info("返回消息处理器 {}", annotationBean);
-                return (AbstractMessageHandler) annotationBean;
+                if (eventType == null) {
+                    //消息处理器
+                    log.info("返回消息处理器 {}", annotationBean);
+                    return (AbstractMessageHandler) annotationBean;
+                } else {
+                    //事件处理器
+                    if (eventType.equals(annotation.eventType())) {
+                        log.info("返回事件处理器 {}", annotationBean);
+                        return (AbstractMessageHandler) annotationBean;
+                    }
+                }
             }
         }
 

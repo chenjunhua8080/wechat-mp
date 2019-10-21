@@ -53,9 +53,9 @@ public class MessageController {
             e.printStackTrace();
         }
         log.info("body: {}", body);
-//        String resp = messageHandler.handle(body);
         String msgType = MessageUtil.getMessageType(body);
-        AbstractMessageHandler messageHandler = messageHandlerAdapter.findMessageHandler(msgType);
+        String eventType = MessageUtil.getEventType(body);
+        AbstractMessageHandler messageHandler = messageHandlerAdapter.findMessageHandler(msgType, eventType);
         BaseMessage inMessage = MessageUtil.convert(body);
         BaseMessage outMessage = messageHandler.handleMessage(inMessage);
         String resp = null;
