@@ -3,12 +3,16 @@ package com.cjh.wechatmp.token;
 import com.cjh.wechatmp.api.WxApi;
 import com.cjh.wechatmp.exception.ServiceException;
 import com.cjh.wechatmp.po.UserPO;
+import com.cjh.wechatmp.po.WeChatUser;
 import com.cjh.wechatmp.redis.RedisConstant;
 import com.cjh.wechatmp.redis.RedisService;
 import com.cjh.wechatmp.service.UserService;
 import com.cjh.wechatmp.sign.MpProperty;
+import com.cjh.wechatmp.util.CharsetUtil;
 import com.cjh.wechatmp.util.JsonUtil;
 import com.cjh.wechatmp.util.RestTemplateUtil;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +84,10 @@ public class TokenService {
         if (userPO == null) {
             userPO = new UserPO();
             userPO.setOpenId(openid);
+            //获取用户微信基本信息
+            WeChatUser baseInfo = getBaseInfo(oauth2Token, openid);
+            userPO.setName(baseInfo.getNickname());
+            userPO.setAvatar(baseInfo.getHeadimgurl());
             userService.save(userPO);
         }
 
@@ -165,10 +173,27 @@ public class TokenService {
         return dto;
     }
 
-    public static void main(String[] args) {
-        String resp = "{\"errcode\":40013,\"errmsg\":\"invalid appid\"}";
-        TokenEntity tokenEntity = JsonUtil.json2java(resp, TokenEntity.class);
-        System.out.println(tokenEntity);
+    /**
+     * 获取用户微信基本信息
+     */
+    private WeChatUser getBaseInfo(String accessToken, String openId) {
+        log.info("获取用户微信基本信息, openId: {}", openId);
+        String url = WxApi.GET_BASE_INFO
+            .replace("ACCESS_TOKEN", accessToken)
+            .replace("OPENID", openId);
+        String resp = RestTemplateUtil.doGet(url);
+        //转换一下字符集
+        resp = CharsetUtil.toCharset(resp, "utf-8");
+        if (!resp.contains("nickname")) {
+            return new WeChatUser();
+        }
+        return JsonUtil.json2java(resp, WeChatUser.class);
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        String resp = "respBody - {\"openid\":\"o1IsFt8QJMFhVZDE0W3ovHx15hes\",\"nickname\":\"set any bugsð\u009F¤\u0094ð\u009F¤\u0094\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"å¹¿å·\u009E\",\"province\":\"å¹¿ä¸\u009C\",\"country\":\"ä¸\u00ADå\u009B½\",\"headimgurl\":\"http:\\/\\/thirdwx.qlogo.cn\\/mmopen\\/vi_32\\/19ItTFRzOhgZLbWIlYKprVNtaXpya3VbMncXYYnKLlWfm4SnMqwKIS4WDaHd2lnnAlyCnxdDj1OTYUsolbGlHA\\/132\",\"privilege\":[]}";
+        byte[] bytes = resp.getBytes(StandardCharsets.ISO_8859_1);
+        System.out.println(new String(bytes, StandardCharsets.UTF_8));
     }
 
 }

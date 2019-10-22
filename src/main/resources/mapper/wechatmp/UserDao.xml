@@ -11,6 +11,7 @@
         <result property="age" column="age"/>
         <result property="phone" column="phone"/>
         <result property="password" column="password"/>
+        <result property="avatar" column="avatar"/>
     </resultMap>
 
     <sql id="baseColumnList">

@@ -1,5 +1,6 @@
 package com.cjh.wechatmp.controller;
 
+import com.cjh.wechatmp.response.Result;
 import com.cjh.wechatmp.token.JsSDKTokenDTO;
 import com.cjh.wechatmp.token.OAuth2TokenDTO;
 import com.cjh.wechatmp.token.TokenService;
@@ -20,19 +21,19 @@ public class TokenController {
     private TokenService tokenService;
 
     @GetMapping("/getOAuth2Token/{code}")
-    public OAuth2TokenDTO getOAuth2Token(@PathVariable String code) {
+    public Result getOAuth2Token(@PathVariable String code) {
         log.info("****************通过code换取网页授权access_token**********************");
         OAuth2TokenDTO oAuth2Token = tokenService.getOAuth2Token(code);
         log.info("****************通过code换取网页授权access_token结束*******************");
-        return oAuth2Token;
+        return Result.success().setData(oAuth2Token);
     }
 
     @GetMapping("/getJsSDKToken")
-    public JsSDKTokenDTO getJsSDKTokenDTO(@RequestParam String url) {
+    public Result getJsSDKTokenDTO(@RequestParam String url) {
         log.info("****************获取jsSDK授权token**********************");
         JsSDKTokenDTO jsSDKTokenDTO = tokenService.getJsSDKTokenDTO(url);
         log.info("****************获取jsSDK授权token结束******************");
-        return jsSDKTokenDTO;
+        return Result.success().setData(jsSDKTokenDTO);
     }
 
 }

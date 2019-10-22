@@ -33,7 +33,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserPO> implements Use
     @Override
     public UserPO getByOpenId(String openId) {
         QueryWrapper<UserPO> wrapper = Wrappers.query();
-        wrapper.eq("openId", openId);
+        wrapper.eq("open_id", openId);
         return baseMapper.selectOne(wrapper);
     }
 

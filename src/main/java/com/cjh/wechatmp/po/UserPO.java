@@ -44,5 +44,9 @@ public class UserPO implements Serializable {
 	 * 
 	 */
 	private String password;
+	/**
+	 *
+	 */
+	private String avatar;
 
 }

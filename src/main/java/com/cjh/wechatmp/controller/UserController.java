@@ -40,11 +40,11 @@ public class UserController {
     public Result info(UserRequest user) {
         UserPO userPO;
         if (user.getOpenId() != null) {
-            userPO = userService.getById(user.getOpenId());
+            userPO = userService.getByOpenId(user.getOpenId());
         } else {
             userPO = userService.getById(user.getId());
         }
-        return Result.success().addData(userPO);
+        return Result.success().setData(userPO);
     }
 
     /**
@@ -54,7 +54,7 @@ public class UserController {
     public Result list(UserRequest user) {
         UserPO userPO = userService.getByOpenId(user.getOpenId());
         userPO.setPhone(user.getPhone());
-        userService.save(userPO);
+        userService.updateById(userPO);
         return Result.success("绑定成功");
     }
 
