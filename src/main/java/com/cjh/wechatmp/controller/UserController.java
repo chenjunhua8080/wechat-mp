@@ -8,6 +8,9 @@ import com.cjh.wechatmp.response.Result;
 import com.cjh.wechatmp.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +30,7 @@ public class UserController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public Result list(UserRequest user, PageRequest pageRequest) {
         IPage<UserPO> pageData = userService.listByPage(user, pageRequest);
         return Result.success().addData(pageData);
@@ -36,7 +39,7 @@ public class UserController {
     /**
      * 单个
      */
-    @RequestMapping("/info")
+    @GetMapping("/info")
     public Result info(UserRequest user) {
         UserPO userPO;
         if (user.getOpenId() != null) {
@@ -50,8 +53,8 @@ public class UserController {
     /**
      * 绑定
      */
-    @RequestMapping("/bind")
-    public Result list(UserRequest user) {
+    @PostMapping("/bind")
+    public Result list(@RequestBody UserRequest user) {
         UserPO userPO = userService.getByOpenId(user.getOpenId());
         userPO.setPhone(user.getPhone());
         userService.updateById(userPO);

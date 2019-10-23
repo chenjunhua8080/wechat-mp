@@ -8,7 +8,7 @@
 </head>
 <body>
 <label>
-  <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0fba0e001eeeccf&redirect_uri=http%3a%2f%2fnest84.natappfree.cc%2fmp%2flogin.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect">授权</a>
+  <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0fba0e001eeeccf&redirect_uri=http%3a%2f%2fwwx46k.natappfree.cc%2fmp%2flogin.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect">授权</a>
   code:<strong id="code"></strong>
   <br>
   <a href="" id="a2">授权2</a>
@@ -19,10 +19,10 @@
     var code = url.match(/code=(.+)&/)[1];
     codeE.innerHTML = code;
     var a2 = document.getElementById("a2");
-    a2.setAttribute("href", "http://nest84.natappfree.cc/mp/token/getOAuth2Token/" + code);
+    a2.setAttribute("href", "http://wwx46k.natappfree.cc/mp/token/getOAuth2Token/" + code);
     var accessToken;
     var openId;
-    $.get("http://nest84.natappfree.cc/mp/token/getOAuth2Token/" + code, function (t) {
+    $.get("http://wwx46k.natappfree.cc/mp/token/getOAuth2Token/" + code, function (t) {
       accessToken = t.data.accessToken;
       openId = t.data.openId;
     })
@@ -31,12 +31,12 @@
       var phone = $("#phone").val();
       var password = $("#password").val();
       $.ajax({
-        url: "http://nest84.natappfree.cc/mp/user/bind",
+        url: "http://wwx46k.natappfree.cc/mp/user/bind",
         data: {"phone": phone, "password": password, "openId": openId},
         dataType: "json",
         success: function (data) {
           if (data.code === 200) {
-            window.location.href = "http://nest84.natappfree.cc/mp/index.html?openId=" + openId;
+            window.location.href = "http://wwx46k.natappfree.cc/mp/index.html?openId=" + openId;
           }else {
             alert(data);
           }

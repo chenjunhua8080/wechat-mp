@@ -7,7 +7,6 @@ import com.cjh.wechatmp.token.TokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +19,8 @@ public class TokenController {
 
     private TokenService tokenService;
 
-    @GetMapping("/getOAuth2Token/{code}")
-    public Result getOAuth2Token(@PathVariable String code) {
+    @GetMapping("/getOAuth2Token")
+    public Result getOAuth2Token(@RequestParam String code) {
         log.info("****************通过code换取网页授权access_token**********************");
         OAuth2TokenDTO oAuth2Token = tokenService.getOAuth2Token(code);
         log.info("****************通过code换取网页授权access_token结束*******************");

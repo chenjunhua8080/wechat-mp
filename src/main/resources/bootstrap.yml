@@ -1,5 +1,5 @@
 server:
-  port: 8057
+  port: 8055
   servlet:
     context-path: /mp
 spring:
