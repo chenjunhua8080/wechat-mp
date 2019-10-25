@@ -50,13 +50,13 @@ public class UnderlineToCamelUtils {
         if (str == null || "".equals(str)) {
             return "";
         }
-        str = String.valueOf(str.charAt(0)).toLowerCase().concat(str.substring(1));
         Pattern pattern = Pattern.compile("[A-Z]([a-z\\d]+)?");
         Matcher matcher = pattern.matcher(str);
         while (matcher.find()) {
             String word = matcher.group();
             str = str.replace(word, "_" + word.toLowerCase());
         }
+        str = String.valueOf(str.charAt(0)).toLowerCase().concat(str.substring(1));
         return str;
     }
 
