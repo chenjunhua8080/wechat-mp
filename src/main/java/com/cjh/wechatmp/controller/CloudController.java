@@ -1,9 +1,8 @@
 package com.cjh.wechatmp.controller;
 
 import com.cjh.wechatmp.api.CloudService;
-import com.cjh.wechatmp.po.NowPlaying;
 import com.cjh.wechatmp.request.PageRequest;
-import java.util.List;
+import com.cjh.wechatmp.response.Result;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,18 +17,19 @@ public class CloudController {
     private CloudService cloudService;
 
     @GetMapping("/getNowPlaying")
-    public NowPlaying getNowPlaying() {
-        return cloudService.getNowPlaying();
+    public Result getNowPlaying() {
+        return Result.success().setData(cloudService.getNowPlaying());
     }
 
     @GetMapping("/getMovieDesc")
-    public String getMovieDesc(String movieId) {
-        return cloudService.getMovieDesc(movieId);
+    public Result getMovieDesc(String movieId) {
+        String movieDesc = cloudService.getMovieDesc(movieId);
+        return Result.success().setData(movieDesc);
     }
 
     @GetMapping("/getComments")
-    public List<String> getComments(@RequestParam("movieId") String movieId, PageRequest page) {
-        return cloudService.getComments(movieId, page.getPageNum(), page.getPageSize());
+    public Result getComments(@RequestParam("movieId") String movieId, PageRequest page) {
+        return Result.success().setData(cloudService.getComments(movieId, page.getPageNum(), page.getPageSize()));
     }
 
 }
