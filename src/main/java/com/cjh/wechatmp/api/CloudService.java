@@ -6,14 +6,15 @@ import com.cjh.wechatmp.po.NowPlaying;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
-@AllArgsConstructor
 @Component
 public class CloudService {
 
+    @Autowired
     private RestTemplate restTemplate;
 
     /**
@@ -33,7 +34,7 @@ public class CloudService {
             e.printStackTrace();
         }
         log.info("服务结果: {}", nowPlaying);
-        return null;
+        return nowPlaying;
     }
 
     /**
