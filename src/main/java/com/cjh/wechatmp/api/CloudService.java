@@ -3,8 +3,8 @@ package com.cjh.wechatmp.api;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.po.NowPlaying;
+import com.cjh.wechatmp.util.ImgUtil;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,6 +30,7 @@ public class CloudService {
             assert jsonArray != null;
             JSONObject jsonObject = jsonArray.getJSONObject((int) (Math.random() * jsonArray.size()));
             nowPlaying = jsonObject.toJavaObject(NowPlaying.class);
+//            nowPlaying.setImg(ImgUtil.img2base64(nowPlaying.getImg()));
         } catch (Exception e) {
             e.printStackTrace();
         }
