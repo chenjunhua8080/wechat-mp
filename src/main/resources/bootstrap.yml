@@ -1,5 +1,5 @@
 server:
-  port: 8055
+  port: 8057
 spring:
   application:
     name: wechat-mp
