@@ -31,7 +31,7 @@ public class ClickEventHandler extends AbstractMessageHandler {
             if (userToken != null) {
                 content = userToken;
             } else {
-                content = "未登录哦！<a href=\"http://h5.springeasy.cn/login.html\">戳我</a>去登陆";
+                content = "未登录哦！<a href=\"http://h5.springeasy.cn/pages/user/user\">戳我</a>去登陆";
             }
             return MessageUtil.buildTextOutMessage(inMessage, content);
         }
