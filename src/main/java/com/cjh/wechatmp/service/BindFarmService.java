@@ -1,7 +1,7 @@
-package com.cjh.wechatmp.farm.service;
+package com.cjh.wechatmp.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cjh.wechatmp.farm.po.BindFarmPO;
+import com.cjh.wechatmp.po.BindFarmPO;
 
 /**
  * 绑定农场

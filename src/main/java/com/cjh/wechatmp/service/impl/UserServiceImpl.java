@@ -1,14 +1,10 @@
 package com.cjh.wechatmp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cjh.wechatmp.dao.UserDao;
 import com.cjh.wechatmp.po.UserPO;
-import com.cjh.wechatmp.request.PageRequest;
-import com.cjh.wechatmp.request.UserRequest;
 import com.cjh.wechatmp.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +19,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 public class UserServiceImpl extends ServiceImpl<UserDao, UserPO> implements UserService {
-
-    @Override
-    public IPage<UserPO> listByPage(UserRequest userRequest, PageRequest pageRequest) {
-        Page page = new Page(pageRequest.getPageNum(), pageRequest.getPageSize());
-        return baseMapper.listByPage(page, userRequest);
-    }
 
     @Override
     public UserPO getByOpenId(String openId) {

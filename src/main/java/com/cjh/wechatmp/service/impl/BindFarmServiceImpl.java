@@ -1,9 +1,9 @@
-package com.cjh.wechatmp.farm.service.impl;
+package com.cjh.wechatmp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cjh.wechatmp.farm.dao.BindFarmDao;
-import com.cjh.wechatmp.farm.po.BindFarmPO;
-import com.cjh.wechatmp.farm.service.BindFarmService;
+import com.cjh.wechatmp.dao.BindFarmDao;
+import com.cjh.wechatmp.po.BindFarmPO;
+import com.cjh.wechatmp.service.BindFarmService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

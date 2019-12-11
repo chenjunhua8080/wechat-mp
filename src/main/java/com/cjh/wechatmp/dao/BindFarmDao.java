@@ -1,7 +1,7 @@
-package com.cjh.wechatmp.farm.dao;
+package com.cjh.wechatmp.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cjh.wechatmp.farm.po.BindFarmPO;
+import com.cjh.wechatmp.po.BindFarmPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

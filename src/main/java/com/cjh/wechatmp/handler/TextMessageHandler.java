@@ -1,7 +1,7 @@
 package com.cjh.wechatmp.handler;
 
 import com.cjh.wechatmp.annotation.MessageProcessor;
-import com.cjh.wechatmp.farm.service.FarmService;
+import com.cjh.wechatmp.farm.FarmService;
 import com.cjh.wechatmp.message.BaseMessage;
 import com.cjh.wechatmp.message.MessageUtil;
 import com.cjh.wechatmp.message.handler.AbstractMessageHandler;

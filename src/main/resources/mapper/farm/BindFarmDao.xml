@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.cjh.wechatmp.farm.dao.BindFarmDao">
+<mapper namespace="com.cjh.wechatmp.dao.BindFarmDao">
 
-    <select id="selectByUserId" resultType="com.cjh.wechatmp.farm.po.BindFarmPO">
+    <select id="selectByUserId" resultType="com.cjh.wechatmp.po.BindFarmPO">
         select t.* from bind_farm t where t.user_id = #{userId}
     </select>
 </mapper>

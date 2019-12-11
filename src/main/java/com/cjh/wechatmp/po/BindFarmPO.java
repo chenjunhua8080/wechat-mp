@@ -1,4 +1,4 @@
-package com.cjh.wechatmp.farm.po;
+package com.cjh.wechatmp.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

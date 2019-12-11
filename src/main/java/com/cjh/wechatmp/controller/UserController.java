@@ -1,8 +1,6 @@
 package com.cjh.wechatmp.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.cjh.wechatmp.po.UserPO;
-import com.cjh.wechatmp.request.PageRequest;
 import com.cjh.wechatmp.request.UserRequest;
 import com.cjh.wechatmp.response.Result;
 import com.cjh.wechatmp.service.UserService;
@@ -26,15 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private UserService userService;
-
-    /**
-     * 列表
-     */
-    @GetMapping("/list")
-    public Result list(UserRequest user, PageRequest pageRequest) {
-        IPage<UserPO> pageData = userService.listByPage(user, pageRequest);
-        return Result.success().addData(pageData);
-    }
 
     /**
      * 单个

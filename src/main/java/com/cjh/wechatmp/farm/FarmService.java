@@ -1,9 +1,9 @@
-package com.cjh.wechatmp.farm.service;
+package com.cjh.wechatmp.farm;
 
 import com.cjh.wechatmp.api.CloudService;
 import com.cjh.wechatmp.dao.UserDao;
-import com.cjh.wechatmp.farm.dao.BindFarmDao;
-import com.cjh.wechatmp.farm.po.BindFarmPO;
+import com.cjh.wechatmp.dao.BindFarmDao;
+import com.cjh.wechatmp.po.BindFarmPO;
 import com.cjh.wechatmp.message.in.TextInMessage;
 import com.cjh.wechatmp.po.UserPO;
 import lombok.AllArgsConstructor;
