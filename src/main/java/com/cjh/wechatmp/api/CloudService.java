@@ -3,7 +3,6 @@ package com.cjh.wechatmp.api;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.po.NowPlaying;
-import com.cjh.wechatmp.util.ImgUtil;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +55,19 @@ public class CloudService {
         String url = CloudApi.HOST_DOUBAN + "getComments?id=" + id + "&pageNum=" + pageNum + "&pageSize=" + pageSize;
         log.info("服务调用: {}", url);
         List forObject = restTemplate.getForObject(url, List.class);
+        log.info("服务结果: {}", forObject);
+        return forObject;
+    }
+
+    //##################### 农场 ########################
+
+    /**
+     * 查询今天农场日志
+     */
+    public String getTodayFarmLog(String farmOpenId) {
+        String url = CloudApi.HOST_DOUBAN + "getTodayFarmLog?openId=" + farmOpenId;
+        log.info("服务调用: {}", url);
+        String forObject = restTemplate.getForObject(url, String.class);
         log.info("服务结果: {}", forObject);
         return forObject;
     }

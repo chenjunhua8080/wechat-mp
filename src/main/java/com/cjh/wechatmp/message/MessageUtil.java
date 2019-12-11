@@ -75,7 +75,7 @@ public class MessageUtil {
     }
 
     /**
-     * 构建<strong>图片</strong>响应消息
+     * 构建<strong>文本</strong>响应消息
      */
     public static TextOutMessage buildTextOutMessage(BaseMessage requestMessage, String content) {
         TextOutMessage textResponseMessage = new TextOutMessage();
