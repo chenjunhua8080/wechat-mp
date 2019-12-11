@@ -1,12 +1,13 @@
 package com.cjh.wechatmp.farm;
 
 import com.cjh.wechatmp.api.CloudService;
-import com.cjh.wechatmp.dao.UserDao;
 import com.cjh.wechatmp.dao.BindFarmDao;
-import com.cjh.wechatmp.po.BindFarmPO;
+import com.cjh.wechatmp.dao.UserDao;
 import com.cjh.wechatmp.message.in.TextInMessage;
+import com.cjh.wechatmp.po.BindFarmPO;
 import com.cjh.wechatmp.po.UserPO;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
@@ -51,7 +52,11 @@ public class FarmService {
         if (bindFarmPO == null) {
             return "未绑定农场，请先回复 “openid#xxx” 进行绑定...(xxx -> 农场openid)";
         }
-        return cloudService.getTodayFarmLog(bindFarmPO.getFarmOpenid());
+        String todayFarmLog = cloudService.getTodayFarmLog(bindFarmPO.getFarmOpenid());
+        if (StringUtils.isBlank(todayFarmLog)) {
+            return "暂无消息";
+        }
+        return todayFarmLog;
     }
 
     /**
@@ -79,7 +84,7 @@ public class FarmService {
      */
     private boolean isBind(String fromUserName) {
         UserPO userPO = userDao.selectByOpenId(fromUserName);
-        return userPO == null;
+        return userPO != null;
     }
 
     /**
@@ -92,7 +97,11 @@ public class FarmService {
         if (userPO == null) {
             return "请先授权登录";
         }
-        BindFarmPO bindFarmPO = new BindFarmPO();
+        BindFarmPO bindFarmPO = bindFarmDao.selectByUserId(userPO.getId());
+        if (bindFarmPO == null) {
+            return "已绑定农场，请先回复 “hb+openid#xxx” 进行换绑...(xxx -> 农场openid)";
+        }
+        bindFarmPO = new BindFarmPO();
         bindFarmPO.setFarmOpenid(openId);
         bindFarmPO.setUserId(userPO.getId());
         bindFarmDao.insert(bindFarmPO);
