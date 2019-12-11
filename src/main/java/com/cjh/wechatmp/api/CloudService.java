@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.farm.FarmLogPO;
 import com.cjh.wechatmp.po.NowPlaying;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -68,10 +69,9 @@ public class CloudService {
     public List<FarmLogPO> getTodayFarmLog(String farmOpenId) {
         String url = CloudApi.HOST_DOUBAN + "getTodayFarmLog?openId=" + farmOpenId;
         log.info("服务调用: {}", url);
-        List<Object> forObject = restTemplate.getForObject(url, List.class);
-        List<FarmLogPO> logs = JSONObject.parseArray(farmOpenId, FarmLogPO.class);
+        List<Map<String, Object>> forObject = restTemplate.getForObject(url, List.class);
         log.info("服务结果: {}", forObject);
-        return logs;
+        return JSONObject.parseArray(JSONObject.toJSONString(forObject), FarmLogPO.class);
     }
 
 }
