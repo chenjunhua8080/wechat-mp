@@ -27,11 +27,11 @@ public class FarmService {
                 result = "回复 “openid#xxx” 即可绑定...(xxx -> 农场openid)";
             }
 
-        } else if (textInMessage.getContent().contains("openid#")) {
-            result = bind(textInMessage);
-
         } else if (textInMessage.getContent().contains("hb+openid#")) {
             result = changeBind(textInMessage);
+
+        } else if (textInMessage.getContent().contains("openid#")) {
+            result = bind(textInMessage);
 
         } else if (textInMessage.getContent().equals("今日农场作业情况")) {
             result = getTodayFarmLog(textInMessage.getFromUserName());
