@@ -6,8 +6,8 @@ import com.cjh.wechatmp.dao.UserDao;
 import com.cjh.wechatmp.message.in.TextInMessage;
 import com.cjh.wechatmp.po.BindFarmPO;
 import com.cjh.wechatmp.po.UserPO;
+import java.util.List;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
@@ -52,11 +52,15 @@ public class FarmService {
         if (bindFarmPO == null) {
             return "未绑定农场，请先回复 “openid#xxx” 进行绑定...(xxx -> 农场openid)";
         }
-        String todayFarmLog = cloudService.getTodayFarmLog(bindFarmPO.getFarmOpenid());
-        if (StringUtils.isBlank(todayFarmLog)) {
+        List<FarmLogPO> todayFarmLog = cloudService.getTodayFarmLog(bindFarmPO.getFarmOpenid());
+        if (todayFarmLog.isEmpty()) {
             return "暂无消息";
         }
-        return todayFarmLog;
+        StringBuilder sb = new StringBuilder();
+        for (FarmLogPO farmLogPO : todayFarmLog) {
+            sb.append(farmLogPO.getMessage()).append("\t");
+        }
+        return sb.toString();
     }
 
     /**

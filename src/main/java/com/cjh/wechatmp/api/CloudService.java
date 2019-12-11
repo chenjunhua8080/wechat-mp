@@ -2,6 +2,7 @@ package com.cjh.wechatmp.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cjh.wechatmp.farm.FarmLogPO;
 import com.cjh.wechatmp.po.NowPlaying;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -64,10 +65,10 @@ public class CloudService {
     /**
      * 查询今天农场日志
      */
-    public String getTodayFarmLog(String farmOpenId) {
+    public List<FarmLogPO> getTodayFarmLog(String farmOpenId) {
         String url = CloudApi.HOST_DOUBAN + "getTodayFarmLog?openId=" + farmOpenId;
         log.info("服务调用: {}", url);
-        String forObject = restTemplate.getForObject(url, String.class);
+        List<FarmLogPO> forObject = restTemplate.getForObject(url, List.class);
         log.info("服务结果: {}", forObject);
         return forObject;
     }
