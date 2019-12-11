@@ -58,10 +58,10 @@ public class FarmService {
         }
         StringBuilder sb = new StringBuilder();
         for (FarmLogPO farmLogPO : todayFarmLog) {
-            sb.append(farmLogPO.getMessage()).append("<br/>");
+            sb.append(farmLogPO.getMessage()).append("\n");
         }
         if (sb.length() > 0) {
-            sb.delete(sb.lastIndexOf("<br/>"), sb.length());
+            sb.delete(sb.lastIndexOf("\n"), sb.length());
         }
         return sb.toString();
     }
