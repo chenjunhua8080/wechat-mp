@@ -68,9 +68,10 @@ public class CloudService {
     public List<FarmLogPO> getTodayFarmLog(String farmOpenId) {
         String url = CloudApi.HOST_DOUBAN + "getTodayFarmLog?openId=" + farmOpenId;
         log.info("服务调用: {}", url);
-        List<FarmLogPO> forObject = restTemplate.getForObject(url, List.class);
+        List<Object> forObject = restTemplate.getForObject(url, List.class);
+        List<FarmLogPO> logs = JSONObject.parseArray(farmOpenId, FarmLogPO.class);
         log.info("服务结果: {}", forObject);
-        return forObject;
+        return logs;
     }
 
 }
