@@ -43,8 +43,8 @@ public class FarmService {
     /**
      * 今日农场作业情况
      */
-    private String getTodayFarmLog(String fromUserName) {
-        UserPO userPO = userDao.selectByOpenId(fromUserName);
+    public String getTodayFarmLog(String openId) {
+        UserPO userPO = userDao.selectByOpenId(openId);
         if (userPO == null) {
             return "请先授权登录";
         }

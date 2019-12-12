@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/message")
 public class MessageController {
 
-    private MessageHandler messageHandler;
     private MessageHandlerAdapter messageHandlerAdapter;
 
     @PostMapping("/in")
