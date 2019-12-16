@@ -76,7 +76,7 @@ public class MessagePushService {
         list.setValue(body);
         list.setColor("#173177");
         TextBean remark = new TextBean();
-        remark.setValue("bye");
+        remark.setValue("bye~");
         remark.setColor("#173177");
         data.setFirst(first);
         data.setList(list);

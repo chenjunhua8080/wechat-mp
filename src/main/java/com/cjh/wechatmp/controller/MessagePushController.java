@@ -25,7 +25,7 @@ public class MessagePushController {
     }
 
     @GetMapping("/tempPush")
-    public String tempPush(@RequestParam("openId") String openId, @RequestParam("openId") String body) {
+    public String tempPush(@RequestParam("openId") String openId, @RequestParam("body") String body) {
         log.info("****************推送消息**********************");
         String resp = pushService.pushTempByOpenId(openId, body);
         log.info("****************推送消息结束*******************");
