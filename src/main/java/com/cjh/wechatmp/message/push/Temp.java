@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 public class Temp {
 
     private String touser;
-    private String templateId;
+    private String template_id;
     private String url;
     private MiniprogramBean miniprogram;
     private DataBean data;
