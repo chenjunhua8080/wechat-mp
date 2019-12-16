@@ -28,7 +28,9 @@ public class MessagePushJob {
     private UserService userService;
 
     @Value("${job.messagePush.enable}")
-    private Boolean enable;
+    private Boolean messagePushEnable;
+    @Value("${job.tempPush.enable}")
+    private Boolean tempPushEnable;
 
     @Scheduled(cron = "${job.test.cron}")
     public void test() {
@@ -36,14 +38,28 @@ public class MessagePushJob {
     }
 
     @Scheduled(cron = "${job.messagePush.cron}")
-    public void signForFarm() {
-        if (enable) {
+    public void signForFarmPushTextByOpenId() {
+        if (messagePushEnable) {
             List<UserPO> list = userService.list();
             for (UserPO userPO : list) {
                 String openId = userPO.getOpenId();
                 String farmLog = farmService.getTodayFarmLog(openId);
-                log.info("尝试推送消息: openId -> {}, text -> {}", openId, farmLog);
+                log.info("尝试推送文本消息: openId -> {}, text -> {}", openId, farmLog);
                 String resp = pushService.pushTextByOpenId(farmLog);
+                log.info("推送结果: {}", resp);
+            }
+        }
+    }
+
+    @Scheduled(cron = "${job.tempPush.cron}")
+    public void signForFarm() {
+        if (tempPushEnable) {
+            List<UserPO> list = userService.list();
+            for (UserPO userPO : list) {
+                String openId = userPO.getOpenId();
+                String farmLog = farmService.getTodayFarmLog(openId);
+                log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
+                String resp = pushService.pushTempByOpenId(openId, farmLog);
                 log.info("推送结果: {}", resp);
             }
         }

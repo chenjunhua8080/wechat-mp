@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class Entity {
+public class Message {
 
     private String msgtype;
     private TextBean text;

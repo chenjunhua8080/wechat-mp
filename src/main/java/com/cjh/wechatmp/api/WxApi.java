@@ -44,4 +44,9 @@ public class WxApi {
      * 根据openId群发消息
      */
     public static final String MESSAGE_SEND_BY_OPENID = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=ACCESS_TOKEN";
+
+    /**
+     * 推送模板消息
+     */
+    public static final String TEMPLATE_SEND_BY_OPENID = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN";
 }
