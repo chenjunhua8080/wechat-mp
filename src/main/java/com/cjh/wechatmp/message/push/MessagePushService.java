@@ -66,7 +66,7 @@ public class MessagePushService {
         String url = WxApi.TEMPLATE_SEND_BY_OPENID.replace("ACCESS_TOKEN", tokenService.getBaseToken());
         Temp temp;
         temp = new Temp();
-        temp.setTemplateId(farmTemp);
+        temp.setTemplate_id(farmTemp);
         temp.setTouser(openId);
         DataBean data = new DataBean();
         TextBean first = new TextBean();
