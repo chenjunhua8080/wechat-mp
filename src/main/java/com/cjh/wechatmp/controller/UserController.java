@@ -1,6 +1,8 @@
 package com.cjh.wechatmp.controller;
 
 import com.cjh.wechatmp.po.UserPO;
+import com.cjh.wechatmp.redis.RedisConstant;
+import com.cjh.wechatmp.redis.RedisService;
 import com.cjh.wechatmp.request.UserRequest;
 import com.cjh.wechatmp.response.Result;
 import com.cjh.wechatmp.service.UserService;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private UserService userService;
+    private RedisService redisService;
 
     /**
      * 单个
@@ -44,9 +47,12 @@ public class UserController {
      */
     @PostMapping("/bind")
     public Result list(@RequestBody UserRequest user) {
-        UserPO userPO = userService.getByOpenId(user.getOpenId());
+        String openId = user.getOpenId();
+        UserPO userPO = userService.getByOpenId(openId);
         userPO.setPhone(user.getPhone());
         userService.updateById(userPO);
+
+        redisService.set(RedisConstant.USER_TOKEN + openId, userPO.getId(), RedisConstant.EXIST_FOREVER);
         return Result.success("绑定成功");
     }
 
