@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta charset="UTF-8">
+  <title>欢迎</title>
+  <script src="jquery-3.2.1.js"></script>
+</head>
+<body>
+<label>
+  <script>
+    url = window.location.href;
+    var openId = url.match(/openId=(.+)/)[1];
+    $.get("http://h5.springeasy.cn/user/info?openId=" + openId, function (t) {
+      $("#user").text(t.data.name);
+    })
+  </script>
+  user: <strong id="user"></strong>
+</label>
+</body>
+</html>

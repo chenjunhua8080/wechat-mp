@@ -38,5 +38,4 @@ public class TestController {
         return Result.success().setData(redisService.get(key, User.class));
     }
 
-
 }

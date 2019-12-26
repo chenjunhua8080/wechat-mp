@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta charset="UTF-8">
+  <title>登录</title>
+  <script src="jquery-3.2.1.js"></script>
+</head>
+<body>
+<label>
+  <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0fba0e001eeeccf&redirect_uri=http%3a%2f%2fh5.springeasy.cn%2fmp%2flogin.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect">授权</a>
+  code:<strong id="code"></strong>
+  <br>
+  <a href="" id="a2">授权2</a>
+  <br>
+  <script>
+    url = window.location.href;
+    var codeE = document.getElementById("code");
+    var code = url.match(/code=(.+)&/)[1];
+    codeE.innerHTML = code;
+    var a2 = document.getElementById("a2");
+    a2.setAttribute("href", "http://h5.springeasy.cn/token/getOAuth2Token/" + code);
+    var accessToken;
+    var openId;
+    $.get("http://h5.springeasy.cn/token/getOAuth2Token/" + code, function (t) {
+      accessToken = t.data.accessToken;
+      openId = t.data.openId;
+    })
+
+    function bind() {
+      var phone = $("#phone").val();
+      var password = $("#password").val();
+      $.ajax({
+        url: "http://h5.springeasy.cn/user/bind",
+        data: {"phone": phone, "password": password, "openId": openId},
+        dataType: "json",
+        success: function (data) {
+          if (data.code === 200) {
+            window.location.href = "http://h5.springeasy.cn/index.html?openId=" + openId;
+          }else {
+            alert(data);
+          }
+        }
+      });
+    }
+  </script>
+  <br>
+  手机号:
+  <input type="text" id="phone">
+  <br>
+  密码:
+  <input type="password" id="password">
+  <br>
+  <input type="button" onclick="bind()" value="登录">
+</label>
+</body>
+</html>

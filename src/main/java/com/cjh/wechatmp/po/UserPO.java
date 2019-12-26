@@ -12,11 +12,11 @@ import java.util.Date;
  * 
  * @author cjh
  * @email 
- * @date 2019-10-11 15:10:33
+ * @date 2019-10-21 18:44:25
  */
 @Data
-//@TableName("token")
-public class TokenPO implements Serializable {
+@TableName("user")
+public class UserPO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -27,14 +27,26 @@ public class TokenPO implements Serializable {
 	/**
 	 * 
 	 */
-	private Date createDate;
+	private String openId;
 	/**
 	 * 
 	 */
-	private Integer time;
+	private String name;
 	/**
 	 * 
 	 */
-	private String value;
+	private Integer age;
+	/**
+	 * 
+	 */
+	private String phone;
+	/**
+	 * 
+	 */
+	private String password;
+	/**
+	 *
+	 */
+	private String avatar;
 
 }
