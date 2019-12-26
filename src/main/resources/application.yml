@@ -18,3 +18,5 @@ mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
   #po位置
   type-aliases-package: com.cjh.wechatmp.po
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -2,6 +2,7 @@ package com.cjh.wechatmp.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cjh.wechatmp.message.BaseMessage;
 import com.cjh.wechatmp.po.MessagePO;
 import com.cjh.wechatmp.request.MessageRequest;
 import com.cjh.wechatmp.request.PageRequest;
@@ -20,6 +21,6 @@ public interface MessageService extends IService<MessagePO> {
      */
     IPage<MessagePO> listByPage(MessageRequest messageRequest, PageRequest pageRequest);
 
-    boolean isExist(String msgId);
+    boolean isExist(BaseMessage baseMessage);
 }
 

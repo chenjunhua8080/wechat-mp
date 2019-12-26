@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "mp")
 @Component
 @Data
-public class MpEntity {
+public class MpProperty {
 
 
     /**
