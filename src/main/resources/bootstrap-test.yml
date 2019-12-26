@@ -1,6 +1,0 @@
-spring:
-  cloud:
-    #配置中心
-    nacos:
-      config:
-        namespace: 7dedf96c-a508-4c19-80dc-0b05a1d04d51
