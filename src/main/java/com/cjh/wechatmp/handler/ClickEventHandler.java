@@ -27,11 +27,11 @@ public class ClickEventHandler extends AbstractMessageHandler {
         String eventKey = eventMessage.getEventKey();
         String content;
         if (eventKey.equals("menu_1")) {
-            String userToken = redisService.get(RedisConstant.USER_TOKEN);
+            String userToken = redisService.get(RedisConstant.USER_TOKEN+eventMessage.getFromUserName());
             if (userToken != null) {
-                content = userToken;
+                content = "已绑定";
             } else {
-                content = "未登录哦！<a href=\"http://h5.springeasy.cn/login.html\">戳我</a>去登陆";
+                content = "未登录哦！<a href=\"http://h5.springeasy.cn/pages/user/user\">戳我</a>去登陆";
             }
             return MessageUtil.buildTextOutMessage(inMessage, content);
         }

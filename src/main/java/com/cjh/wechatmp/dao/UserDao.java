@@ -1,12 +1,8 @@
 package com.cjh.wechatmp.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cjh.wechatmp.po.UserPO;
-import com.cjh.wechatmp.request.UserRequest;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * @author cjh
@@ -17,8 +13,7 @@ import org.apache.ibatis.annotations.Param;
 public interface UserDao extends BaseMapper<UserPO> {
 
     /**
-     * 分页查询
+     * 根据openId查找
      */
-    IPage<UserPO> listByPage(Page page, @Param("params") UserRequest userRequest);
-
+    UserPO selectByOpenId(String openId);
 }

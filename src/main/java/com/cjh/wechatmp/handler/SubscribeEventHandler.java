@@ -20,7 +20,7 @@ public class SubscribeEventHandler extends AbstractMessageHandler {
     public BaseMessage doHandle(BaseMessage inMessage) {
         String content;
         content = "嗨, 终于等到你了~\t"
-            + "<a href=\"http://h5.springeasy.cn/login.html\">戳我</a>绑定手机号";
+            + "<a href=\"http://h5.springeasy.cn/pages/user/user\">戳我</a>绑定手机号";
         return MessageUtil.buildTextOutMessage(inMessage, content);
     }
 }

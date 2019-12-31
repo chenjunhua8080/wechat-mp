@@ -3,49 +3,8 @@
 
 <mapper namespace="com.cjh.wechatmp.dao.UserDao">
 
-    <!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.cjh.wechatmp.po.UserPO" id="userMap">
-        <result property="id" column="id"/>
-        <result property="openId" column="open_id"/>
-        <result property="name" column="name"/>
-        <result property="age" column="age"/>
-        <result property="phone" column="phone"/>
-        <result property="password" column="password"/>
-        <result property="avatar" column="avatar"/>
-    </resultMap>
-
-    <sql id="baseColumnList">
-        id,open_id,name,age,phone,password
-    </sql>
-
-    <sql id="baseWhereSql">
-        <where>
-            <if test="params.id != null">
-                and t.id = #{params.id}
-            </if>
-            <if test="params.openId != null">
-                and t.open_id = #{params.openId}
-            </if>
-            <if test="params.name != null">
-                and t.name = #{params.name}
-            </if>
-            <if test="params.age != null">
-                and t.age = #{params.age}
-            </if>
-            <if test="params.phone != null">
-                and t.phone = #{params.phone}
-            </if>
-            <if test="params.password != null">
-                and t.password = #{params.password}
-            </if>
-        </where>
-    </sql>
-
-    <select id="listByPage" resultType="com.cjh.wechatmp.po.UserPO">
-        select
-        <include refid="baseColumnList"/>
-        from user t
-        <include refid="baseWhereSql"/>
-    </select>
+  <select id="selectByOpenId" resultType="com.cjh.wechatmp.po.UserPO">
+      select t.* from user t where t.open_id = #{openId}
+  </select>
 
 </mapper>

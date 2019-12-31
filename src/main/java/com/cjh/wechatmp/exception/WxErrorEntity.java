@@ -10,4 +10,6 @@ public class WxErrorEntity {
 
     private int errcode;
     private String errmsg;
+    private String msg_id;
+    private String msgid;
 }

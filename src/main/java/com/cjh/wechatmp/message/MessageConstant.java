@@ -17,6 +17,7 @@ public class MessageConstant {
     public static final String EVENT_TYPE_LOCATION = "LOCATION";
     public static final String EVENT_TYPE_CLICK = "CLICK";
     public static final String EVENT_TYPE_VIEW = "VIEW";
+    public static final String EVENT_TYPE_TEMP_PUSH = "TEMPLATESENDJOBFINISH";
 
     /**
      * 进出消息
