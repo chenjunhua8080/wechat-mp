@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.farm.FarmLogPO;
 import com.cjh.wechatmp.juhe.QuestionBankPO;
+import com.cjh.wechatmp.avatar.AvatarPO;
 import com.cjh.wechatmp.po.NowPlaying;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +140,17 @@ public class CloudService {
         String url = CloudApi.HOST_COMMON + "getQuestionAnswers";
         log.info("服务调用: {}", url);
         JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
+        log.info("服务结果: {}", forObject);
+        return forObject;
+    }
+
+    /**
+     * 头像
+     */
+    public List<AvatarPO> getAvatarByNew(int pageNum) {
+        String url = CloudApi.HOST_COMMON + "getAvatarByNew?pageNum=" + pageNum;
+        log.info("服务调用: {}", url);
+        List<AvatarPO> forObject = restTemplate.getForObject(url, List.class);
         log.info("服务结果: {}", forObject);
         return forObject;
     }
