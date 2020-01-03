@@ -20,7 +20,7 @@ public class TextMessageHandler extends AbstractMessageHandler {
 
     private FarmService farmService;
     private JuHeService juHeService;
-    String[] instructs = new String[]{
+    private static String[] instructs = new String[]{
         "绑定农场",
         "今日农场作业情况",
         "天气#广州",
