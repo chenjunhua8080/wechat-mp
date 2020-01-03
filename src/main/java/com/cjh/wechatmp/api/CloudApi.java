@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CloudApi {
 
-    public static final String HOST_DOUBAN = "http://douban/";
+    public static final String HOST_COMMON = "http://common/";
 
 }

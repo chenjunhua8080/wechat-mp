@@ -19,8 +19,8 @@ public class SubscribeEventHandler extends AbstractMessageHandler {
     @Override
     public BaseMessage doHandle(BaseMessage inMessage) {
         String content;
-        content = "嗨, 终于等到你了~\t"
-            + "<a href=\"http://h5.springeasy.cn/pages/user/user\">戳我</a>绑定手机号";
+        content = "嗨, 终于等到你了~\n"
+            + "试试回复help获取操作指令吧";
         return MessageUtil.buildTextOutMessage(inMessage, content);
     }
 }
