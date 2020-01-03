@@ -114,7 +114,7 @@ public class CloudService {
      * 星座
      */
     public String getConstellation(String start) {
-        String url = CloudApi.HOST_COMMON + "getTodayHistory?start=" + start;
+        String url = CloudApi.HOST_COMMON + "getConstellation?start=" + start;
         log.info("服务调用: {}", url);
         String forObject = restTemplate.getForObject(url, String.class);
         log.info("服务结果: {}", forObject);
@@ -125,7 +125,7 @@ public class CloudService {
      * 学车题库
      */
     public QuestionBankPO getQuestionBank() {
-        String url = CloudApi.HOST_COMMON + "getTodayHistory";
+        String url = CloudApi.HOST_COMMON + "getQuestionBank";
         log.info("服务调用: {}", url);
         QuestionBankPO forObject = restTemplate.getForObject(url, QuestionBankPO.class);
         log.info("服务结果: {}", JSONObject.toJSONString(forObject));
@@ -136,7 +136,7 @@ public class CloudService {
      * 学车答案
      */
     public JSONObject getQuestionAnswers() {
-        String url = CloudApi.HOST_COMMON + "getTodayHistory";
+        String url = CloudApi.HOST_COMMON + "getQuestionAnswers";
         log.info("服务调用: {}", url);
         JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
         log.info("服务结果: {}", forObject);
