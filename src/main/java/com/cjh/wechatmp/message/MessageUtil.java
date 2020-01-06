@@ -95,7 +95,7 @@ public class MessageUtil {
         imgOutMessage.setCreateTime(System.currentTimeMillis());
         imgOutMessage.setToUserName(requestMessage.getFromUserName());
         imgOutMessage.setFromUserName(requestMessage.getToUserName());
-        imgOutMessage.setMsgType(MessageConstant.MESSAGE_TYPE_IMG);
+        imgOutMessage.setMsgType(MessageConstant.MESSAGE_TYPE_IMG_RESP);
         Image image = new Image();
         image.setMediaId(mediaId);
         imgOutMessage.setImage(image);

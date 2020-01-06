@@ -172,11 +172,15 @@ public class CloudService {
     public String getAvatar() {
         //获取图片链接
         List<AvatarPO> list = getAvatarByNew((int) (Math.random() * 10));
+        if (list.isEmpty()) {
+            return null;
+        }
         AvatarPO avatarPO = list.get((int) (Math.random() * list.size()));
         String url = avatarPO.getImg();
         //下载图片
         File file = new File("avatar_" + System.currentTimeMillis() + url.substring(url.lastIndexOf(".") + 1));
         downFile(file, url);
+        log.info("file :{}", file.getName());
         //上传到临时素材，返回mediaId
         String mediaId = mediaService.upload(file);
         if (mediaId != null) {

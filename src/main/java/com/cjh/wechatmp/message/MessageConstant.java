@@ -7,6 +7,7 @@ public class MessageConstant {
      */
     public static final String MESSAGE_TYPE_TEXT = "text";
     public static final String MESSAGE_TYPE_IMG = "img";
+    public static final String MESSAGE_TYPE_IMG_RESP = "image";
     public static final String MESSAGE_TYPE_EVENT = "event";
 
     /**
