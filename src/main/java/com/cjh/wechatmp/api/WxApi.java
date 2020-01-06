@@ -49,4 +49,9 @@ public class WxApi {
      * 推送模板消息
      */
     public static final String TEMPLATE_SEND_BY_OPENID = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN";
+
+    /**
+     * 新增临时素材
+     */
+    public static final String MEDIA_UPLOAD = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
 }

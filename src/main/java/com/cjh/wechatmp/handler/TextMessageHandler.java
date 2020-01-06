@@ -59,7 +59,10 @@ public class TextMessageHandler extends AbstractMessageHandler {
 
         //头像业务
         if (result == null) {
-            result = avatarService.handleMessage(content);
+            BaseMessage baseMessage = avatarService.handleMessage(textInMessage);
+            if (baseMessage != null) {
+                return baseMessage;
+            }
         }
 
         //原样返回

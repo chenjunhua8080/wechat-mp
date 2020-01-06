@@ -1,7 +1,9 @@
 package com.cjh.wechatmp.avatar;
 
 import com.cjh.wechatmp.api.CloudService;
-import java.util.ArrayList;
+import com.cjh.wechatmp.message.BaseMessage;
+import com.cjh.wechatmp.message.MessageUtil;
+import com.cjh.wechatmp.message.in.TextInMessage;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,21 +14,26 @@ public class AvatarService {
 
     private CloudService cloudService;
 
-    public String handleMessage(String content) {
-        String result = null;
-        List<AvatarPO> avatars = new ArrayList<>();
+    public BaseMessage handleMessage(TextInMessage textInMessage) {
+        String content = textInMessage.getContent();
+        StringBuilder stringBuilder = null;
         if (content.contains("头像")) {
-            avatars = cloudService.getAvatarByNew(1);
-        } else if (content.contains("头像#1")) {
+            String mediaId = cloudService.getAvatar();
+            return MessageUtil.buildImgOutMessage(textInMessage, mediaId);
+        } else if (content.contains("头像#")) {
             String pageNum = content.substring(content.indexOf("#") + 1);
-            avatars = cloudService.getAvatarByNew(Integer.parseInt(pageNum));
-        }
-        if (!avatars.isEmpty()) {
-            result = "";
-            for (AvatarPO avatar : avatars) {
-                result += "<a href=\"" + avatar.getHref() + "\">" + avatar.getTitle() + "</a>\n";
+            int num = Integer.parseInt(pageNum);
+            List<AvatarPO> avatars = cloudService.getAvatarByNew(num);
+            if (!avatars.isEmpty()) {
+                stringBuilder = new StringBuilder();
+                for (AvatarPO avatar : avatars) {
+                    stringBuilder.append("<a href=\"").append(avatar.getHref()).append("\">").append(avatar.getTitle())
+                        .append("</a>\n");
+                }
             }
+            return MessageUtil.buildTextOutMessage(textInMessage,
+                stringBuilder != null ? stringBuilder.toString() : "请稍后再试");
         }
-        return result;
+        return null;
     }
 }

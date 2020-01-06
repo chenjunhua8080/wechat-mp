@@ -14,6 +14,10 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class RestTemplateUtil {
 
+    public static RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
+
     public static String doGet(String url) {
         return doGet(url, null, null);
     }
@@ -73,7 +77,7 @@ public class RestTemplateUtil {
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
         headers.add("Accept", MediaType.APPLICATION_JSON.toString());
-        HttpEntity httpEntity = new HttpEntity(json,headers);
+        HttpEntity httpEntity = new HttpEntity(json, headers);
         return send(url, httpEntity, HttpMethod.POST, String.class);
     }
 
