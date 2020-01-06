@@ -175,7 +175,7 @@ public class CloudService {
         AvatarPO avatarPO = list.get((int) (Math.random() * list.size()));
         String url = avatarPO.getImg();
         //下载图片
-        File file = new File("avatar.jpeg");
+        File file = new File("avatar_" + System.currentTimeMillis() + url.substring(url.lastIndexOf(".") + 1));
         downFile(file, url);
         //上传到临时素材，返回mediaId
         String mediaId = mediaService.upload(file);
