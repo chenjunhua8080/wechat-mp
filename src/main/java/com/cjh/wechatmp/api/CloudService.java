@@ -2,23 +2,33 @@ package com.cjh.wechatmp.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cjh.wechatmp.avatar.AvatarPO;
 import com.cjh.wechatmp.farm.FarmLogPO;
 import com.cjh.wechatmp.juhe.QuestionBankPO;
-import com.cjh.wechatmp.avatar.AvatarPO;
+import com.cjh.wechatmp.media.MediaService;
 import com.cjh.wechatmp.po.NowPlaying;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Component
+@AllArgsConstructor
 public class CloudService {
 
-    @Autowired
     private RestTemplate restTemplate;
+    private MediaService mediaService;
 
     /**
      * 获取热映电影
@@ -145,13 +155,56 @@ public class CloudService {
     }
 
     /**
-     * 头像
+     * 头像列表
      */
     public List<AvatarPO> getAvatarByNew(int pageNum) {
         String url = CloudApi.HOST_COMMON + "getAvatarByNew?pageNum=" + pageNum;
         log.info("服务调用: {}", url);
-        List<AvatarPO> forObject = restTemplate.getForObject(url, List.class);
+        String forObject = restTemplate.getForObject(url, String.class);
+        JSONArray jsonArray = JSONArray.parseArray(forObject);
         log.info("服务结果: {}", forObject);
-        return forObject;
+        return jsonArray != null ? jsonArray.toJavaList(AvatarPO.class) : new ArrayList<>();
+    }
+
+    /**
+     * 头像图片
+     */
+    public String getAvatar() {
+        //获取图片链接
+        List<AvatarPO> list = getAvatarByNew((int) (Math.random() * 10));
+        AvatarPO avatarPO = list.get((int) (Math.random() * list.size()));
+        String url = avatarPO.getImg();
+        //下载图片
+        File file = new File("avatar_" + System.currentTimeMillis() + url.substring(url.lastIndexOf(".") + 1));
+        downFile(file, url);
+        //上传到临时素材，返回mediaId
+        String mediaId = mediaService.upload(file);
+        if (mediaId != null) {
+            //删除文件
+            boolean delete = file.delete();
+            log.info("删除文件{}: {}", file.getName(), delete);
+        }
+        return mediaId;
+    }
+
+    private void downFile(File file, String url) {
+        URLConnection urlConnection = null;
+        try {
+            urlConnection = new URL(url).openConnection();
+        } catch (IOException e) {
+            log.error("打开链接url: {}，错误: {}", url, e.getMessage());
+        }
+        try (
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(urlConnection.getInputStream());
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+        ) {
+            byte[] bytes = new byte[1024];
+            int read;
+            while ((read = bufferedInputStream.read(bytes)) != -1) {
+                bufferedOutputStream.write(bytes, 0, read);
+            }
+        } catch (IOException e) {
+            log.error("文件读写错误: {}", e.getMessage());
+        }
     }
 }
