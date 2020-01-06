@@ -17,7 +17,7 @@ public class AvatarService {
     public BaseMessage handleMessage(TextInMessage textInMessage) {
         String content = textInMessage.getContent();
         StringBuilder stringBuilder = null;
-        if (content.contains("头像")) {
+        if (content.equals("头像")) {
             String mediaId = cloudService.getAvatar();
             if (mediaId == null) {
                 return MessageUtil.buildTextOutMessage(textInMessage, "请稍后再试");
