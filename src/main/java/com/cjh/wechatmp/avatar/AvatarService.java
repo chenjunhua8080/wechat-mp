@@ -19,6 +19,9 @@ public class AvatarService {
         StringBuilder stringBuilder = null;
         if (content.contains("头像")) {
             String mediaId = cloudService.getAvatar();
+            if (mediaId == null) {
+                return MessageUtil.buildTextOutMessage(textInMessage, "请稍后再试");
+            }
             return MessageUtil.buildImgOutMessage(textInMessage, mediaId);
         } else if (content.contains("头像#")) {
             String pageNum = content.substring(content.indexOf("#") + 1);
