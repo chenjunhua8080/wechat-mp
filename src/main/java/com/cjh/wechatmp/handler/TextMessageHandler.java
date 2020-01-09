@@ -8,6 +8,7 @@ import com.cjh.wechatmp.message.BaseMessage;
 import com.cjh.wechatmp.message.MessageUtil;
 import com.cjh.wechatmp.message.handler.AbstractMessageHandler;
 import com.cjh.wechatmp.message.in.TextInMessage;
+import com.cjh.wechatmp.util.ByteUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -69,6 +70,10 @@ public class TextMessageHandler extends AbstractMessageHandler {
         if (result == null) {
             result = content;
         }
+
+        //处理字符过长
+        result = ByteUtil.limit2048byte(result);
+
         return MessageUtil.buildTextOutMessage(textInMessage, result);
     }
 }
