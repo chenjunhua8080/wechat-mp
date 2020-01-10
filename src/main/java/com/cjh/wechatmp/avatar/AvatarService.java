@@ -29,16 +29,10 @@ public class AvatarService {
             List<AvatarPO> avatars = cloudService.getAvatarByNew(num);
             if (!avatars.isEmpty()) {
                 stringBuilder = new StringBuilder();
-                int i = 0;
                 for (AvatarPO avatar : avatars) {
                     stringBuilder.append("<a href=\"").append(avatar.getHref()).append("\">")
                         .append(avatar.getTitle())
                         .append("</a>\n");
-                    if (i >= 9) {
-                        break;
-                    } else {
-                        i++;
-                    }
                 }
             }
             return MessageUtil.buildTextOutMessage(textInMessage,
