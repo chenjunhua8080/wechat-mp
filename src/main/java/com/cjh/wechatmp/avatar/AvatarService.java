@@ -4,6 +4,7 @@ import com.cjh.wechatmp.api.CloudService;
 import com.cjh.wechatmp.message.BaseMessage;
 import com.cjh.wechatmp.message.MessageUtil;
 import com.cjh.wechatmp.message.in.TextInMessage;
+import com.cjh.wechatmp.util.ByteUtil;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ public class AvatarService {
                 }
             }
             return MessageUtil.buildTextOutMessage(textInMessage,
-                stringBuilder != null ? stringBuilder.toString() : "请稍后再试");
+                stringBuilder != null ? ByteUtil.limit2048byte(stringBuilder.toString()) : "请稍后再试");
         }
         return null;
     }
