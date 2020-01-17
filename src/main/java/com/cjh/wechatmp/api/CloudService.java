@@ -1,9 +1,9 @@
 package com.cjh.wechatmp.api;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.avatar.AvatarPO;
 import com.cjh.wechatmp.farm.FarmLogPO;
+import com.cjh.wechatmp.feign.CloudFeignClient;
 import com.cjh.wechatmp.juhe.QuestionBankPO;
 import com.cjh.wechatmp.media.MediaService;
 import com.cjh.wechatmp.po.NowPlaying;
@@ -14,63 +14,49 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Component
 @AllArgsConstructor
 public class CloudService {
 
-    private RestTemplate restTemplate;
+    private CloudFeignClient feignClient;
     private MediaService mediaService;
 
     /**
-     * 获取热映电影
+     * 获取热映电影-list
+     */
+    public List<NowPlaying> getNowPlayingList() {
+        return feignClient.getNowPlaying();
+    }
+
+    /**
+     * 获取热映电影-单个
      */
     public NowPlaying getNowPlaying() {
-        String url = CloudApi.HOST_COMMON + "getNowPlaying";
-        log.info("服务调用: {}", url);
-        NowPlaying nowPlaying = new NowPlaying();
-        try {
-            String resp = restTemplate.getForObject(url, String.class);
-            JSONArray jsonArray = JSONArray.parseArray(resp);
-            assert jsonArray != null;
-            JSONObject jsonObject = jsonArray.getJSONObject((int) (Math.random() * jsonArray.size()));
-            nowPlaying = jsonObject.toJavaObject(NowPlaying.class);
-//            nowPlaying.setImg(ImgUtil.img2base64(nowPlaying.getImg()));
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<NowPlaying> nowPlayingList = getNowPlayingList();
+        if (nowPlayingList.isEmpty()) {
+            return null;
         }
-        log.info("服务结果: {}", nowPlaying);
-        return nowPlaying;
+        return nowPlayingList.get((int) (nowPlayingList.size() * Math.random()));
     }
 
     /**
      * 获取电影简述
      */
     public String getMovieDesc(String id) {
-        String url = CloudApi.HOST_COMMON + "getMovieDesc?id=" + id;
-        log.info("服务调用: {}", url);
-        String forObject = restTemplate.getForObject(url, String.class);
-        log.info("服务结果: {}", forObject);
-        return forObject;
+        return feignClient.getMovieDesc(id);
     }
 
     /**
      * 获取电影评论
      */
     public List<String> getComments(String id, int pageNum, int pageSize) {
-        String url = CloudApi.HOST_COMMON + "getComments?id=" + id + "&pageNum=" + pageNum + "&pageSize=" + pageSize;
-        log.info("服务调用: {}", url);
-        List<String> forObject = restTemplate.getForObject(url, List.class);
-        log.info("服务结果: {}", forObject);
-        return forObject;
+        return feignClient.getComments(id, pageNum, pageSize);
     }
 
     //##################### 农场 ########################
@@ -79,11 +65,7 @@ public class CloudService {
      * 查询今天农场日志
      */
     public List<FarmLogPO> getTodayFarmLog(String farmOpenId) {
-        String url = CloudApi.HOST_COMMON + "getTodayFarmLog?openId=" + farmOpenId;
-        log.info("服务调用: {}", url);
-        List<Map<String, Object>> forObject = restTemplate.getForObject(url, List.class);
-        log.info("服务结果: {}", forObject);
-        return JSONObject.parseArray(JSONObject.toJSONString(forObject), FarmLogPO.class);
+        return feignClient.getTodayFarmLog(farmOpenId);
     }
 
     //##############################聚合api#################################
@@ -92,78 +74,49 @@ public class CloudService {
      * 历史上今天
      */
     public String getTodayHistory() {
-        String url = CloudApi.HOST_COMMON + "getTodayHistory";
-        log.info("服务调用: {}", url);
-        String forObject = restTemplate.getForObject(url, String.class);
-        log.info("服务结果: {}", forObject);
-        return forObject;
+        return feignClient.getTodayHistory();
     }
 
     /**
      * 笑话
      */
     public String getRandJoke() {
-        String url = CloudApi.HOST_COMMON + "getRandJoke";
-        log.info("服务调用: {}", url);
-        String forObject = restTemplate.getForObject(url, String.class);
-        log.info("服务结果: {}", forObject);
-        return forObject;
+        return feignClient.getRandJoke();
     }
 
     /**
      * 天气
      */
     public String getSimpleWeadther(String city) {
-        String url = CloudApi.HOST_COMMON + "getSimpleWeadther?city=" + city;
-        log.info("服务调用: {}", url);
-        String forObject = restTemplate.getForObject(url, String.class);
-        log.info("服务结果: {}", forObject);
-        return forObject;
+        return feignClient.getSimpleWeadther(city);
     }
 
     /**
      * 星座
      */
     public String getConstellation(String start) {
-        String url = CloudApi.HOST_COMMON + "getConstellation?start=" + start;
-        log.info("服务调用: {}", url);
-        String forObject = restTemplate.getForObject(url, String.class);
-        log.info("服务结果: {}", forObject);
-        return forObject;
+        return feignClient.getConstellation(start);
     }
 
     /**
      * 学车题库
      */
     public QuestionBankPO getQuestionBank() {
-        String url = CloudApi.HOST_COMMON + "getQuestionBank";
-        log.info("服务调用: {}", url);
-        QuestionBankPO forObject = restTemplate.getForObject(url, QuestionBankPO.class);
-        log.info("服务结果: {}", JSONObject.toJSONString(forObject));
-        return forObject;
+        return feignClient.getQuestionBank();
     }
 
     /**
      * 学车答案
      */
     public JSONObject getQuestionAnswers() {
-        String url = CloudApi.HOST_COMMON + "getQuestionAnswers";
-        log.info("服务调用: {}", url);
-        JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
-        log.info("服务结果: {}", forObject);
-        return forObject;
+        return feignClient.getQuestionAnswers();
     }
 
     /**
      * 头像列表
      */
     public List<AvatarPO> getAvatarByNew(int pageNum) {
-        String url = CloudApi.HOST_COMMON + "getAvatarByNew?pageNum=" + pageNum;
-        log.info("服务调用: {}", url);
-        String forObject = restTemplate.getForObject(url, String.class);
-        JSONArray jsonArray = JSONArray.parseArray(forObject);
-        log.info("服务结果: {}", forObject);
-        return jsonArray != null ? jsonArray.toJavaList(AvatarPO.class) : new ArrayList<>();
+        return feignClient.getAvatarByNew(pageNum);
     }
 
     /**

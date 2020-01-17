@@ -97,6 +97,12 @@
       <artifactId>dom4j</artifactId>
     </dependency>
 
+    <!-- openFeign -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+
   </dependencies>
 
   <dependencyManagement>

@@ -1,14 +1,30 @@
 spring:
-  cloud:
-    nacos:
-      #服务发现
-      discovery:
-        #为什么读少了一个n
-        server-addr: http://nacos.springeasy.cnn
-        namespace: 32d93268-bdb6-40a0-8740-a211f74b9a9f
   #redis
   redis:
     database: 0
     host: localhost
     port: 6379
     password:
+#openFeign
+feign:
+  client:
+    config:
+      #If you prefer using configuration properties to configured all @FeignClient, you can create configuration properties with default feign name.
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+        loggerLevel: full
+  hystrix:
+    enabled: true
+#hystrix配置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+#feign client log
+logging:
+  level:
+    com.cjh.wechatmp.feign.CloudFeignClient: debug
