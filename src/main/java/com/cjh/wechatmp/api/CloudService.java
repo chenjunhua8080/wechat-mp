@@ -39,7 +39,7 @@ public class CloudService {
      */
     public NowPlaying getNowPlaying() {
         List<NowPlaying> nowPlayingList = getNowPlayingList();
-        if (nowPlayingList.isEmpty()) {
+        if (nowPlayingList == null || nowPlayingList.isEmpty()) {
             return null;
         }
         return nowPlayingList.get((int) (nowPlayingList.size() * Math.random()));
@@ -125,9 +125,10 @@ public class CloudService {
     public String getAvatar() {
         //获取图片链接
         List<AvatarPO> list = getAvatarByNew((int) (Math.random() * 10));
-        if (list.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
+
         AvatarPO avatarPO = list.get((int) (Math.random() * list.size()));
         String url = avatarPO.getImg();
         //下载图片

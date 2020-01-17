@@ -27,4 +27,7 @@ hystrix:
 #feign client log
 logging:
   level:
-    com.cjh.wechatmp.feign.CloudFeignClient: debug
+    com.cjh.wechatmp.feign: debug
+    #上面自定义日志后，居然会影响nacos日志~
+    com.alibaba.nacos.client.naming: warn
+
