@@ -1,7 +1,12 @@
 spring:
   cloud:
-    #配置中心
     nacos:
+      #配置中心
       config:
         server-addr: http://nacos.springeasy.cn
+        namespace: 32d93268-bdb6-40a0-8740-a211f74b9a9f
+      #服务发现
+      discovery:
+        #为什么读少了一个
+        server-addr: http://nacos.springeasy.cn/
         namespace: 32d93268-bdb6-40a0-8740-a211f74b9a9f
