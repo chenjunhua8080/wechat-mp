@@ -2,10 +2,12 @@ package com.cjh.wechatmp.sign;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "mp")
 @Component
+@RefreshScope
 @Data
 public class MpProperty {
 
