@@ -3,14 +3,15 @@ server:
 spring:
   application:
     name: wechat-mp
-  #默认环境dev
+  #默认环境location
   profiles:
-    active: dev
+    active: location
   cloud:
-    #配置中心
     nacos:
+      #配置中心
       config:
-        server-addr: 127.0.0.1:8048
+        server-addr: http://nacos.springeasy.cn
+        namespace: 32d93268-bdb6-40a0-8740-a211f74b9a9f
         group: ${spring.application.name}
         file-extension: yml
         #公共的配置文件
@@ -18,3 +19,7 @@ spring:
           - data-id: base.yml
             group: DEFAULT_GROUP
             refresh: true
+      #服务发现
+      discovery:
+        server-addr: http://nacos.springeasy.cn
+        namespace: 32d93268-bdb6-40a0-8740-a211f74b9a9f
