@@ -93,11 +93,11 @@ public class MessagePushService {
         String url = WxApi.TEMPLATE_SEND_BY_OPENID.replace("ACCESS_TOKEN", tokenService.getBaseToken());
         Temp temp;
         temp = new Temp();
-        temp.setTemplate_id(templateConfig.getFarm());
+        temp.setTemplate_id(templateConfig.getReport());
         temp.setTouser(openId);
         DataBean data = new DataBean();
         TextBean first = new TextBean();
-        first.setValue(openId + "，您好：");
+        first.setValue("您好：" + openId);
         first.setColor("#459ae9");
         TextBean list = new TextBean();
         list.setValue(body);

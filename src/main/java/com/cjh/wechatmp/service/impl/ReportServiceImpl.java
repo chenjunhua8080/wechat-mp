@@ -2,7 +2,6 @@ package com.cjh.wechatmp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cjh.wechatmp.dao.ReportDao;
-import com.cjh.wechatmp.farm.FarmLogPO;
 import com.cjh.wechatmp.po.ReportPO;
 import com.cjh.wechatmp.service.ReportService;
 import lombok.AllArgsConstructor;
@@ -32,10 +31,10 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, ReportPO> implemen
         int countByMonth = baseMapper.countByMonth(openId);
         int countByUser = baseMapper.countByUser(openId);
         StringBuilder sb = new StringBuilder();
-        sb.append("今日统计: ").append(countByDay).append("\n");
-        sb.append("本周统计: ").append(countByWeek).append("\n");
-        sb.append("本月统计: ").append(countByMonth).append("\n");
-        sb.append("总计: ").append(countByUser);
+        sb.append("〓〓〓〓 今日统计: ").append(countByDay).append(" 〓〓〓〓").append("\n");
+        sb.append("〓〓〓〓 本周统计: ").append(countByWeek).append(" 〓〓〓〓").append("\n");
+        sb.append("〓〓〓〓 本月统计: ").append(countByMonth).append(" 〓〓〓〓").append("\n");
+        sb.append("〓〓〓〓〓〓 总计: ").append(countByUser).append(" 〓〓〓〓");
         return sb.toString();
     }
 }
