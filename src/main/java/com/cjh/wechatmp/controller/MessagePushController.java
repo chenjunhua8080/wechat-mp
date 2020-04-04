@@ -44,7 +44,8 @@ public class MessagePushController {
      * 手动推送
      */
     @GetMapping("/push")
-    public String push(@RequestParam("type") Integer type, @RequestParam("openId") String openId) {
+    public String push(@RequestParam("type") Integer type,
+        @RequestParam(name = "openId", required = false) String openId) {
         String resp;
         log.info("****************推送消息**********************");
         if (type == 1) {
