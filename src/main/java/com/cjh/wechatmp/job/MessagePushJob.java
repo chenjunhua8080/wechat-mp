@@ -3,6 +3,7 @@ package com.cjh.wechatmp.job;
 import com.cjh.wechatmp.farm.FarmService;
 import com.cjh.wechatmp.message.push.MessagePushService;
 import com.cjh.wechatmp.po.UserPO;
+import com.cjh.wechatmp.service.ReportService;
 import com.cjh.wechatmp.service.UserService;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +27,15 @@ public class MessagePushJob {
     private FarmService farmService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ReportService reportService;
 
     @Value("${job.messagePush.enable}")
     private Boolean messagePushEnable;
     @Value("${job.tempPush.enable}")
     private Boolean tempPushEnable;
+    @Value("${job.reportPush.enable}")
+    private Boolean reportPushEnable;
 
     @Scheduled(cron = "${job.test.cron}")
     public void test() {
@@ -60,6 +65,20 @@ public class MessagePushJob {
                 String farmLog = farmService.getTodayFarmLog(openId);
                 log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
                 String resp = pushService.pushTempByOpenId(openId, farmLog);
+                log.info("推送结果: {}", resp);
+            }
+        }
+    }
+
+    @Scheduled(cron = "${job.reportPush.cron}")
+    public void reportPush() {
+        if (reportPushEnable) {
+            List<UserPO> list = userService.list();
+            for (UserPO userPO : list) {
+                String openId = userPO.getOpenId();
+                String reportText = reportService.getReportText(openId);
+                log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, reportText);
+                String resp = pushService.pushReport(openId, reportText);
                 log.info("推送结果: {}", resp);
             }
         }
