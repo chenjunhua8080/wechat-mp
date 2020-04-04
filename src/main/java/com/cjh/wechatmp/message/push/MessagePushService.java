@@ -12,24 +12,17 @@ import com.cjh.wechatmp.util.JsonUtil;
 import com.cjh.wechatmp.util.RestTemplateUtil;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Resource;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
-@RefreshScope
-@Slf4j
+@AllArgsConstructor
 @Component
+@Slf4j
 public class MessagePushService {
 
-    @Value("${mp.temp.farm}")
-    private String farmTemp;
-
-    @Autowired
+    private TemplateConfig templateConfig;
     private TokenService tokenService;
-    @Resource
     private UserDao userDao;
 
 
@@ -60,13 +53,13 @@ public class MessagePushService {
     }
 
     /**
-     * 推送模板消息
+     * 推送模板消息[农场提醒]
      */
     public String pushTempByOpenId(String openId, String body) {
         String url = WxApi.TEMPLATE_SEND_BY_OPENID.replace("ACCESS_TOKEN", tokenService.getBaseToken());
         Temp temp;
         temp = new Temp();
-        temp.setTemplate_id(farmTemp);
+        temp.setTemplate_id(templateConfig.getFarm());
         temp.setTouser(openId);
         DataBean data = new DataBean();
         TextBean first = new TextBean();
@@ -86,9 +79,43 @@ public class MessagePushService {
         String resp = RestTemplateUtil.doPost(url, JSONObject.toJSONString(temp));
         WxErrorEntity errorEntity = JsonUtil.json2java(resp, WxErrorEntity.class);
         if (errorEntity.getErrcode() == 0) {
-            log.info("推送模板成功: {}", errorEntity.getMsgid());
+            log.info("推送[农场提醒]成功: {}", errorEntity.getMsgid());
         } else {
-            log.info("推送模板失败: {}", resp);
+            log.info("推送[农场提醒]失败: {}", resp);
+        }
+        return resp;
+    }
+
+    /**
+     * 推送模板消息[自我报告]
+     */
+    public String pushReport(String openId, String body) {
+        String url = WxApi.TEMPLATE_SEND_BY_OPENID.replace("ACCESS_TOKEN", tokenService.getBaseToken());
+        Temp temp;
+        temp = new Temp();
+        temp.setTemplate_id(templateConfig.getFarm());
+        temp.setTouser(openId);
+        DataBean data = new DataBean();
+        TextBean first = new TextBean();
+        first.setValue(openId + "，您好：");
+        first.setColor("#459ae9");
+        TextBean list = new TextBean();
+        list.setValue(body);
+        list.setColor("#f24d4d");
+        TextBean remark = new TextBean();
+        remark.setValue("bye~");
+        remark.setColor("#173177");
+        data.setFirst(first);
+        data.setList(list);
+        data.setRemark(remark);
+        temp.setData(data);
+
+        String resp = RestTemplateUtil.doPost(url, JSONObject.toJSONString(temp));
+        WxErrorEntity errorEntity = JsonUtil.json2java(resp, WxErrorEntity.class);
+        if (errorEntity.getErrcode() == 0) {
+            log.info("推送[自我报告]成功: {}", errorEntity.getMsgid());
+        } else {
+            log.info("推送[自我报告]失败: {}", resp);
         }
         return resp;
     }

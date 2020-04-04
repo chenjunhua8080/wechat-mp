@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cjh.wechatmp.dao.ReportDao">
+
+    <select id="selectByUserId" resultType="com.cjh.wechatmp.po.ReportPO">
+        select t.* from report t where t.user_id = #{userId}
+    </select>
+    <select id="countByDay" resultType="java.lang.Integer">
+        select count(1) from report
+        where user_id = #{openId}
+        and timestampdiff(day,create_time,now()) = 0
+    </select>
+    <select id="countByWeek" resultType="java.lang.Integer">
+        select count(1) from report
+        where user_id = #{openId}
+        and yearweek(create_time) = yearweek(now())
+    </select>
+    <select id="countByMonth" resultType="java.lang.Integer">
+        select count(1) from report
+        where user_id = #{openId}
+        and month(create_time) = month(now())
+    </select>
+    <select id="countByUser" resultType="java.lang.Integer">
+        select count(1) from report
+        where user_id = #{openId}
+    </select>
+</mapper>
