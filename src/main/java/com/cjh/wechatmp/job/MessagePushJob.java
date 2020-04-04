@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableScheduling
 @Slf4j
-@RefreshScope
 public class MessagePushJob {
 
     private MessagePushService pushService;
