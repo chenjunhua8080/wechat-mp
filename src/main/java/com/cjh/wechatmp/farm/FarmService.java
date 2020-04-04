@@ -53,7 +53,7 @@ public class FarmService {
             return "未绑定农场，请先回复 “openid#xxx” 进行绑定...(xxx -> 农场openid)";
         }
         List<FarmLogPO> todayFarmLog = cloudService.getTodayFarmLog(bindFarmPO.getFarmOpenid());
-        if (todayFarmLog.isEmpty()) {
+        if (todayFarmLog == null || todayFarmLog.isEmpty()) {
             return "暂无消息";
         }
         StringBuilder sb = new StringBuilder();

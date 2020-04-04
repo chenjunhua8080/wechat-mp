@@ -8,6 +8,7 @@ import com.cjh.wechatmp.message.BaseMessage;
 import com.cjh.wechatmp.message.MessageUtil;
 import com.cjh.wechatmp.message.handler.AbstractMessageHandler;
 import com.cjh.wechatmp.message.in.TextInMessage;
+import com.cjh.wechatmp.service.ReportService;
 import com.cjh.wechatmp.util.ByteUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ public class TextMessageHandler extends AbstractMessageHandler {
     private FarmService farmService;
     private JuHeService juHeService;
     private AvatarService avatarService;
+    private ReportService reportService;
 
     private static String[] instructs = new String[]{
         "绑定农场",
@@ -40,12 +42,15 @@ public class TextMessageHandler extends AbstractMessageHandler {
         String content = textInMessage.getContent();
         String result = null;
 
-        //原样返回
         if ("help".equals(content)) {
             result = "";
             for (int i = 0; i < instructs.length; i++) {
                 result += (i + 1) + "、" + instructs[i] + "\n";
             }
+        } else if ("1".equals(content)) {
+            String openId = inMessage.getFromUserName();
+            reportService.add(openId);
+            result = reportService.getReportText(openId);
         }
 
         //农场业务
