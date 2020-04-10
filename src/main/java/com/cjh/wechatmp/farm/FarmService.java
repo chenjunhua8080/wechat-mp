@@ -115,4 +115,23 @@ public class FarmService {
         return "绑定成功, 系统会每日自动领取水滴啦~";
     }
 
+    /**
+     * 今日中银作业情况
+     */
+    public String getBankChinaLog(String userId) {
+        List<FarmLogPO> todayFarmLog = cloudService.getTodayFarmLog(userId);
+        if (todayFarmLog == null || todayFarmLog.isEmpty()) {
+            return "暂无消息";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (FarmLogPO farmLogPO : todayFarmLog) {
+            sb.append(farmLogPO.getMessage()).append("\n");
+        }
+        if (sb.length() > 0) {
+            sb.delete(sb.lastIndexOf("\n"), sb.length());
+        }
+        return sb.toString();
+    }
+
+
 }
