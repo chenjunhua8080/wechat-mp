@@ -41,7 +41,7 @@ public class MessagePushJob {
     }
 
     /**
-     * 定时推送模板消息[农村作业情况]
+     * 定时推送模板消息[农场作业情况]
      */
     @Scheduled(cron = "${job.tempPush}")
     public void signForFarm() {
@@ -50,6 +50,12 @@ public class MessagePushJob {
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
             String farmLog = farmService.getTodayFarmLog(openId);
+            try {
+                farmLog += "\n〓〓〓〓 中银 〓〓〓〓\n";
+                farmLog += farmService.getBankChinaLog("b556e5c5c5297a05");
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
             log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
             String resp = pushService.pushTempByOpenId(openId, farmLog);
             log.info("推送结果: {}", resp);
