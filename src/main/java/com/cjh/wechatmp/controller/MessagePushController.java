@@ -35,7 +35,15 @@ public class MessagePushController {
     @GetMapping("/tempPush")
     public String tempPush(@RequestParam("openId") String openId, @RequestParam("body") String body) {
         log.info("****************推送消息**********************");
-        String resp = pushService.pushTempByOpenId(openId, body);
+        String resp = pushService.pushJobMsg(openId, body);
+        log.info("****************推送消息结束*******************");
+        return String.valueOf(resp);
+    }
+
+    @GetMapping("/pushErrorMsg")
+    public String pushErrorMsg(@RequestParam("openId") String openId, @RequestParam("body") String body) {
+        log.info("****************推送消息**********************");
+        String resp = pushService.pushErrorMsg(openId, body);
         log.info("****************推送消息结束*******************");
         return String.valueOf(resp);
     }
@@ -54,12 +62,12 @@ public class MessagePushController {
                 for (UserPO userPO : list) {
                     openId = userPO.getOpenId();
                     String farmLog = farmService.getTodayFarmLog(openId);
-                    pushService.pushTempByOpenId(openId, farmLog);
+                    pushService.pushJobMsg(openId, farmLog);
                 }
                 resp = String.valueOf(list);
             } else {
                 String farmLog = farmService.getTodayFarmLog(openId);
-                pushService.pushTempByOpenId(openId, farmLog);
+                pushService.pushJobMsg(openId, farmLog);
                 resp = farmLog;
             }
         } else if (type == 2) {
@@ -68,12 +76,12 @@ public class MessagePushController {
                 for (UserPO userPO : list) {
                     openId = userPO.getOpenId();
                     String reportText = reportService.getReportText(openId);
-                    pushService.pushReport(openId, reportText);
+                    pushService.pushReportMsg(openId, reportText);
                 }
                 resp = String.valueOf(list);
             } else {
                 String reportText = reportService.getReportText(openId);
-                pushService.pushReport(openId, reportText);
+                pushService.pushReportMsg(openId, reportText);
                 resp = reportText;
             }
         } else {

@@ -1,5 +1,6 @@
 package com.cjh.wechatmp.feign;
 
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,7 @@ public class CloudFeignClientTest {
 
     @Test
     public void getTodayFarmLog() {
-        log.info(String.valueOf(feignClient.getTodayFarmLog("oA1P50NL6OdsFy2lrwp0tN1tw7Ow")));
+        log.info(String.valueOf(feignClient.getTodayFarmLog("oA1P50NL6OdsFy2lrwp0tN1tw7Ow", new Date())));
     }
 
     @Test

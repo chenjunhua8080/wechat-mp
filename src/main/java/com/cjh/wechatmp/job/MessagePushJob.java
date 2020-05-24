@@ -1,6 +1,7 @@
 package com.cjh.wechatmp.job;
 
 import com.cjh.wechatmp.farm.FarmService;
+import com.cjh.wechatmp.feign.CloudFeignClient;
 import com.cjh.wechatmp.message.push.MessagePushService;
 import com.cjh.wechatmp.po.UserPO;
 import com.cjh.wechatmp.service.ReportService;
@@ -23,6 +24,7 @@ public class MessagePushJob {
     private FarmService farmService;
     private UserService userService;
     private ReportService reportService;
+    private CloudFeignClient cloudFeignClient;
 
     /**
      * 推送文字消息
@@ -50,14 +52,8 @@ public class MessagePushJob {
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
             String farmLog = farmService.getTodayFarmLog(openId);
-            try {
-                farmLog += "\n〓〓〓〓 中银 〓〓〓〓\n";
-                farmLog += farmService.getBankChinaLog("b556e5c5c5297a05");
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
             log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
-            String resp = pushService.pushTempByOpenId(openId, farmLog);
+            String resp = pushService.pushJobMsg(openId, farmLog);
             log.info("推送结果: {}", resp);
         }
     }
@@ -73,7 +69,39 @@ public class MessagePushJob {
             String openId = userPO.getOpenId();
             String reportText = reportService.getReportText(openId);
             log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, reportText);
-            String resp = pushService.pushReport(openId, reportText);
+            String resp = pushService.pushReportMsg(openId, reportText);
+            log.info("推送结果: {}", resp);
+        }
+    }
+
+    /**
+     * 定时推送模板消息[京东-收集金币]
+     */
+    @Scheduled(cron = "${job.jdPush}")
+    public void jdPush() {
+        log.info("jdPush job: {}", new Date());
+        List<UserPO> list = userService.list();
+        for (UserPO userPO : list) {
+            String openId = userPO.getOpenId();
+            String farmLog = cloudFeignClient.getHomeData(openId);
+            log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
+            String resp = pushService.pushJobMsg(openId, farmLog);
+            log.info("推送结果: {}", resp);
+        }
+    }
+
+    /**
+     * 定时推送模板消息[中国银行-签到]
+     */
+    @Scheduled(cron = "${job.bankChinaPush}")
+    public void bankChinaPush() {
+        log.info("bankChinaPush job: {}", new Date());
+        List<UserPO> list = userService.list();
+        for (UserPO userPO : list) {
+            String openId = userPO.getOpenId();
+            String farmLog = cloudFeignClient.getBankChinaInfo(openId);
+            log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
+            String resp = pushService.pushJobMsg(openId, farmLog);
             log.info("推送结果: {}", resp);
         }
     }

@@ -53,24 +53,25 @@ public class MessagePushService {
     }
 
     /**
-     * 推送模板消息[农场提醒]
+     * 推送模板消息[通用]
      */
-    public String pushTempByOpenId(String openId, String body) {
+    public String pushTempMsg(String openId, String body, String tempId) {
         String url = WxApi.TEMPLATE_SEND_BY_OPENID.replace("ACCESS_TOKEN", tokenService.getBaseToken());
         Temp temp;
         temp = new Temp();
-        temp.setTemplate_id(templateConfig.getFarm());
+        temp.setTemplate_id(tempId);
         temp.setTouser(openId);
         DataBean data = new DataBean();
         TextBean first = new TextBean();
-        first.setValue("今天农场操作日志");
-        first.setColor("#173177");
+        UserPO userPO = userDao.selectByOpenId(openId);
+        first.setValue("您好：" + userPO.getName());
+        first.setColor("#459ae9");
         TextBean list = new TextBean();
         list.setValue(body);
         list.setColor("#173177");
         TextBean remark = new TextBean();
         remark.setValue("bye~");
-        remark.setColor("#173177");
+        remark.setColor("#f24d4d");
         data.setFirst(first);
         data.setList(list);
         data.setRemark(remark);
@@ -79,9 +80,9 @@ public class MessagePushService {
         String resp = RestTemplateUtil.doPost(url, JSONObject.toJSONString(temp));
         WxErrorEntity errorEntity = JsonUtil.json2java(resp, WxErrorEntity.class);
         if (errorEntity.getErrcode() == 0) {
-            log.info("推送[农场提醒]成功: {}", errorEntity.getMsgid());
+            log.info("推送模板消息[{}]成功: {}", tempId, errorEntity.getMsgid());
         } else {
-            log.info("推送[农场提醒]失败: {}", resp);
+            log.info("推送模板消息[{}]失败: {}", tempId, resp);
         }
         return resp;
     }
@@ -89,35 +90,21 @@ public class MessagePushService {
     /**
      * 推送模板消息[自我报告]
      */
-    public String pushReport(String openId, String body) {
-        String url = WxApi.TEMPLATE_SEND_BY_OPENID.replace("ACCESS_TOKEN", tokenService.getBaseToken());
-        Temp temp;
-        temp = new Temp();
-        temp.setTemplate_id(templateConfig.getReport());
-        temp.setTouser(openId);
-        DataBean data = new DataBean();
-        TextBean first = new TextBean();
-        first.setValue("您好：" + openId);
-        first.setColor("#459ae9");
-        TextBean list = new TextBean();
-        list.setValue(body);
-        list.setColor("#f24d4d");
-        TextBean remark = new TextBean();
-        remark.setValue("bye~");
-        remark.setColor("#173177");
-        data.setFirst(first);
-        data.setList(list);
-        data.setRemark(remark);
-        temp.setData(data);
-
-        String resp = RestTemplateUtil.doPost(url, JSONObject.toJSONString(temp));
-        WxErrorEntity errorEntity = JsonUtil.json2java(resp, WxErrorEntity.class);
-        if (errorEntity.getErrcode() == 0) {
-            log.info("推送[自我报告]成功: {}", errorEntity.getMsgid());
-        } else {
-            log.info("推送[自我报告]失败: {}", resp);
-        }
-        return resp;
+    public String pushReportMsg(String openId, String body) {
+        return pushTempMsg(openId, body, templateConfig.getReport());
     }
 
+    /**
+     * 推送模板消息[异常通知]
+     */
+    public String pushErrorMsg(String openId, String body) {
+        return pushTempMsg(openId, body, templateConfig.getError());
+    }
+
+    /**
+     * 推送模板消息[定时任务通知	]
+     */
+    public String pushJobMsg(String openId, String body) {
+        return pushTempMsg(openId, body, templateConfig.getJob());
+    }
 }

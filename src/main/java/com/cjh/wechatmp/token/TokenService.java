@@ -89,6 +89,12 @@ public class TokenService {
             userPO.setName(baseInfo.getNickname());
             userPO.setAvatar(baseInfo.getHeadimgurl());
             userService.save(userPO);
+        } else {
+            //更新信息
+            WeChatUser baseInfo = getBaseInfo(oauth2Token, openid);
+            userPO.setName(baseInfo.getNickname());
+            userPO.setAvatar(baseInfo.getHeadimgurl());
+            userService.updateById(userPO);
         }
 
         OAuth2TokenDTO tokenDTO = new OAuth2TokenDTO();

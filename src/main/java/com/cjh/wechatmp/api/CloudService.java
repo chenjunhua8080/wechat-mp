@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +66,7 @@ public class CloudService {
      * 查询今天农场日志
      */
     public List<FarmLogPO> getTodayFarmLog(String farmOpenId) {
-        return feignClient.getTodayFarmLog(farmOpenId);
+        return feignClient.getTodayFarmLog(farmOpenId, new Date());
     }
 
     //##############################聚合api#################################
@@ -165,4 +166,26 @@ public class CloudService {
             log.error("文件读写错误: {}", e.getMessage());
         }
     }
+
+    //##################### 京东API ########################
+
+    /**
+     * 叠蛋糕 - 查询我的金币
+     */
+    public String getHomeData(String openId) {
+        String result = feignClient.getHomeData(openId);
+        if (result != null) {
+            result += "\n";
+            result += countCollectScore(openId, new Date());
+        }
+        return result;
+    }
+
+    /**
+     * 叠蛋糕 - 统计领取金币
+     */
+    public String countCollectScore(String openId, Date date) {
+        return feignClient.countCollectScore(openId, date);
+    }
+
 }
