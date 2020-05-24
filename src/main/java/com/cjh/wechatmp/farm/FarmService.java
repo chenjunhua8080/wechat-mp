@@ -3,9 +3,12 @@ package com.cjh.wechatmp.farm;
 import com.cjh.wechatmp.api.CloudService;
 import com.cjh.wechatmp.dao.BindFarmDao;
 import com.cjh.wechatmp.dao.UserDao;
+import com.cjh.wechatmp.enums.InstructsEnum;
+import com.cjh.wechatmp.enums.PlatformEnum;
 import com.cjh.wechatmp.message.in.TextInMessage;
 import com.cjh.wechatmp.po.BindFarmPO;
 import com.cjh.wechatmp.po.UserPO;
+import com.cjh.wechatmp.redis.RedisService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,27 +20,118 @@ public class FarmService {
     private BindFarmDao bindFarmDao;
     private UserDao userDao;
     private CloudService cloudService;
+    private RedisService redisService;
 
     public String handleMessage(TextInMessage textInMessage) {
+        String content = textInMessage.getContent();
         String result = null;
-        if (textInMessage.getContent().equals("绑定农场")) {
-            if (isBind(textInMessage.getFromUserName())) {
-                result = "已绑定，回复 “hb+openid#xxx” 即可换绑...(xxx -> 农场openid)";
+        String fromUserName = textInMessage.getFromUserName();
+        String lastInstruct = redisService.getLastInstruct(fromUserName, true);
+        //京东-618蛋糕
+        if (InstructsEnum.Instruct2.getCode().toString().equals(lastInstruct)
+            && content.equals(InstructsEnum.Instruct21.getCode().toString())) {
+            BindFarmPO bind = getBind(fromUserName, PlatformEnum.JD_CAKE.getCode());
+            if (bind != null) {
+                result = "已绑定: " + bind.getId() + ", 回复cookie覆盖绑定";
             } else {
-                result = "回复 “openid#xxx” 即可绑定...(xxx -> 农场openid)";
+                result = "请回复完整cookie继续完成绑定";
+            }
+            redisService.setLastInstruct(fromUserName, lastInstruct + "-" + content);
+
+        } else if ((InstructsEnum.Instruct2.getCode() + "-" + InstructsEnum.Instruct21.getCode())
+            .equals(lastInstruct)) {
+            result = "绑定成功，id: " + doBind(fromUserName, textInMessage.getContent(), PlatformEnum.JD_CAKE.getCode());
+
+        } else if (InstructsEnum.Instruct2.getCode().toString().equals(lastInstruct)
+            && content.equals(InstructsEnum.Instruct22.getCode().toString())) {
+            BindFarmPO bind = getBind(fromUserName, PlatformEnum.JD_CAKE.getCode());
+            if (bind != null) {
+                result = cloudService.getHomeData(fromUserName);
+            } else {
+                result = "未绑定";
+            }
+        } else if (InstructsEnum.Instruct2.getCode().toString().equals(lastInstruct)
+            && content.equals(InstructsEnum.Instruct23.getCode().toString())) {
+            BindFarmPO bind = getBind(fromUserName, PlatformEnum.JD_CAKE.getCode());
+            if (bind != null) {
+                result = cloudService.countCollectScore(fromUserName, null);
+            } else {
+                result = "未绑定";
+            }
+        }
+        //中国银行
+        else if (InstructsEnum.Instruct4.getCode().toString().equals(lastInstruct)
+            && content.equals(InstructsEnum.Instruct41.getCode().toString())) {
+            BindFarmPO bind = getBind(fromUserName, PlatformEnum.BANK_CHINA.getCode());
+            if (bind != null) {
+                result = "已绑定: " + bind.getId() + ", 回复cookie覆盖绑定";
+            } else {
+                result = "请回复完整cookie继续完成绑定";
+            }
+            redisService.setLastInstruct(fromUserName, lastInstruct + "-" + content);
+
+        } else if ((InstructsEnum.Instruct4.getCode() + "-" + InstructsEnum.Instruct41.getCode())
+            .equals(lastInstruct)) {
+            result = "绑定成功，id: " + doBind(fromUserName, textInMessage.getContent(), PlatformEnum.BANK_CHINA.getCode());
+
+        } else if (InstructsEnum.Instruct4.getCode().toString().equals(lastInstruct)
+            && content.equals(InstructsEnum.Instruct42.getCode().toString())) {
+            BindFarmPO bind = getBind(fromUserName, PlatformEnum.BANK_CHINA.getCode());
+            if (bind != null) {
+                result = cloudService.getHomeData(fromUserName);
+            } else {
+                result = "未绑定";
+            }
+        }
+        //京东-农场
+        else if (content.equals("绑定农场") ||
+            (InstructsEnum.Instruct3.getCode().toString().equals(lastInstruct)
+                && content.equals(InstructsEnum.Instruct31.getCode().toString()))) {
+            BindFarmPO bind = getBind(fromUserName, PlatformEnum.JD_FARM.getCode());
+            if (bind != null) {
+                result = "已绑定: " + bind.getId() + ", 回复cookie覆盖绑定";
+            } else {
+                result = "请回复完整cookie继续完成绑定";
+            }
+            redisService.setLastInstruct(fromUserName, lastInstruct + "-" + content);
+
+        } else if (content.contains("openid#") ||
+            (InstructsEnum.Instruct3.getCode() + "-" + InstructsEnum.Instruct31.getCode()).equals(lastInstruct)) {
+            result = "绑定成功，id: " + doBind(fromUserName, textInMessage.getContent(), PlatformEnum.JD_FARM.getCode());
+
+        } else if (content.equals("今日农场作业情况") ||
+            (InstructsEnum.Instruct3.getCode().toString().equals(lastInstruct)
+                && content.equals(InstructsEnum.Instruct32.getCode().toString()))) {
+            BindFarmPO bind = getBind(fromUserName, PlatformEnum.JD_FARM.getCode());
+            if (bind != null) {
+                result = getTodayFarmLog(fromUserName);
+            } else {
+                result = "未绑定";
             }
 
-        } else if (textInMessage.getContent().contains("hb+openid#")) {
-            result = changeBind(textInMessage);
-
-        } else if (textInMessage.getContent().contains("openid#")) {
-            result = bind(textInMessage);
-
-        } else if (textInMessage.getContent().equals("今日农场作业情况")) {
-            result = getTodayFarmLog(textInMessage.getFromUserName());
-
         }
+
         return result;
+    }
+
+    private Integer doBind(String openId, String cookie, Integer platformType) {
+        UserPO user = userDao.selectByOpenId(openId);
+        BindFarmPO old = bindFarmDao.getBindUser(user.getId(), platformType);
+        if (old != null) {
+            bindFarmDao.deleteById(old.getId());
+        }
+        BindFarmPO entity = new BindFarmPO();
+        entity.setUserId(user.getId());
+        entity.setPlatformType(platformType);
+        entity.setPlatformId(openId);
+        entity.setCookie(cookie);
+        bindFarmDao.insert(entity);
+        return entity.getId();
+    }
+
+    private BindFarmPO getBind(String openId, Integer platformType) {
+        UserPO user = userDao.selectByOpenId(openId);
+        return bindFarmDao.getBindUser(user.getId(), platformType);
     }
 
     /**
@@ -91,7 +185,8 @@ public class FarmService {
      */
     private boolean isBind(String fromUserName) {
         UserPO userPO = userDao.selectByOpenId(fromUserName);
-        return userPO != null;
+        BindFarmPO bindFarmPO = bindFarmDao.selectByUserId(userPO.getId());
+        return bindFarmPO != null;
     }
 
     /**
@@ -132,6 +227,5 @@ public class FarmService {
         }
         return sb.toString();
     }
-
 
 }

@@ -19,4 +19,9 @@ public interface BindFarmDao extends BaseMapper<BindFarmPO> {
      * 根据userID查询
      */
     BindFarmPO selectByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 新 根据userID查询
+     */
+    BindFarmPO getBindUser(@Param("userId") Integer userId, @Param("platformType") Integer platformType);
 }

@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * 绑定农场
- * 
+ *
  * @author chenjunhua
  * @email 1109551489@qq.com
  * @date 2019-12-10 18:00:04
@@ -17,20 +17,32 @@ import java.util.Date;
 @Data
 @TableName("bind_farm")
 public class BindFarmPO implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
-	@TableId
-	private Integer id;
-	/**
-	 * 用户id
-	 */
-	private Integer userId;
-	/**
-	 * 农场openId
-	 */
-	private String farmOpenid;
+    private static final long serialVersionUID = 1L;
 
+    /**
+     *
+     */
+    @TableId
+    private Integer id;
+    /**
+     * 用户id
+     */
+    private Integer userId;
+    /**
+     * 农场openId
+     */
+    private String farmOpenid;
+    /**
+     * 绑定平台类型
+     */
+    private Integer platformType;
+    /**
+     * 对应平台id
+     */
+    private String platformId;
+    /**
+     * cookie
+     */
+    private String cookie;
 }

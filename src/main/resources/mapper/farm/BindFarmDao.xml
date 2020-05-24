@@ -3,7 +3,12 @@
 
 <mapper namespace="com.cjh.wechatmp.dao.BindFarmDao">
 
-    <select id="selectByUserId" resultType="com.cjh.wechatmp.po.BindFarmPO">
+  <select id="selectByUserId" resultType="com.cjh.wechatmp.po.BindFarmPO">
         select t.* from bind_farm t where t.user_id = #{userId}
     </select>
+  <select id="getBindUser" resultType="com.cjh.wechatmp.po.BindFarmPO">
+        select t.* from bind_farm t
+        where t.user_id = #{userId}
+        and t.platform_type = #{platformType}
+  </select>
 </mapper>
