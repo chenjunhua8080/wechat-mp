@@ -37,11 +37,11 @@ public class TextMessageHandler extends AbstractMessageHandler {
     @Override
     public BaseMessage doHandle(BaseMessage inMessage) {
         //注册
-        String userId = inMessage.getFromUserName();
-        UserPO userPO = userService.getByOpenId(userId);
+        String openId = inMessage.getFromUserName();
+        UserPO userPO = userService.getByOpenId(openId);
         if (userPO == null) {
             userPO = new UserPO();
-            userPO.setOpenId(userId);
+            userPO.setOpenId(openId);
             userService.save(userPO);
         }
 
@@ -49,21 +49,32 @@ public class TextMessageHandler extends AbstractMessageHandler {
         String content = textInMessage.getContent();
         String result = null;
 
-        if ("help".equals(content) || InstructsEnum.Instruct10.getCode().toString().equals(content)) {
+        if ("help".equals(content) || "home".equals(content) || InstructsEnum.Instruct10.getCode().toString()
+            .equals(content)) {
+            //清除旧指令
+            redisService.getLastInstruct(openId, true);
             result = InstructsEnum.getInstructs(0);
         } else if ("0".equals(content)) {
-            String openId = userId;
+            //清除旧指令
+            redisService.getLastInstruct(openId, true);
             reportService.add(openId);
             result = reportService.getReportText(openId);
         }
 
         //InstructsEnum
-        String lastInstruct = redisService.getLastInstruct(textInMessage.getFromUserName(), false);
+        String lastInstruct = redisService.getLastInstruct(openId, false);
         log.info("#### lastInstruct: {} ####", lastInstruct);
         if (lastInstruct == null && InstructsEnum.getInstructs(0).contains("【" + content + "】")) {
             result = InstructsEnum.getInstructs(Integer.parseInt(content));
             if (result != null) {
-                redisService.setLastInstruct(textInMessage.getFromUserName(), content);
+                redisService.setLastInstruct(openId, content);
+            }
+        }
+
+        //report
+        if (result == null) {
+            if (InstructsEnum.Instruct1.getCode().toString().equals(lastInstruct)) {
+                result = reportService.getReportText(openId);
             }
         }
 

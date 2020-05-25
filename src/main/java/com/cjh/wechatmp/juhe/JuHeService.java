@@ -27,10 +27,10 @@ public class JuHeService {
             String city = content.substring(content.indexOf("#") + 1);
             result = cloudService.getSimpleWeadther(city);
         } else if (content.contains("笑话") ||
-            InstructsEnum.Instruct7.getCode().toString().equals(lastInstruct)) {
+            InstructsEnum.Instruct7.getCode().toString().equals(content)) {
             result = cloudService.getRandJoke();
         } else if (content.contains("历史上的今天") ||
-            InstructsEnum.Instruct8.getCode().toString().equals(lastInstruct)) {
+            InstructsEnum.Instruct8.getCode().toString().equals(content)) {
             result = cloudService.getTodayHistory();
         } else if (content.contains("星座运势#")) {
             String start = content.substring(content.indexOf("#") + 1);

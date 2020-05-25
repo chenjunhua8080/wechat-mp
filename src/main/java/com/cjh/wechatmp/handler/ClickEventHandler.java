@@ -36,6 +36,8 @@ public class ClickEventHandler extends AbstractMessageHandler {
             }
             return MessageUtil.buildTextOutMessage(inMessage, content);
         }else  if (eventKey.equals("menu_2_1")) {
+            //清除旧指令
+            redisService.getLastInstruct(inMessage.getFromUserName(), true);
             String instructs = InstructsEnum.getInstructs(0);
             return MessageUtil.buildTextOutMessage(inMessage, instructs);
         }
