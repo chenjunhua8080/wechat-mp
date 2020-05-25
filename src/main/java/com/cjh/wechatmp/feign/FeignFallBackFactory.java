@@ -3,6 +3,7 @@ package com.cjh.wechatmp.feign;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.avatar.AvatarPO;
 import com.cjh.wechatmp.farm.FarmLogPO;
+import com.cjh.wechatmp.farm.ReqLog;
 import com.cjh.wechatmp.juhe.QuestionBankPO;
 import com.cjh.wechatmp.po.NowPlaying;
 import feign.hystrix.FallbackFactory;
@@ -24,7 +25,7 @@ public class FeignFallBackFactory implements FallbackFactory<CloudFeignClient> {
         return new CloudFeignClient() {
 
             @Override
-            public String getReqLogList(String openId, Integer platformType, Date date) {
+            public List<ReqLog> getReqLogList(String openId, Integer platformType, Date date) {
                 return null;
             }
 
