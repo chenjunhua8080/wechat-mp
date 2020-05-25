@@ -26,7 +26,7 @@ public class FarmService {
         String content = textInMessage.getContent();
         String result = null;
         String fromUserName = textInMessage.getFromUserName();
-        String lastInstruct = redisService.getLastInstruct(fromUserName, true);
+        String lastInstruct = redisService.getLastInstruct(fromUserName, false);
         //京东-618蛋糕
         if (InstructsEnum.Instruct2.getCode().toString().equals(lastInstruct)
             && content.equals(InstructsEnum.Instruct21.getCode().toString())) {
@@ -78,7 +78,7 @@ public class FarmService {
             && content.equals(InstructsEnum.Instruct42.getCode().toString())) {
             BindFarmPO bind = getBind(fromUserName, PlatformEnum.BANK_CHINA.getCode());
             if (bind != null) {
-                result = cloudService.getHomeData(fromUserName);
+                result = cloudService.getBankChinaInfo(fromUserName);
             } else {
                 result = "未绑定";
             }

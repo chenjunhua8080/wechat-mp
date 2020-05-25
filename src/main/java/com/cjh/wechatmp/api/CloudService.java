@@ -176,7 +176,7 @@ public class CloudService {
         String result = feignClient.getHomeData(openId);
         if (result != null) {
             result += "\n";
-            result += countCollectScore(openId, new Date());
+            result += feignClient.countCollectScore(openId, new Date());
         }
         return result;
     }
@@ -188,4 +188,12 @@ public class CloudService {
         return feignClient.countCollectScore(openId, date);
     }
 
+    //##################### 京东API ########################
+
+    /**
+     * 中国银行 - 查询信息
+     */
+    public String getBankChinaInfo(String openId) {
+        return feignClient.getBankChinaInfo(openId);
+    }
 }

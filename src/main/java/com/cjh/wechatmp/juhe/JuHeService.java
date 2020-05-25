@@ -17,7 +17,7 @@ public class JuHeService {
     public String handleMessage(TextInMessage textInMessage) {
         String content = textInMessage.getContent();
         String result = null;
-        String lastInstruct = redisService.getLastInstruct(textInMessage.getFromUserName(), true);
+        String lastInstruct = redisService.getLastInstruct(textInMessage.getFromUserName(), false);
         if (InstructsEnum.Instruct6.getCode().toString().equals(lastInstruct)) {
             result = cloudService.getConstellation(
                 InstructsEnum.getNameByCode(Integer.parseInt(content), InstructsEnum.Instruct6.getCode()));

@@ -21,7 +21,7 @@ public class AvatarService {
     public BaseMessage handleMessage(TextInMessage textInMessage) {
         String content = textInMessage.getContent();
         StringBuilder stringBuilder = null;
-        String lastInstruct = redisService.getLastInstruct(textInMessage.getFromUserName(), true);
+        String lastInstruct = redisService.getLastInstruct(textInMessage.getFromUserName(), false);
         if (content.equals("头像") ||
             (InstructsEnum.Instruct9.getCode().toString().equals(lastInstruct)
                 && content.equals(InstructsEnum.Instruct91.getCode().toString()))) {
