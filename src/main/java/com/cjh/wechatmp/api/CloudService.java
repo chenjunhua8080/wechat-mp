@@ -3,6 +3,7 @@ package com.cjh.wechatmp.api;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.avatar.AvatarPO;
 import com.cjh.wechatmp.farm.FarmLogPO;
+import com.cjh.wechatmp.farm.ReqLog;
 import com.cjh.wechatmp.feign.CloudFeignClient;
 import com.cjh.wechatmp.juhe.QuestionBankPO;
 import com.cjh.wechatmp.media.MediaService;
@@ -14,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +67,7 @@ public class CloudService {
      * 查询今天农场日志
      */
     public List<FarmLogPO> getTodayFarmLog(String farmOpenId) {
-        return feignClient.getTodayFarmLog(farmOpenId);
+        return feignClient.getTodayFarmLog(farmOpenId, new Date());
     }
 
     //##############################聚合api#################################
@@ -164,5 +166,45 @@ public class CloudService {
         } catch (IOException e) {
             log.error("文件读写错误: {}", e.getMessage());
         }
+    }
+
+    //##################### 京东API ########################
+
+    /**
+     * 叠蛋糕 - 查询我的金币
+     */
+    public String getHomeData(String openId) {
+        String result = feignClient.getHomeData(openId);
+        if (result != null) {
+            result += "\n";
+            result += feignClient.countCollectScore(openId, new Date());
+        }
+        return result;
+    }
+
+    /**
+     * 叠蛋糕 - 统计领取金币
+     */
+    public String countCollectScore(String openId, Date date) {
+        return feignClient.countCollectScore(openId, date);
+    }
+
+    //##################### 京东API ########################
+
+    /**
+     * 中国银行 - 查询信息
+     */
+    public String getBankChinaInfo(String openId) {
+        String bankChinaInfo = feignClient.getBankChinaInfo(openId);
+        return bankChinaInfo;
+    }
+
+    //##################### 通用日志 ########################
+
+    /**
+     * 查询通用日志
+     */
+    public List<ReqLog> getReqLogList(String openId, Integer platformType, Date date) {
+        return feignClient.getReqLogList(openId, platformType, date);
     }
 }

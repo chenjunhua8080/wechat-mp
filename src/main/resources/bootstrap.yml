@@ -21,5 +21,5 @@ spring:
             refresh: true
       #服务发现
       discovery:
-        server-addr: http://nacos.springeasy.cn
+        server-addr: http://nacos.springeasy.cn/
         namespace: 32d93268-bdb6-40a0-8740-a211f74b9a9f

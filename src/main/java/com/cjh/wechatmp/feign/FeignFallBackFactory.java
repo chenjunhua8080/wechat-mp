@@ -3,9 +3,11 @@ package com.cjh.wechatmp.feign;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.avatar.AvatarPO;
 import com.cjh.wechatmp.farm.FarmLogPO;
+import com.cjh.wechatmp.farm.ReqLog;
 import com.cjh.wechatmp.juhe.QuestionBankPO;
 import com.cjh.wechatmp.po.NowPlaying;
 import feign.hystrix.FallbackFactory;
+import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,12 +25,17 @@ public class FeignFallBackFactory implements FallbackFactory<CloudFeignClient> {
         return new CloudFeignClient() {
 
             @Override
+            public List<ReqLog> getReqLogList(String openId, Integer platformType, Date date) {
+                return null;
+            }
+
+            @Override
             public List<AvatarPO> getAvatarByNew(Integer pageNum) {
                 return null;
             }
 
             @Override
-            public List<FarmLogPO> getTodayFarmLog(String openId) {
+            public List<FarmLogPO> getTodayFarmLog(String openId, Date date) {
                 return null;
             }
 
@@ -74,6 +81,21 @@ public class FeignFallBackFactory implements FallbackFactory<CloudFeignClient> {
 
             @Override
             public JSONObject getQuestionAnswers() {
+                return null;
+            }
+
+            @Override
+            public String getHomeData(String openId) {
+                return null;
+            }
+
+            @Override
+            public String countCollectScore(String openId, Date date) {
+                return null;
+            }
+
+            @Override
+            public String getBankChinaInfo(String openId) {
                 return null;
             }
         };

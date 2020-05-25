@@ -13,6 +13,24 @@ public class RedisService {
     private RedisTemplate redisTemplate;
 
     /**
+     * 记录上一次指令
+     */
+    public static final String last_instruct = "last_instruct";
+
+    public String getLastInstruct(String user, boolean delKey) {
+        int time = 30;
+        if (delKey) {
+            time = 0;
+        }
+        return get(last_instruct + "_" + user, String.class, time);
+    }
+
+    public void setLastInstruct(String user, Object value) {
+        set(last_instruct + "_" + user, value, 60);
+    }
+
+
+    /**
      * 普通缓存放入
      *
      * @param key   键

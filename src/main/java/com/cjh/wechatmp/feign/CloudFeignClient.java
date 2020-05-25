@@ -3,8 +3,10 @@ package com.cjh.wechatmp.feign;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.avatar.AvatarPO;
 import com.cjh.wechatmp.farm.FarmLogPO;
+import com.cjh.wechatmp.farm.ReqLog;
 import com.cjh.wechatmp.juhe.QuestionBankPO;
 import com.cjh.wechatmp.po.NowPlaying;
+import java.util.Date;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "common", fallbackFactory = FeignFallBackFactory.class)
 public interface CloudFeignClient {
+
+    //########################## 通用请求日志 #############################
+
+    /**
+     * 查询请求日志
+     */
+    @GetMapping("/reqLog/list")
+    List<ReqLog> getReqLogList(@RequestParam String openId, @RequestParam Integer platformType, @RequestParam Date date);
 
     //########################## 头像API #############################
     //不能用int做参数
@@ -28,7 +38,7 @@ public interface CloudFeignClient {
      * 今天农场作业情况
      */
     @GetMapping("/getTodayFarmLog")
-    List<FarmLogPO> getTodayFarmLog(@RequestParam String openId);
+    List<FarmLogPO> getTodayFarmLog(@RequestParam String openId, @RequestParam Date date);
 
     //########################## 豆瓣API #############################
 
@@ -88,4 +98,25 @@ public interface CloudFeignClient {
     @GetMapping("/getQuestionAnswers")
     JSONObject getQuestionAnswers();
 
+    //########################## 京东API #############################
+
+    /**
+     * 叠蛋糕 - 查询我的金币
+     */
+    @GetMapping("/getHomeData")
+    String getHomeData(@RequestParam String openId);
+
+    /**
+     * 叠蛋糕 - 统计领取金币
+     */
+    @GetMapping("/countCollectScore")
+    String countCollectScore(@RequestParam String openId, @RequestParam Date date);
+
+    //########################## 中国银行 #############################
+
+    /**
+     * 中国银行 - 查询我的
+     */
+    @GetMapping("/getBankChinaInfo")
+    String getBankChinaInfo(@RequestParam String openId);
 }

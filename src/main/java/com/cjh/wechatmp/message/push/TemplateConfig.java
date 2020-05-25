@@ -16,5 +16,7 @@ public class TemplateConfig {
 
     private String farm;
     private String report;
+    private String job;
+    private String error;
 
 }

@@ -1,6 +1,7 @@
 package com.cjh.wechatmp.handler;
 
 import com.cjh.wechatmp.annotation.MessageProcessor;
+import com.cjh.wechatmp.enums.InstructsEnum;
 import com.cjh.wechatmp.message.BaseMessage;
 import com.cjh.wechatmp.message.MessageConstant;
 import com.cjh.wechatmp.message.MessageUtil;
@@ -34,6 +35,11 @@ public class ClickEventHandler extends AbstractMessageHandler {
                 content = "未登录哦！<a href=\"http://h5.springeasy.cn/pages/user/user\">戳我</a>去登陆";
             }
             return MessageUtil.buildTextOutMessage(inMessage, content);
+        }else  if (eventKey.equals("menu_2_1")) {
+            //清除旧指令
+            redisService.getLastInstruct(inMessage.getFromUserName(), true);
+            String instructs = InstructsEnum.getInstructs(0);
+            return MessageUtil.buildTextOutMessage(inMessage, instructs);
         }
         return null;
     }
