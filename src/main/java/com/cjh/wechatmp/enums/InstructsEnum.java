@@ -22,7 +22,8 @@ public enum InstructsEnum {
     Instruct41(1, 4, "绑定"),
     Instruct42(2, 4, "当前状况"),
     Instruct5(5, 0, "天气"),
-    Instruct51(1, 5, "请回复城市名"),
+    Instruct51(1, 5, "广州"),
+    Instruct52(2, 5, "其他回复城市名: 如广州"),
     Instruct6(6, 0, "星座运势"),
     Instruct61(1, 6, "白羊座"),
     Instruct62(2, 6, "金牛座"),
@@ -41,7 +42,8 @@ public enum InstructsEnum {
     Instruct9(9, 0, "头像"),
     Instruct91(1, 9, "单个头像"),
     Instruct92(2, 9, "图文列表"),
-    Instruct10(10, 0, "help");
+    Instruct10(10, 0, "回复home，回到主菜单"),
+    Instruct99(99, 0, "温馨提示：连续对话场景30秒内有效~");
 
     private Integer code;
     private Integer pid;
