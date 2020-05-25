@@ -29,9 +29,13 @@ public class JuHeService {
         } else if (content.contains("笑话") ||
             InstructsEnum.Instruct7.getCode().toString().equals(content)) {
             result = cloudService.getRandJoke();
+            //清除旧指令
+            redisService.getLastInstruct(textInMessage.getFromUserName(), true);
         } else if (content.contains("历史上的今天") ||
             InstructsEnum.Instruct8.getCode().toString().equals(content)) {
             result = cloudService.getTodayHistory();
+            //清除旧指令
+            redisService.getLastInstruct(textInMessage.getFromUserName(), true);
         } else if (content.contains("星座运势#")) {
             String start = content.substring(content.indexOf("#") + 1);
             result = cloudService.getConstellation(start);

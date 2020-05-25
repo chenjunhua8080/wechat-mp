@@ -72,8 +72,8 @@ public class TextMessageHandler extends AbstractMessageHandler {
         }
 
         //report
-        if (result == null) {
-            if (InstructsEnum.Instruct1.getCode().toString().equals(lastInstruct)) {
+        if (result == null && lastInstruct == null) {
+            if (InstructsEnum.Instruct1.getCode().toString().equals(content)) {
                 result = reportService.getReportText(openId);
             }
         }
