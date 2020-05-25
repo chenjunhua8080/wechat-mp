@@ -9,6 +9,7 @@ import com.cjh.wechatmp.message.in.TextInMessage;
 import com.cjh.wechatmp.po.BindFarmPO;
 import com.cjh.wechatmp.po.UserPO;
 import com.cjh.wechatmp.redis.RedisService;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,6 +68,14 @@ public class FarmService {
             } else {
                 result = "未绑定";
             }
+        } else if (InstructsEnum.Instruct2.getCode().toString().equals(lastInstruct)
+            && content.equals(InstructsEnum.Instruct24.getCode().toString())) {
+            BindFarmPO bind = getBind(fromUserName, PlatformEnum.JD_CAKE.getCode());
+            if (bind != null) {
+                result = cloudService.getReqLogList(fromUserName, PlatformEnum.JD_CAKE.getCode(), new Date());
+            } else {
+                result = "未绑定";
+            }
         }
         //中国银行
         else if (InstructsEnum.Instruct4.getCode().toString().equals(lastInstruct)
@@ -93,7 +102,10 @@ public class FarmService {
             && content.equals(InstructsEnum.Instruct42.getCode().toString())) {
             BindFarmPO bind = getBind(fromUserName, PlatformEnum.BANK_CHINA.getCode());
             if (bind != null) {
-                result = cloudService.getBankChinaInfo(fromUserName);
+                result = cloudService.getReqLogList(fromUserName, PlatformEnum.BANK_CHINA.getCode(), new Date());
+                if (result == null) {
+                    result = cloudService.getBankChinaInfo(fromUserName);
+                }
             } else {
                 result = "未绑定";
             }
@@ -171,83 +183,7 @@ public class FarmService {
      * 今日农场作业情况
      */
     public String getTodayFarmLog(String openId) {
-        UserPO userPO = userDao.selectByOpenId(openId);
-        if (userPO == null) {
-            return "请先授权登录";
-        }
-        BindFarmPO bindFarmPO = bindFarmDao.selectByUserId(userPO.getId());
-        if (bindFarmPO == null) {
-            return "未绑定农场，请先回复 “openid#xxx” 进行绑定...(xxx -> 农场openid)";
-        }
-        List<FarmLogPO> todayFarmLog = cloudService.getTodayFarmLog(bindFarmPO.getFarmOpenid());
-        if (todayFarmLog == null || todayFarmLog.isEmpty()) {
-            return "暂无消息";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (FarmLogPO farmLogPO : todayFarmLog) {
-            sb.append(farmLogPO.getMessage()).append("\n");
-        }
-        if (sb.length() > 0) {
-            sb.delete(sb.lastIndexOf("\n"), sb.length());
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 换绑
-     */
-    private String changeBind(TextInMessage textInMessage) {
-        String content = textInMessage.getContent();
-        String openId = content.substring("hb+openid#".length());
-        UserPO userPO = userDao.selectByOpenId(textInMessage.getFromUserName());
-        if (userPO == null) {
-            return "请先授权登录";
-        }
-        BindFarmPO bindFarmPO = bindFarmDao.selectByUserId(userPO.getId());
-        if (bindFarmPO == null) {
-            return "换绑失败，请先回复 “openid#xxx” 进行绑定...(xxx -> 农场openid)";
-        } else {
-            bindFarmPO.setFarmOpenid(openId);
-            bindFarmDao.updateById(bindFarmPO);
-            return "换绑成功, 系统会每日自动领取水滴啦~";
-        }
-    }
-
-    /**
-     * 判断是否绑定
-     */
-    private boolean isBind(String fromUserName) {
-        UserPO userPO = userDao.selectByOpenId(fromUserName);
-        BindFarmPO bindFarmPO = bindFarmDao.selectByUserId(userPO.getId());
-        return bindFarmPO != null;
-    }
-
-    /**
-     * 绑定农场和系统用户
-     */
-    private String bind(TextInMessage textInMessage) {
-        String content = textInMessage.getContent();
-        String openId = content.substring("openid#".length());
-        UserPO userPO = userDao.selectByOpenId(textInMessage.getFromUserName());
-        if (userPO == null) {
-            return "请先授权登录";
-        }
-        BindFarmPO bindFarmPO = bindFarmDao.selectByUserId(userPO.getId());
-        if (bindFarmPO == null) {
-            return "已绑定农场，请先回复 “hb+openid#xxx” 进行换绑...(xxx -> 农场openid)";
-        }
-        bindFarmPO = new BindFarmPO();
-        bindFarmPO.setFarmOpenid(openId);
-        bindFarmPO.setUserId(userPO.getId());
-        bindFarmDao.insert(bindFarmPO);
-        return "绑定成功, 系统会每日自动领取水滴啦~";
-    }
-
-    /**
-     * 今日中银作业情况
-     */
-    public String getBankChinaLog(String userId) {
-        List<FarmLogPO> todayFarmLog = cloudService.getTodayFarmLog(userId);
+        List<FarmLogPO> todayFarmLog = cloudService.getTodayFarmLog(openId);
         if (todayFarmLog == null || todayFarmLog.isEmpty()) {
             return "暂无消息";
         }

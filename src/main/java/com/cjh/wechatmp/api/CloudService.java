@@ -194,6 +194,16 @@ public class CloudService {
      * 中国银行 - 查询信息
      */
     public String getBankChinaInfo(String openId) {
-        return feignClient.getBankChinaInfo(openId);
+        String bankChinaInfo = feignClient.getBankChinaInfo(openId);
+        return bankChinaInfo;
+    }
+
+    //##################### 通用日志 ########################
+
+    /**
+     * 查询通用日志
+     */
+    public String getReqLogList(String openId, Integer platformType, Date date) {
+        return feignClient.getReqLogList(openId, platformType, date);
     }
 }

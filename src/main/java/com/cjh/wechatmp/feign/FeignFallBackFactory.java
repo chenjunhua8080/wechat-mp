@@ -24,6 +24,11 @@ public class FeignFallBackFactory implements FallbackFactory<CloudFeignClient> {
         return new CloudFeignClient() {
 
             @Override
+            public String getReqLogList(String openId, Integer platformType, Date date) {
+                return null;
+            }
+
+            @Override
             public List<AvatarPO> getAvatarByNew(Integer pageNum) {
                 return null;
             }
