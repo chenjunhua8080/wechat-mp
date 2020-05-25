@@ -18,7 +18,7 @@ public class RedisService {
     public static final String last_instruct = "last_instruct";
 
     public String getLastInstruct(String user, boolean delKey) {
-        int time = 10;
+        int time = 30;
         if (delKey) {
             time = 0;
         }

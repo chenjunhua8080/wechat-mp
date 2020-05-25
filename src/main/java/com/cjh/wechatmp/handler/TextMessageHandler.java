@@ -10,12 +10,12 @@ import com.cjh.wechatmp.message.MessageUtil;
 import com.cjh.wechatmp.message.handler.AbstractMessageHandler;
 import com.cjh.wechatmp.message.in.TextInMessage;
 import com.cjh.wechatmp.po.UserPO;
-import com.cjh.wechatmp.po.WeChatUser;
 import com.cjh.wechatmp.redis.RedisService;
 import com.cjh.wechatmp.service.ReportService;
 import com.cjh.wechatmp.service.UserService;
 import com.cjh.wechatmp.util.ByteUtil;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 @MessageProcessor
 @AllArgsConstructor
 @Component
+@Slf4j
 public class TextMessageHandler extends AbstractMessageHandler {
 
     private FarmService farmService;
@@ -58,6 +59,7 @@ public class TextMessageHandler extends AbstractMessageHandler {
 
         //InstructsEnum
         String lastInstruct = redisService.getLastInstruct(textInMessage.getFromUserName(), false);
+        log.info("#### lastInstruct: {} ####", lastInstruct);
         if (lastInstruct == null && InstructsEnum.getInstructs(0).contains("【" + content + "】")) {
             result = InstructsEnum.getInstructs(Integer.parseInt(content));
             if (result != null) {
