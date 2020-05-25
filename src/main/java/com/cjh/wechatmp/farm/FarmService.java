@@ -10,6 +10,8 @@ import com.cjh.wechatmp.po.BindFarmPO;
 import com.cjh.wechatmp.po.UserPO;
 import com.cjh.wechatmp.redis.RedisService;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -32,15 +34,22 @@ public class FarmService {
             && content.equals(InstructsEnum.Instruct21.getCode().toString())) {
             BindFarmPO bind = getBind(fromUserName, PlatformEnum.JD_CAKE.getCode());
             if (bind != null) {
-                result = "已绑定: " + bind.getId() + ", 回复cookie覆盖绑定";
+                result = "已绑定: " + bind.getId() + ", 回复cookie==>xxx覆盖绑定";
             } else {
-                result = "请回复完整cookie继续完成绑定";
+                result = "请回复cookie==>xxx继续完成绑定";
             }
             redisService.setLastInstruct(fromUserName, lastInstruct + "-" + content);
 
         } else if ((InstructsEnum.Instruct2.getCode() + "-" + InstructsEnum.Instruct21.getCode())
             .equals(lastInstruct)) {
-            result = "绑定成功，id: " + doBind(fromUserName, textInMessage.getContent(), PlatformEnum.JD_CAKE.getCode());
+            String cookie = getCookie(textInMessage.getContent());
+            if (cookie == null) {
+                result = "cookie格式错误，请参考cookie==>xxx";
+            } else {
+                result = "绑定成功，id: " + doBind(fromUserName, cookie, PlatformEnum.JD_CAKE.getCode());
+                //清除指令
+                redisService.getLastInstruct(fromUserName, true);
+            }
 
         } else if (InstructsEnum.Instruct2.getCode().toString().equals(lastInstruct)
             && content.equals(InstructsEnum.Instruct22.getCode().toString())) {
@@ -64,16 +73,22 @@ public class FarmService {
             && content.equals(InstructsEnum.Instruct41.getCode().toString())) {
             BindFarmPO bind = getBind(fromUserName, PlatformEnum.BANK_CHINA.getCode());
             if (bind != null) {
-                result = "已绑定: " + bind.getId() + ", 回复cookie覆盖绑定";
+                result = "已绑定: " + bind.getId() + ", 回复cookie==>xxx覆盖绑定";
             } else {
-                result = "请回复完整cookie继续完成绑定";
+                result = "请回复cookie==>xxx继续完成绑定";
             }
             redisService.setLastInstruct(fromUserName, lastInstruct + "-" + content);
 
         } else if ((InstructsEnum.Instruct4.getCode() + "-" + InstructsEnum.Instruct41.getCode())
             .equals(lastInstruct)) {
-            result = "绑定成功，id: " + doBind(fromUserName, textInMessage.getContent(), PlatformEnum.BANK_CHINA.getCode());
-
+            String cookie = getCookie(textInMessage.getContent());
+            if (cookie == null) {
+                result = "cookie格式错误，请参考cookie==>xxx";
+            } else {
+                result = "绑定成功，id: " + doBind(fromUserName, cookie, PlatformEnum.BANK_CHINA.getCode());
+                //清除指令
+                redisService.getLastInstruct(fromUserName, true);
+            }
         } else if (InstructsEnum.Instruct4.getCode().toString().equals(lastInstruct)
             && content.equals(InstructsEnum.Instruct42.getCode().toString())) {
             BindFarmPO bind = getBind(fromUserName, PlatformEnum.BANK_CHINA.getCode());
@@ -89,16 +104,22 @@ public class FarmService {
                 && content.equals(InstructsEnum.Instruct31.getCode().toString()))) {
             BindFarmPO bind = getBind(fromUserName, PlatformEnum.JD_FARM.getCode());
             if (bind != null) {
-                result = "已绑定: " + bind.getId() + ", 回复cookie覆盖绑定";
+                result = "已绑定: " + bind.getId() + ", 回复cookie==>xxx覆盖绑定";
             } else {
-                result = "请回复完整cookie继续完成绑定";
+                result = "请回复cookie==>xxx继续完成绑定";
             }
             redisService.setLastInstruct(fromUserName, lastInstruct + "-" + content);
 
         } else if (content.contains("openid#") ||
             (InstructsEnum.Instruct3.getCode() + "-" + InstructsEnum.Instruct31.getCode()).equals(lastInstruct)) {
-            result = "绑定成功，id: " + doBind(fromUserName, textInMessage.getContent(), PlatformEnum.JD_FARM.getCode());
-
+            String cookie = getCookie(textInMessage.getContent());
+            if (cookie == null) {
+                result = "cookie格式错误，请参考cookie==>xxx";
+            } else {
+                result = "绑定成功，id: " + doBind(fromUserName, cookie, PlatformEnum.JD_FARM.getCode());
+                //清除指令
+                redisService.getLastInstruct(fromUserName, true);
+            }
         } else if (content.equals("今日农场作业情况") ||
             (InstructsEnum.Instruct3.getCode().toString().equals(lastInstruct)
                 && content.equals(InstructsEnum.Instruct32.getCode().toString()))) {
@@ -112,6 +133,18 @@ public class FarmService {
         }
 
         return result;
+    }
+
+    /**
+     * 从cookie==>xxx截取xxx
+     */
+    private String getCookie(String content) {
+        Pattern pattern = Pattern.compile("cookie==>(.*)");
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
     }
 
     private Integer doBind(String openId, String cookie, Integer platformType) {
