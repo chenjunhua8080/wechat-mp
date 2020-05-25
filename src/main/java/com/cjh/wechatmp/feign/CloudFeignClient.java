@@ -14,6 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "common", fallbackFactory = FeignFallBackFactory.class)
 public interface CloudFeignClient {
 
+    //########################## 通用请求日志 #############################
+
+    /**
+     * 中国银行 - 查询我的
+     */
+    @GetMapping("/reqLog/list")
+    String getReqLogList(@RequestParam String openId, @RequestParam Integer platformType, @RequestParam Date date);
+
     //########################## 头像API #############################
     //不能用int做参数
 
