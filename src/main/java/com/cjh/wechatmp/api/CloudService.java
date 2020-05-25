@@ -3,6 +3,7 @@ package com.cjh.wechatmp.api;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.avatar.AvatarPO;
 import com.cjh.wechatmp.farm.FarmLogPO;
+import com.cjh.wechatmp.farm.ReqLog;
 import com.cjh.wechatmp.feign.CloudFeignClient;
 import com.cjh.wechatmp.juhe.QuestionBankPO;
 import com.cjh.wechatmp.media.MediaService;
@@ -203,7 +204,7 @@ public class CloudService {
     /**
      * 查询通用日志
      */
-    public String getReqLogList(String openId, Integer platformType, Date date) {
+    public List<ReqLog> getReqLogList(String openId, Integer platformType, Date date) {
         return feignClient.getReqLogList(openId, platformType, date);
     }
 }

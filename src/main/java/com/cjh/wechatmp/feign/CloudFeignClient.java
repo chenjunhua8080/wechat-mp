@@ -3,6 +3,7 @@ package com.cjh.wechatmp.feign;
 import com.alibaba.fastjson.JSONObject;
 import com.cjh.wechatmp.avatar.AvatarPO;
 import com.cjh.wechatmp.farm.FarmLogPO;
+import com.cjh.wechatmp.farm.ReqLog;
 import com.cjh.wechatmp.juhe.QuestionBankPO;
 import com.cjh.wechatmp.po.NowPlaying;
 import java.util.Date;
@@ -17,10 +18,10 @@ public interface CloudFeignClient {
     //########################## 通用请求日志 #############################
 
     /**
-     * 中国银行 - 查询我的
+     * 查询请求日志
      */
     @GetMapping("/reqLog/list")
-    String getReqLogList(@RequestParam String openId, @RequestParam Integer platformType, @RequestParam Date date);
+    List<ReqLog> getReqLogList(@RequestParam String openId, @RequestParam Integer platformType, @RequestParam Date date);
 
     //########################## 头像API #############################
     //不能用int做参数
