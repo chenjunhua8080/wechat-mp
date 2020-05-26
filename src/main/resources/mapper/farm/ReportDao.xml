@@ -9,7 +9,7 @@
     <select id="countByDay" resultType="java.lang.Integer">
         select count(1) from report
         where user_id = #{openId}
-        and timestampdiff(day,create_time,now()) = 0
+        and to_days(create_time)= to_days(now())
     </select>
     <select id="countByWeek" resultType="java.lang.Integer">
         select count(1) from report

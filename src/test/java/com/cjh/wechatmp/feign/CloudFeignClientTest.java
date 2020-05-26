@@ -18,7 +18,7 @@ public class CloudFeignClientTest {
 
     @Test
     public void getTodayFarmLog() {
-        log.info(String.valueOf(feignClient.getTodayFarmLog("oA1P50NL6OdsFy2lrwp0tN1tw7Ow", new Date())));
+        log.info(String.valueOf(feignClient.getTodayFarmLog("o1IsFt8QJMFhVZDE0W3ovHx15hes", new Date())));
     }
 
     @Test
