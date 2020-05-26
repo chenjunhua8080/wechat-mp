@@ -1,5 +1,9 @@
 package com.cjh.wechatmp.job;
 
+import com.cjh.wechatmp.dao.BindFarmDao;
+import com.cjh.wechatmp.dao.ReportDao;
+import com.cjh.wechatmp.dao.UserDao;
+import com.cjh.wechatmp.enums.PlatformEnum;
 import com.cjh.wechatmp.farm.FarmService;
 import com.cjh.wechatmp.feign.CloudFeignClient;
 import com.cjh.wechatmp.message.push.MessagePushService;
@@ -25,6 +29,9 @@ public class MessagePushJob {
     private UserService userService;
     private ReportService reportService;
     private CloudFeignClient cloudFeignClient;
+    private BindFarmDao bindFarmDao;
+    private UserDao userDao;
+    private ReportDao reportDao;
 
     /**
      * 推送文字消息
@@ -51,6 +58,9 @@ public class MessagePushJob {
         List<UserPO> list = userService.list();
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
+            if (!isBind(openId, PlatformEnum.JD_FARM.getCode())) {
+                continue;
+            }
             String farmLog = farmService.getTodayFarmLog(openId);
             log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
             String resp = pushService.pushJobMsg(openId, farmLog);
@@ -67,6 +77,9 @@ public class MessagePushJob {
         List<UserPO> list = userService.list();
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
+            if (reportDao.countByUser(openId) == 0) {
+                continue;
+            }
             String reportText = reportService.getReportText(openId);
             log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, reportText);
             String resp = pushService.pushReportMsg(openId, reportText);
@@ -83,6 +96,9 @@ public class MessagePushJob {
         List<UserPO> list = userService.list();
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
+            if (!isBind(openId, PlatformEnum.JD_CAKE.getCode())) {
+                continue;
+            }
             String farmLog = cloudFeignClient.getHomeData(openId);
             log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
             String resp = pushService.pushJobMsg(openId, farmLog);
@@ -99,11 +115,22 @@ public class MessagePushJob {
         List<UserPO> list = userService.list();
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
+            if (!isBind(openId, PlatformEnum.BANK_CHINA.getCode())) {
+                continue;
+            }
             String farmLog = cloudFeignClient.getBankChinaInfo(openId);
             log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
             String resp = pushService.pushJobMsg(openId, farmLog);
             log.info("推送结果: {}", resp);
         }
+    }
+
+    /**
+     * 查询是否绑定
+     */
+    private boolean isBind(String openId, Integer platformType) {
+        UserPO user = userDao.selectByOpenId(openId);
+        return bindFarmDao.getBindUser(user.getId(), platformType) == null;
     }
 
 }
