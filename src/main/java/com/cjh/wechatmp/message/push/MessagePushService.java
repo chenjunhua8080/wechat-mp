@@ -64,13 +64,13 @@ public class MessagePushService {
         DataBean data = new DataBean();
         TextBean first = new TextBean();
         UserPO userPO = userDao.selectByOpenId(openId);
-        first.setValue("您好：" + userPO.getName());
+        first.setValue("您好：" + userPO.getName() + "\n");
         first.setColor("#459ae9");
         TextBean list = new TextBean();
-        list.setValue(body);
+        list.setValue(body + "\n");
         list.setColor("#173177");
         TextBean remark = new TextBean();
-        remark.setValue("bye~");
+        remark.setValue("bye~" + "\n");
         remark.setColor("#f24d4d");
         data.setFirst(first);
         data.setList(list);
