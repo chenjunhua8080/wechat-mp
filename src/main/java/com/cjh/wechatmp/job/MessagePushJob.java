@@ -58,7 +58,7 @@ public class MessagePushJob {
         List<UserPO> list = userService.list();
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
-            if (!isBind(openId, PlatformEnum.JD_FARM.getCode())) {
+            if (notBind(openId, PlatformEnum.JD_FARM.getCode())) {
                 continue;
             }
             String farmLog = farmService.getTodayFarmLog(openId);
@@ -96,7 +96,7 @@ public class MessagePushJob {
         List<UserPO> list = userService.list();
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
-            if (!isBind(openId, PlatformEnum.JD_CAKE.getCode())) {
+            if (notBind(openId, PlatformEnum.JD_CAKE.getCode())) {
                 continue;
             }
             String farmLog = cloudFeignClient.getHomeData(openId);
@@ -115,7 +115,7 @@ public class MessagePushJob {
         List<UserPO> list = userService.list();
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
-            if (!isBind(openId, PlatformEnum.BANK_CHINA.getCode())) {
+            if (notBind(openId, PlatformEnum.BANK_CHINA.getCode())) {
                 continue;
             }
             String farmLog = cloudFeignClient.getBankChinaInfo(openId);
@@ -128,7 +128,7 @@ public class MessagePushJob {
     /**
      * 查询是否绑定
      */
-    private boolean isBind(String openId, Integer platformType) {
+    private boolean notBind(String openId, Integer platformType) {
         UserPO user = userDao.selectByOpenId(openId);
         return bindFarmDao.getBindUser(user.getId(), platformType) == null;
     }
