@@ -11,8 +11,9 @@ import lombok.Getter;
 public enum PlatformEnum {
 
     JD_CAKE(1, "京东-618蛋糕"),
-    JD_FARM(3, "京东-农场"),
     BANK_CHINA(2, "中国银行"),
+    JD_FARM(3, "京东-农场"),
+    JD_PETS(4, "京东-宠物"),
     ;
 
     private int code;
