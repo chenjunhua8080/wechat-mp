@@ -72,8 +72,7 @@ public class FarmService {
             && content.equals(InstructsEnum.Instruct24.getCode().toString())) {
             BindFarmPO bind = getBind(openId, PlatformEnum.JD_CAKE.getCode());
             if (bind != null) {
-                List<ReqLog> logs = cloudService.getReqLogList(openId, PlatformEnum.JD_CAKE.getCode(), new Date());
-                result = parseLog(logs, false);
+                result = getTodayLog(openId, PlatformEnum.JD_CAKE.getCode(), false);
             } else {
                 result = "未绑定";
             }
@@ -103,8 +102,7 @@ public class FarmService {
             && content.equals(InstructsEnum.Instruct42.getCode().toString())) {
             BindFarmPO bind = getBind(openId, PlatformEnum.BANK_CHINA.getCode());
             if (bind != null) {
-                List<ReqLog> logs = cloudService.getReqLogList(openId, PlatformEnum.BANK_CHINA.getCode(), new Date());
-                result = parseLog(logs, true);
+                result = getTodayLog(openId, PlatformEnum.BANK_CHINA.getCode(), true);
                 if (result == null) {
                     result = cloudService.getBankChinaInfo(openId);
                 }
@@ -139,7 +137,38 @@ public class FarmService {
                 && content.equals(InstructsEnum.Instruct32.getCode().toString()))) {
             BindFarmPO bind = getBind(openId, PlatformEnum.JD_FARM.getCode());
             if (bind != null) {
-                result = getTodayFarmLog(openId);
+                result = getTodayLog(openId, PlatformEnum.JD_FARM.getCode(), false);
+            } else {
+                result = "未绑定";
+            }
+
+        }
+        //京东-宠物
+        else if (InstructsEnum.Instruct10.getCode().toString().equals(lastInstruct)
+            && InstructsEnum.Instruct101.getCode().toString().equals(content)) {
+            BindFarmPO bind = getBind(openId, PlatformEnum.JD_PETS.getCode());
+            if (bind != null) {
+                result = "已绑定: " + bind.getId() + ", 回复cookie==>xxx覆盖绑定";
+            } else {
+                result = "请回复cookie==>xxx继续完成绑定";
+            }
+            redisService.setLastInstruct(openId, lastInstruct + "-" + content);
+
+        } else if ((InstructsEnum.Instruct10.getCode() + "-" + InstructsEnum.Instruct101.getCode())
+            .equals(lastInstruct)) {
+            String cookie = getCookie(textInMessage.getContent());
+            if (cookie == null) {
+                result = "cookie格式错误，请参考cookie==>xxx";
+            } else {
+                result = "绑定成功，id: " + doBind(openId, cookie, PlatformEnum.JD_PETS.getCode());
+                //清除指令
+                redisService.getLastInstruct(openId, true);
+            }
+        } else if (InstructsEnum.Instruct10.getCode().toString().equals(lastInstruct)
+            && InstructsEnum.Instruct102.getCode().toString().equals(content)) {
+            BindFarmPO bind = getBind(openId, PlatformEnum.JD_PETS.getCode());
+            if (bind != null) {
+                result = getTodayLog(openId, PlatformEnum.JD_PETS.getCode(), false);
             } else {
                 result = "未绑定";
             }
@@ -199,21 +228,11 @@ public class FarmService {
     }
 
     /**
-     * 今日农场作业情况
+     * 今日作业情况
      */
-    public String getTodayFarmLog(String openId) {
-        List<FarmLogPO> todayFarmLog = cloudService.getTodayFarmLog(openId);
-        if (todayFarmLog == null || todayFarmLog.isEmpty()) {
-            return "暂无消息";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (FarmLogPO farmLogPO : todayFarmLog) {
-            sb.append(farmLogPO.getMessage()).append("\n");
-        }
-        if (sb.length() > 0) {
-            sb.delete(sb.lastIndexOf("\n"), sb.length());
-        }
-        return sb.toString();
+    public String getTodayLog(String openId, int platform, boolean returnNull) {
+        List<ReqLog> todayLog = cloudService.getReqLogList(openId, platform, new Date());
+        return parseLog(todayLog, returnNull);
     }
 
 }

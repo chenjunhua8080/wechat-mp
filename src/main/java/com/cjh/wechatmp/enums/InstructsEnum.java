@@ -43,8 +43,11 @@ public enum InstructsEnum {
     Instruct9(9, 0, "头像"),
     Instruct91(1, 9, "单个头像"),
     Instruct92(2, 9, "图文列表"),
-    Instruct10(10, 0, "回复home，回到主菜单"),
-    Instruct99(99, 0, "温馨提示：连续对话场景30秒内有效~");
+    Instruct10(10, 0, "京东#宠物"),
+    Instruct101(1, 10, "绑定"),
+    Instruct102(2, 10, "当前日志"),
+    Instruct991(99, 0, "回复home，回到主菜单"),
+    Instruct992(99, 0, "温馨提示：连续对话场景30秒内有效~");
 
     private Integer code;
     private Integer pid;

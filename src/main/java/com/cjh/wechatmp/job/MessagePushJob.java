@@ -42,7 +42,7 @@ public class MessagePushJob {
         List<UserPO> list = userService.list();
         for (UserPO userPO : list) {
             String openId = userPO.getOpenId();
-            String farmLog = farmService.getTodayFarmLog(openId);
+            String farmLog = farmService.getTodayLog(openId, PlatformEnum.JD_FARM.getCode(), false);
             log.info("尝试推送文本消息: openId -> {}, text -> {}", openId, farmLog);
             String resp = pushService.pushTextByOpenId(farmLog);
             log.info("推送结果: {}", resp);
@@ -50,7 +50,7 @@ public class MessagePushJob {
     }
 
     /**
-     * 定时推送模板消息[农场作业情况]
+     * 定时推送模板消息[京东-农场]
      */
     @Scheduled(cron = "${job.tempPush}")
     public void signForFarm() {
@@ -61,7 +61,26 @@ public class MessagePushJob {
             if (notBind(openId, PlatformEnum.JD_FARM.getCode())) {
                 continue;
             }
-            String farmLog = farmService.getTodayFarmLog(openId);
+            String farmLog = farmService.getTodayLog(openId, PlatformEnum.JD_FARM.getCode(), false);
+            log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
+            String resp = pushService.pushJobMsg(openId, farmLog);
+            log.info("推送结果: {}", resp);
+        }
+    }
+
+    /**
+     * 定时推送模板消息[京东-宠物]
+     */
+    @Scheduled(cron = "${job.petsPush}")
+    public void petsPush() {
+        log.info("petsPush job: {}", new Date());
+        List<UserPO> list = userService.list();
+        for (UserPO userPO : list) {
+            String openId = userPO.getOpenId();
+            if (notBind(openId, PlatformEnum.JD_PETS.getCode())) {
+                continue;
+            }
+            String farmLog = farmService.getTodayLog(openId, PlatformEnum.JD_PETS.getCode(), false);
             log.info("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
             String resp = pushService.pushJobMsg(openId, farmLog);
             log.info("推送结果: {}", resp);
@@ -88,9 +107,9 @@ public class MessagePushJob {
     }
 
     /**
-     * 定时推送模板消息[京东-收集金币]
+     * 定时推送模板消息[京东-618收集金币]
      */
-    @Scheduled(cron = "${job.jdPush}")
+//    @Scheduled(cron = "${job.jdPush}")
     public void jdPush() {
         log.info("jdPush job: {}", new Date());
         List<UserPO> list = userService.list();
