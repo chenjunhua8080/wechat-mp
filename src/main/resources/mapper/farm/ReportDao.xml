@@ -36,17 +36,19 @@
 
     <select id="diffByUser" resultType="java.lang.Integer">
         <![CDATA[
-            select datediff(tt.createtime1,tt.createtime2) from(
-                select t.create_time createtime1,
-                       (select t2.create_time
+            select max(ttt.diffNum) from(
+                 select datediff(tt.createtime1,tt.createtime2) diffNum from(
+                    select t.create_time createtime1,
+                           (select t2.create_time
                             from report t2
                             where t2.id < t.id
-                            and t2.user_id = #{openId}
+                              and t2.user_id = #{openId}
                             order by t2.id desc
                             limit 1) createtime2
-                from report t
-                where t.user_id = #{openId}
-            ) tt
+                    from report t
+                    where t.user_id = #{openId}
+                 ) tt
+            ) ttt
         ]]>
     </select>
 </mapper>
