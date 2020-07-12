@@ -35,4 +35,14 @@ public interface ReportDao extends BaseMapper<ReportPO> {
      * 统计用户所有
      */
     int countByUser(String openId);
+
+    /**
+     * 统计一天内最多的
+     */
+    int countByDayMax(String openId);
+
+    /**
+     * 计算间隔时长最长
+     */
+    int diffByUser(String openId);
 }
