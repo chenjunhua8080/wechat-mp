@@ -1,5 +1,8 @@
 package com.cjh.wechatmp.handler;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import com.cjh.wechatmp.annotation.MessageProcessor;
 import com.cjh.wechatmp.avatar.AvatarService;
 import com.cjh.wechatmp.enums.InstructsEnum;
@@ -14,8 +17,11 @@ import com.cjh.wechatmp.redis.RedisService;
 import com.cjh.wechatmp.service.ReportService;
 import com.cjh.wechatmp.service.UserService;
 import com.cjh.wechatmp.util.ByteUtil;
+import java.text.ParseException;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -96,6 +102,52 @@ public class TextMessageHandler extends AbstractMessageHandler {
             }
         }
 
+        //520
+        Date now = new Date();
+        if (result == null) {
+            if (InstructsEnum.Instruct520.getCode().toString().equals(content)) {
+                String dateStr = redisService.get("date:520");
+                DateTime beginDate = DateUtil.parseDateTime(dateStr);
+                long year = DateUtil.betweenYear(beginDate, now, true);
+                long month = DateUtil.betweenMonth(beginDate, now, true);
+                long day = DateUtil.betweenDay(beginDate, now, true);
+                long week = DateUtil.betweenWeek(beginDate, now, true);
+                long h = DateUtil.between(beginDate, now, DateUnit.HOUR, true);
+                long m = DateUtil.between(beginDate, now, DateUnit.MINUTE, true);
+                long s = DateUtil.between(beginDate, now, DateUnit.SECOND, true);
+                String yearStr = year == 0 ? "" : String.format("%s年", year);
+                String str = String
+                    .format("我们在一起已经: %s%s个月, %s天, %s个星期, %s个小时, %s分钟, %s秒了 啦啦啦~", yearStr, month, day, week, h, m, s);
+                result = str;
+            } else if ("520:set".equals(content)) {
+                result = "请输入日期";
+            }
+        }
+        if (result == null && "520:set".equals(lastInstruct)) {
+            try {
+                Date date = DateUtils.parseDate(content, "yyyy-MM-dd HH:mm:ss");
+                redisService.getLastInstruct(openId, true);
+                redisService.set("date:520", content);
+                result = "设置成功！";
+                String dateStr = redisService.get("date:520");
+                DateTime beginDate = DateUtil.parseDateTime(dateStr);
+                long year = DateUtil.betweenYear(beginDate, now, true);
+                long month = DateUtil.betweenMonth(beginDate, now, true);
+                long day = DateUtil.betweenDay(beginDate, now, true);
+                long week = DateUtil.betweenWeek(beginDate, now, true);
+                long h = DateUtil.between(beginDate, now, DateUnit.HOUR, true);
+                long m = DateUtil.between(beginDate, now, DateUnit.MINUTE, true);
+                long s = DateUtil.between(beginDate, now, DateUnit.SECOND, true);
+                String yearStr = year == 0 ? "" : String.format("%s年", year);
+                String str = String
+                    .format("我们在一起已经: %s%s个月, %s天, %s个星期, %s个小时, %s分钟, %s秒了 啦啦啦~", yearStr, month, day, week, h, m, s);
+                result += str;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                result = "请输出正确日期！";
+            }
+        }
+
         //原样返回
         if (result == null) {
             result = content;
@@ -106,4 +158,5 @@ public class TextMessageHandler extends AbstractMessageHandler {
 
         return MessageUtil.buildTextOutMessage(textInMessage, result);
     }
+
 }

@@ -5,11 +5,15 @@ import lombok.Getter;
 
 /**
  * 指令枚举
+ *
+ * @author Admin
  */
 @Getter
 @AllArgsConstructor
 public enum InstructsEnum {
-
+    /**
+     * 指令枚举
+     */
     Instruct1(1, 0, "报告"),
     Instruct2(2, 0, "京东#618"),
     Instruct21(1, 2, "绑定"),
@@ -47,11 +51,13 @@ public enum InstructsEnum {
     Instruct101(1, 10, "绑定"),
     Instruct102(2, 10, "当前日志"),
     Instruct991(99, 0, "回复home，回到主菜单"),
-    Instruct992(99, 0, "温馨提示：连续对话场景30秒内有效~");
+    Instruct992(99, 0, "温馨提示：连续对话场景30秒内有效~"),
+    Instruct520(520, 0, "获取当前❤❤进度");
+//    Instruct521(521, 0, "设置时间");
 
-    private Integer code;
-    private Integer pid;
-    private String name;
+    private final Integer code;
+    private final Integer pid;
+    private final String name;
 
     public static InstructsEnum from(Integer code, Integer pid) {
         if (code == null || pid == null) {
