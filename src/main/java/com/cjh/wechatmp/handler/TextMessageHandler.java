@@ -120,6 +120,7 @@ public class TextMessageHandler extends AbstractMessageHandler {
                     .format("我们在一起已经: %s%s个月, %s天, %s个星期, %s个小时, %s分钟, %s秒了 啦啦啦~", yearStr, month, day, week, h, m, s);
                 result = str;
             } else if ("520:set".equals(content)) {
+                redisService.setLastInstruct(openId, content);
                 result = "请输入日期";
             }
         }
