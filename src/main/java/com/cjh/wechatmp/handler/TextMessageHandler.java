@@ -13,6 +13,7 @@ import com.cjh.wechatmp.message.MessageUtil;
 import com.cjh.wechatmp.message.handler.AbstractMessageHandler;
 import com.cjh.wechatmp.message.in.TextInMessage;
 import com.cjh.wechatmp.po.UserPO;
+import com.cjh.wechatmp.redis.RedisConstant;
 import com.cjh.wechatmp.redis.RedisService;
 import com.cjh.wechatmp.service.ReportService;
 import com.cjh.wechatmp.service.UserService;
@@ -128,7 +129,7 @@ public class TextMessageHandler extends AbstractMessageHandler {
             try {
                 Date date = DateUtils.parseDate(content, "yyyy-MM-dd HH:mm:ss");
                 redisService.getLastInstruct(openId, true);
-                redisService.set("date:520", content);
+                redisService.set("date:520", content, RedisConstant.EXIST_FOREVER);
                 result = "设置成功！";
                 String dateStr = redisService.get("date:520");
                 DateTime beginDate = DateUtil.parseDateTime(dateStr);
