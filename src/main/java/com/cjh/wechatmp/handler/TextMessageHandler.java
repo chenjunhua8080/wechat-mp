@@ -109,17 +109,11 @@ public class TextMessageHandler extends AbstractMessageHandler {
             if (InstructsEnum.Instruct520.getCode().toString().equals(content)) {
                 String dateStr = redisService.get("date:520");
                 DateTime beginDate = DateUtil.parseDateTime(dateStr);
-                long year = DateUtil.betweenYear(beginDate, now, true);
-                long month = DateUtil.betweenMonth(beginDate, now, true);
-                long day = DateUtil.betweenDay(beginDate, now, true);
-                long week = DateUtil.betweenWeek(beginDate, now, true);
-                long h = DateUtil.between(beginDate, now, DateUnit.HOUR, true);
-                long m = DateUtil.between(beginDate, now, DateUnit.MINUTE, true);
-                long s = DateUtil.between(beginDate, now, DateUnit.SECOND, true);
+                long year = DateUtil.betweenYear(beginDate, now, false);
+                long month = DateUtil.betweenMonth(beginDate, now, true)%12;
+                long day = DateUtil.thisDayOfMonth();
                 String yearStr = year == 0 ? "" : String.format("%s年", year);
-                String str = String
-                    .format("我们在一起已经: %s%s个月, %s天, %s个星期, %s个小时, %s分钟, %s秒了 啦啦啦~", yearStr, month, day, week, h, m, s);
-                result = str;
+                result = String.format("我们在一起已经: %s%s个月%s天了 啦啦啦~", yearStr, month, day);
             } else if ("520:set".equals(content)) {
                 redisService.setLastInstruct(openId, content);
                 result = "请输入日期";
@@ -128,22 +122,18 @@ public class TextMessageHandler extends AbstractMessageHandler {
         if (result == null && "520:set".equals(lastInstruct)) {
             try {
                 Date date = DateUtils.parseDate(content, "yyyy-MM-dd HH:mm:ss");
-                redisService.getLastInstruct(openId, true);
-                redisService.set("date:520", content, RedisConstant.EXIST_FOREVER);
-                result = "设置成功！";
-                String dateStr = redisService.get("date:520");
-                DateTime beginDate = DateUtil.parseDateTime(dateStr);
-                long year = DateUtil.betweenYear(beginDate, now, true);
-                long month = DateUtil.betweenMonth(beginDate, now, true);
-                long day = DateUtil.betweenDay(beginDate, now, true);
-                long week = DateUtil.betweenWeek(beginDate, now, true);
-                long h = DateUtil.between(beginDate, now, DateUnit.HOUR, true);
-                long m = DateUtil.between(beginDate, now, DateUnit.MINUTE, true);
-                long s = DateUtil.between(beginDate, now, DateUnit.SECOND, true);
-                String yearStr = year == 0 ? "" : String.format("%s年", year);
-                String str = String
-                    .format("我们在一起已经: %s%s个月, %s天, %s个星期, %s个小时, %s分钟, %s秒了 啦啦啦~", yearStr, month, day, week, h, m, s);
-                result += str;
+                if (date.after(now)){
+                    result = "请输出有效的日期！";
+                }else {
+                    redisService.getLastInstruct(openId, true);
+                    redisService.set("date:520", content, RedisConstant.EXIST_FOREVER);
+                    result = "设置成功！";
+                    long year = DateUtil.betweenYear(date, now, false);
+                    long month = DateUtil.betweenMonth(date, now, true)%12;
+                    long day = DateUtil.thisDayOfMonth();
+                    String yearStr = year == 0 ? "" : String.format("%s年", year);
+                    result += String.format("我们在一起已经: %s%s个月%s天了 啦啦啦~", yearStr, month, day);
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
                 result = "请输出正确日期！";
@@ -159,6 +149,18 @@ public class TextMessageHandler extends AbstractMessageHandler {
         result = ByteUtil.limit2048byte(result);
 
         return MessageUtil.buildTextOutMessage(textInMessage, result);
+    }
+
+    public static void main(String[] args) {
+        String result;
+        Date now =new Date();
+        DateTime beginDate = DateUtil.parseDateTime("2022-10-18 00:00:00");
+        long year = DateUtil.betweenYear(beginDate, now, false);
+        long month = DateUtil.betweenMonth(beginDate, now, true)%12;
+        long day = DateUtil.thisDayOfMonth();
+        String yearStr = year == 0 ? "" : String.format("%s年", year);
+        result = String.format("我们在一起已经: %s%s个月%s天了 啦啦啦~", yearStr, month, day);
+        System.out.println(result);
     }
 
 }
