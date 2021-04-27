@@ -1,8 +1,8 @@
-
 package com.cjh.wechatmp.exception;
 
 import com.cjh.wechatmp.enums.ErrorEnum;
 import com.cjh.wechatmp.response.Result;
+import feign.RetryableException;
 import java.sql.SQLSyntaxErrorException;
 import java.util.List;
 import javax.validation.ConstraintViolationException;
@@ -86,6 +86,8 @@ public class ExceptionHandlerCenter {
         log.error(e.getMessage(), e);
         if (e instanceof ConstraintViolationException) {
             return Result.failure(ErrorEnum.FAIL.getCode(), "参数异常：" + e.getMessage());
+        } else if (e instanceof RetryableException) {
+            return Result.failure("服务调用超时：" + e.getMessage());
         } else if (e instanceof SQLSyntaxErrorException) {
             return Result.failure("sql异常：" + e.getMessage());
         } else {
