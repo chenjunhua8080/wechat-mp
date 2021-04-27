@@ -14,6 +14,8 @@ public enum PlatformEnum {
     BANK_CHINA(2, "中国银行"),
     JD_FARM(3, "京东-农场"),
     JD_PETS(4, "京东-宠物"),
+    BOSS(5, "BOSS_账号"),
+    BOSS_EMAIL(6, "BOSS_邮箱"),
     ;
 
     private int code;

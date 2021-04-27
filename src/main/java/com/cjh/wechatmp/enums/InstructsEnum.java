@@ -50,9 +50,14 @@ public enum InstructsEnum {
     Instruct10(10, 0, "京东#宠物"),
     Instruct101(1, 10, "绑定"),
     Instruct102(2, 10, "当前日志"),
+    Instruct11(11, 0, "BOSS邮箱"),
+    Instruct111(1, 11, "绑定"),
+    Instruct112(2, 11, "下载日志"),
     Instruct991(99, 0, "回复home，回到主菜单"),
     Instruct992(99, 0, "温馨提示：连续对话场景30秒内有效~"),
-    Instruct520(520, 0, "获取当前❤❤进度");
+    Instruct520(520, 0, "获取当前❤❤进度"),
+    Instruct300(300, 0, "下载所有未读简历！！！"),
+    ;
 //    Instruct521(521, 0, "设置时间");
 
     private final Integer code;

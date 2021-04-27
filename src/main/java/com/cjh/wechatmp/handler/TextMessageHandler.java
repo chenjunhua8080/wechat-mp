@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.cjh.wechatmp.annotation.MessageProcessor;
 import com.cjh.wechatmp.avatar.AvatarService;
+import com.cjh.wechatmp.boss.BossService;
 import com.cjh.wechatmp.enums.InstructsEnum;
 import com.cjh.wechatmp.farm.FarmService;
 import com.cjh.wechatmp.juhe.JuHeService;
@@ -40,6 +41,7 @@ public class TextMessageHandler extends AbstractMessageHandler {
     private ReportService reportService;
     private RedisService redisService;
     private UserService userService;
+    private BossService bossService;
 
     @Override
     public BaseMessage doHandle(BaseMessage inMessage) {
@@ -138,6 +140,11 @@ public class TextMessageHandler extends AbstractMessageHandler {
                 e.printStackTrace();
                 result = "请输出正确日期！";
             }
+        }
+
+        //BOSS业务
+        if (result == null) {
+            result = bossService.handleMessage(textInMessage);
         }
 
         //原样返回
