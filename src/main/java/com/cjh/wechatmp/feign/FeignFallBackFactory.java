@@ -9,6 +9,7 @@ import com.cjh.wechatmp.po.NowPlaying;
 import feign.hystrix.FallbackFactory;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -96,6 +97,11 @@ public class FeignFallBackFactory implements FallbackFactory<CloudFeignClient> {
 
             @Override
             public String getBankChinaInfo(String openId) {
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> getResumeZip(String openId) {
                 return null;
             }
         };

@@ -17,6 +17,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -206,5 +207,15 @@ public class CloudService {
      */
     public List<ReqLog> getReqLogList(String openId, Integer platformType, Date date) {
         return feignClient.getReqLogList(openId, platformType, date);
+    }
+
+    //##################### BOSS ########################
+
+    /**
+     * BOSS - 批量下载简
+     */
+    public Map<String,Object> getResumeZip(String openId) {
+        Map<String,Object> resp = feignClient.getResumeZip(openId);
+        return resp;
     }
 }

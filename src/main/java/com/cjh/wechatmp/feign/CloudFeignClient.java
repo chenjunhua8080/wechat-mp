@@ -8,6 +8,7 @@ import com.cjh.wechatmp.juhe.QuestionBankPO;
 import com.cjh.wechatmp.po.NowPlaying;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -119,4 +120,13 @@ public interface CloudFeignClient {
      */
     @GetMapping("/getBankChinaInfo")
     String getBankChinaInfo(@RequestParam String openId);
+
+    //########################## BOSS #############################
+
+    /**
+     * BOSS - 批量下载简历
+     * @return map
+     */
+    @GetMapping("/getResumeZip")
+    Map<String, Object> getResumeZip(@RequestParam String openId);
 }
