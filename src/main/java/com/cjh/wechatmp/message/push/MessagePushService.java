@@ -15,6 +15,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @AllArgsConstructor
 @Component
@@ -55,10 +56,13 @@ public class MessagePushService {
     /**
      * 推送模板消息[通用]
      */
-    public String pushTempMsg(String openId, String body, String tempId) {
+    public String pushTempMsg(String openId, String body, String tempId, String link) {
         String url = WxApi.TEMPLATE_SEND_BY_OPENID.replace("ACCESS_TOKEN", tokenService.getBaseToken());
         Temp temp;
         temp = new Temp();
+        if (!StringUtils.isEmpty(link)) {
+            temp.setUrl(link);
+        }
         temp.setTemplate_id(tempId);
         temp.setTouser(openId);
         DataBean data = new DataBean();
@@ -88,6 +92,13 @@ public class MessagePushService {
     }
 
     /**
+     * 推送模板消息[通用，不带link]
+     */
+    public String pushTempMsg(String openId, String body, String tempId) {
+        return pushTempMsg(openId, body, tempId, null);
+    }
+
+    /**
      * 推送模板消息[自我报告]
      */
     public String pushReportMsg(String openId, String body) {
@@ -106,5 +117,12 @@ public class MessagePushService {
      */
     public String pushJobMsg(String openId, String body) {
         return pushTempMsg(openId, body, templateConfig.getJob());
+    }
+
+    /**
+     * 推送模板消息[简历下载通知]
+     */
+    public String pushResumeMsg(String openId, String body, String link) {
+        return pushTempMsg(openId, body, templateConfig.getResume(), link);
     }
 }
