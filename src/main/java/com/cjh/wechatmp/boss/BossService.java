@@ -12,7 +12,10 @@ import com.cjh.wechatmp.po.UserPO;
 import com.cjh.wechatmp.redis.RedisService;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,6 +23,9 @@ import org.springframework.util.StringUtils;
 @AllArgsConstructor
 @Component
 public class BossService {
+
+    private static ExecutorService executorService = new ThreadPoolExecutor(1, 1, 0, TimeUnit.SECONDS,
+        new ArrayBlockingQueue<>(100));
 
     private BindFarmDao bindFarmDao;
     private UserDao userDao;
@@ -67,11 +73,12 @@ public class BossService {
         } else if (content.equals(InstructsEnum.Instruct300.getCode().toString())) {
             BindFarmPO bind = getBind(openId, PlatformEnum.BOSS_EMAIL.getCode());
             if (bind != null) {
-                Map<String, Object> map = cloudService.getResumeZip(openId);
-                if (map.get("msg") != null) {
-                    return map.get("msg").toString();
-                }
-                result = "已打包" + map.get("count") + "份简历点击<a href='" + map.get("link") + "'>这里</a>下载";
+                executorService.execute(() -> {
+                    cloudService.getResumeZip(openId);
+                });
+//                被动回复超时
+//                result = "已打包" + map.get("count") + "份简历点击<a href='" + map.get("link") + "'>这里</a>下载";
+                result = "任务已经开始执行了，请留意稍后消息推送";
             } else {
                 result = "未绑定";
             }
