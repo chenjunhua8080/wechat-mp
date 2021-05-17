@@ -53,10 +53,15 @@ public enum InstructsEnum {
     Instruct11(11, 0, "BOSS邮箱"),
     Instruct111(1, 11, "绑定"),
     Instruct112(2, 11, "下载日志"),
+    Instruct12(12, 0, "BOSS账号"),
+    Instruct121(1, 12, "绑定"),
+    Instruct122(2, 12, "日志"),
     Instruct991(99, 0, "回复home，回到主菜单"),
     Instruct992(99, 0, "温馨提示：连续对话场景30秒内有效~"),
     Instruct520(520, 0, "获取当前❤❤进度"),
     Instruct300(300, 0, "下载所有未读简历！！！"),
+    Instruct400(400, 0, "读取消息，签收简历！！！"),
+    Instruct500(500, 0, "寻找牛人，请求简历！！！(有风险)"),
     ;
 //    Instruct521(521, 0, "设置时间");
 

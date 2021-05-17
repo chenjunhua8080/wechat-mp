@@ -218,4 +218,28 @@ public class CloudService {
         Map<String,Object> resp = feignClient.getResumeZip(openId);
         return resp;
     }
+
+    /**
+     * BOSS - 登录
+     */
+    public Map<String,Object> loginBoss(String openId) {
+        Map<String,Object> resp = feignClient.loginBoss(openId);
+        return resp;
+    }
+
+    /**
+     * BOSS - 签收简历
+     */
+    public Map<String,Object> acceptResume(String openId) {
+        Map<String,Object> resp = feignClient.acceptResume(openId);
+        return resp;
+    }
+
+    /**
+     * BOSS - 寻找牛人
+     */
+    public Map<String,Object> findGeek(String openId) {
+        Map<String,Object> resp = feignClient.findGeek(openId);
+        return resp;
+    }
 }
