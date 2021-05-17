@@ -22,7 +22,8 @@ public interface CloudFeignClient {
      * 查询请求日志
      */
     @GetMapping("/reqLog/list")
-    List<ReqLog> getReqLogList(@RequestParam String openId, @RequestParam Integer platformType, @RequestParam Date date);
+    List<ReqLog> getReqLogList(@RequestParam String openId, @RequestParam Integer platformType,
+        @RequestParam Date date);
 
     //########################## 头像API #############################
     //不能用int做参数
@@ -125,8 +126,27 @@ public interface CloudFeignClient {
 
     /**
      * BOSS - 批量下载简历
+     *
      * @return map
      */
     @GetMapping("/getResumeZip")
     Map<String, Object> getResumeZip(@RequestParam String openId);
+
+    /**
+     * BOSS - 登录
+     */
+    @GetMapping("/loginBoss")
+    Map<String, Object> loginBoss(@RequestParam String openId);
+
+    /**
+     * BOSS - 签收简历
+     */
+    @GetMapping("/acceptResume")
+    Map<String, Object> acceptResume(@RequestParam String openId);
+
+    /**
+     * BOSS - 寻找牛人
+     */
+    @GetMapping("/findGeek")
+    Map<String, Object> findGeek(@RequestParam String openId);
 }

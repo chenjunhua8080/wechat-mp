@@ -1,5 +1,6 @@
 package com.cjh.wechatmp.boss;
 
+import cn.hutool.core.thread.ThreadFactoryBuilder;
 import com.cjh.wechatmp.api.CloudService;
 import com.cjh.wechatmp.dao.BindFarmDao;
 import com.cjh.wechatmp.dao.UserDao;
@@ -24,8 +25,11 @@ import org.springframework.util.StringUtils;
 @Component
 public class BossService {
 
-    private static ExecutorService executorService = new ThreadPoolExecutor(1, 1, 0, TimeUnit.SECONDS,
-        new ArrayBlockingQueue<>(100));
+    private static final ExecutorService executorService = new ThreadPoolExecutor(
+        2, 2,
+        0, TimeUnit.SECONDS,
+        new ArrayBlockingQueue<>(100),
+        ThreadFactoryBuilder.create().setNamePrefix("boss-thread-").build());
 
     private BindFarmDao bindFarmDao;
     private UserDao userDao;
@@ -49,7 +53,6 @@ public class BossService {
                 result = "请回复'邮箱号;IMAP码'继续完成绑定";
             }
             redisService.setLastInstruct(openId, lastInstruct + "-" + content);
-
         } else if (StringUtils.isEmpty(content.replaceAll("^.*?@.*?;.*$", "")) ||
             (InstructsEnum.Instruct11.getCode() + "-" + InstructsEnum.Instruct111.getCode()).equals(lastInstruct)) {
             String cookie = textInMessage.getContent();
@@ -69,7 +72,6 @@ public class BossService {
             } else {
                 result = "未绑定";
             }
-
         } else if (content.equals(InstructsEnum.Instruct300.getCode().toString())) {
             BindFarmPO bind = getBind(openId, PlatformEnum.BOSS_EMAIL.getCode());
             if (bind != null) {
@@ -82,9 +84,55 @@ public class BossService {
             } else {
                 result = "未绑定";
             }
-
+        }
+        if (result != null) {
+            return result;
         }
 
+        //BOSS平台
+        if (content.equals("绑定BOSS账号") ||
+            (InstructsEnum.Instruct12.getCode().toString().equals(lastInstruct)
+                && content.equals(InstructsEnum.Instruct111.getCode().toString()))) {
+            //登录BOSS完成绑定
+            executorService.execute(() -> {
+                cloudService.loginBoss(openId);
+            });
+            result = "请按消息推送指引完成绑定！";
+
+            //清除指令
+            redisService.getLastInstruct(openId, true);
+
+        } else if (content.equals("今日BOSS操作记录") ||
+            (InstructsEnum.Instruct12.getCode().toString().equals(lastInstruct)
+                && content.equals(InstructsEnum.Instruct122.getCode().toString()))) {
+            BindFarmPO bind = getBind(openId, PlatformEnum.BOSS.getCode());
+            if (bind != null) {
+                result = getTodayLog(openId, PlatformEnum.BOSS.getCode(), false);
+            } else {
+                result = "未绑定";
+            }
+
+        } else if (content.equals(InstructsEnum.Instruct400.getCode().toString())) {
+            BindFarmPO bind = getBind(openId, PlatformEnum.BOSS.getCode());
+            if (bind != null) {
+                executorService.execute(() -> {
+                    cloudService.acceptResume(openId);
+                });
+                result = "任务已经开始执行了，请留意稍后消息推送";
+            } else {
+                result = "未绑定";
+            }
+        } else if (content.equals(InstructsEnum.Instruct500.getCode().toString())) {
+            BindFarmPO bind = getBind(openId, PlatformEnum.BOSS.getCode());
+            if (bind != null) {
+                executorService.execute(() -> {
+                    cloudService.findGeek(openId);
+                });
+                result = "任务已经开始执行了，请留意稍后消息推送";
+            } else {
+                result = "未绑定";
+            }
+        }
         return result;
     }
 

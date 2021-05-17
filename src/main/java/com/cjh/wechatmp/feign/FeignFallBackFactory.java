@@ -104,6 +104,21 @@ public class FeignFallBackFactory implements FallbackFactory<CloudFeignClient> {
             public Map<String, Object> getResumeZip(String openId) {
                 return null;
             }
+
+            @Override
+            public Map<String, Object> loginBoss(String openId) {
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> acceptResume(String openId) {
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> findGeek(String openId) {
+                return null;
+            }
         };
     }
 }
