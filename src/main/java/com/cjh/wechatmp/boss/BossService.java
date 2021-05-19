@@ -25,7 +25,7 @@ import org.springframework.util.StringUtils;
 @Component
 public class BossService {
 
-    private static final ExecutorService executorService = new ThreadPoolExecutor(
+    public static final ExecutorService executorService = new ThreadPoolExecutor(
         2, 2,
         0, TimeUnit.SECONDS,
         new ArrayBlockingQueue<>(100),
