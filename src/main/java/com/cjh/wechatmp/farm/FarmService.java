@@ -1,6 +1,7 @@
 package com.cjh.wechatmp.farm;
 
 import com.cjh.wechatmp.api.CloudService;
+import com.cjh.wechatmp.boss.BossService;
 import com.cjh.wechatmp.dao.BindFarmDao;
 import com.cjh.wechatmp.dao.UserDao;
 import com.cjh.wechatmp.enums.InstructsEnum;
@@ -154,7 +155,7 @@ public class FarmService {
             } else {
                 count = Integer.parseInt(content);
             }
-            cloudService.continuousWater(openId, count);
+            BossService.executorService.execute(() -> cloudService.continuousWater(openId, count));
 
             result = "正在执行浇水任务，稍后推送结果";
         }
