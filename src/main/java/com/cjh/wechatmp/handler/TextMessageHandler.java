@@ -58,8 +58,7 @@ public class TextMessageHandler extends AbstractMessageHandler {
         String content = textInMessage.getContent();
         String result = null;
 
-        if ("help".equals(content) || "home".equals(content) || InstructsEnum.Instruct10.getCode().toString()
-            .equals(content)) {
+        if ("help".equals(content) || "home".equals(content)) {
             //清除旧指令
             redisService.getLastInstruct(openId, true);
             result = InstructsEnum.getInstructs(0);
