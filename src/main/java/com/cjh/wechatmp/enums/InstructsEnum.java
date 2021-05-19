@@ -23,6 +23,7 @@ public enum InstructsEnum {
     Instruct3(3, 0, "京东#农场"),
     Instruct31(1, 3, "绑定"),
     Instruct32(2, 3, "当前日志"),
+    Instruct33(3, 3, "连续浇水x次"),
     Instruct4(4, 0, "中国银行"),
     Instruct41(1, 4, "绑定"),
     Instruct42(2, 4, "当前日志"),
