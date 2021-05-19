@@ -148,7 +148,7 @@ public class FarmService {
             result = "请回复浇水次数";
         } else if (content.contains("连续浇水#") ||
             ((InstructsEnum.Instruct3.getCode() + "-" + InstructsEnum.Instruct33.getCode()).equals(lastInstruct))) {
-            int count = 0;
+            int count;
             if (content.contains("#")) {
                 count = Integer.parseInt(content.split("#")[1]);
             } else {
