@@ -21,6 +21,7 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Component
@@ -69,6 +70,13 @@ public class CloudService {
      */
     public List<FarmLogPO> getTodayFarmLog(String farmOpenId) {
         return feignClient.getTodayFarmLog(farmOpenId, new Date());
+    }
+
+    /**
+     * 连续浇水
+     */
+    public String continuousWater(@RequestParam String openId, @RequestParam Integer count) {
+        return feignClient.continuousWater(openId, count);
     }
 
     //##############################聚合api#################################
@@ -214,32 +222,32 @@ public class CloudService {
     /**
      * BOSS - 批量下载简
      */
-    public Map<String,Object> getResumeZip(String openId) {
-        Map<String,Object> resp = feignClient.getResumeZip(openId);
+    public Map<String, Object> getResumeZip(String openId) {
+        Map<String, Object> resp = feignClient.getResumeZip(openId);
         return resp;
     }
 
     /**
      * BOSS - 登录
      */
-    public Map<String,Object> loginBoss(String openId) {
-        Map<String,Object> resp = feignClient.loginBoss(openId);
+    public Map<String, Object> loginBoss(String openId) {
+        Map<String, Object> resp = feignClient.loginBoss(openId);
         return resp;
     }
 
     /**
      * BOSS - 签收简历
      */
-    public Map<String,Object> acceptResume(String openId) {
-        Map<String,Object> resp = feignClient.acceptResume(openId);
+    public Map<String, Object> acceptResume(String openId) {
+        Map<String, Object> resp = feignClient.acceptResume(openId);
         return resp;
     }
 
     /**
      * BOSS - 寻找牛人
      */
-    public Map<String,Object> findGeek(String openId) {
-        Map<String,Object> resp = feignClient.findGeek(openId);
+    public Map<String, Object> findGeek(String openId) {
+        Map<String, Object> resp = feignClient.findGeek(openId);
         return resp;
     }
 }

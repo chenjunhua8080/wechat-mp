@@ -42,6 +42,12 @@ public interface CloudFeignClient {
     @GetMapping("/getTodayFarmLog")
     List<FarmLogPO> getTodayFarmLog(@RequestParam String openId, @RequestParam Date date);
 
+    /**
+     * 连续浇水
+     */
+    @GetMapping("/continuousWater")
+    String continuousWater(@RequestParam String openId, @RequestParam Integer count);
+
     //########################## 豆瓣API #############################
 
     /**

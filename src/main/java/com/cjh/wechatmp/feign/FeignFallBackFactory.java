@@ -41,6 +41,11 @@ public class FeignFallBackFactory implements FallbackFactory<CloudFeignClient> {
             }
 
             @Override
+            public String continuousWater(String openId, Integer count) {
+                return null;
+            }
+
+            @Override
             public List<NowPlaying> getNowPlaying() {
                 return null;
             }

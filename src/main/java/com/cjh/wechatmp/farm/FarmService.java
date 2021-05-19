@@ -142,6 +142,21 @@ public class FarmService {
                 result = "未绑定";
             }
 
+        } else if (InstructsEnum.Instruct3.getCode().toString().equals(lastInstruct)
+            && content.equals(InstructsEnum.Instruct33.getCode().toString())) {
+            redisService.setLastInstruct(openId, lastInstruct + "-" + content);
+            result = "请回复浇水次数";
+        } else if (content.contains("连续浇水#") ||
+            ((InstructsEnum.Instruct3.getCode() + "-" + InstructsEnum.Instruct33.getCode()).equals(lastInstruct))) {
+            int count = 0;
+            if (content.contains("#")) {
+                count = Integer.parseInt(content.split("#")[1]);
+            } else {
+                count = Integer.parseInt(content);
+            }
+            cloudService.continuousWater(openId, count);
+
+            result = "正在执行浇水任务，稍后推送结果";
         }
         //京东-宠物
         else if (InstructsEnum.Instruct10.getCode().toString().equals(lastInstruct)
