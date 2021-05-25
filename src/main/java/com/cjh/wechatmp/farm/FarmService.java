@@ -189,6 +189,21 @@ public class FarmService {
                 result = "未绑定";
             }
 
+        } else if (InstructsEnum.Instruct10.getCode().toString().equals(lastInstruct)
+            && content.equals(InstructsEnum.Instruct103.getCode().toString())) {
+            redisService.setLastInstruct(openId, lastInstruct + "-" + content);
+            result = "请回复喂食次数";
+        }else if (content.contains("连续喂食#") ||
+            ((InstructsEnum.Instruct10.getCode() + "-" + InstructsEnum.Instruct103.getCode()).equals(lastInstruct))) {
+            int count;
+            if (content.contains("#")) {
+                count = Integer.parseInt(content.split("#")[1]);
+            } else {
+                count = Integer.parseInt(content);
+            }
+            BossService.executorService.execute(() -> cloudService.continuousFeed(openId, count));
+
+            result = "正在执行喂食任务，稍后推送结果";
         }
 
         return result;

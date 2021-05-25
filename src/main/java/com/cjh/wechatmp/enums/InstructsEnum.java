@@ -51,6 +51,7 @@ public enum InstructsEnum {
     Instruct10(10, 0, "京东#宠物"),
     Instruct101(1, 10, "绑定"),
     Instruct102(2, 10, "当前日志"),
+    Instruct103(3, 10, "连续喂食x次"),
     Instruct11(11, 0, "BOSS邮箱"),
     Instruct111(1, 11, "绑定"),
     Instruct112(2, 11, "下载日志"),

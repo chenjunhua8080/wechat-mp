@@ -79,6 +79,13 @@ public class CloudService {
         return feignClient.continuousWater(openId, count);
     }
 
+    /**
+     * 连续喂食
+     */
+    public String continuousFeed(@RequestParam String openId, @RequestParam Integer count) {
+        return feignClient.continuousFeed(openId, count);
+    }
+
     //##############################聚合api#################################
 
     /**
