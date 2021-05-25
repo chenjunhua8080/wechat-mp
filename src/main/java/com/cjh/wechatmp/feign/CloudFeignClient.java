@@ -48,6 +48,12 @@ public interface CloudFeignClient {
     @GetMapping("/continuousWater")
     String continuousWater(@RequestParam String openId, @RequestParam Integer count);
 
+    /**
+     * 连续喂食
+     */
+    @GetMapping("/continuousFeed")
+    String continuousFeed(@RequestParam String openId, @RequestParam Integer count);
+
     //########################## 豆瓣API #############################
 
     /**
