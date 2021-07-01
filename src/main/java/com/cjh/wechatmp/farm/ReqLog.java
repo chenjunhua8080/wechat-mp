@@ -1,8 +1,10 @@
 package com.cjh.wechatmp.farm;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 请求日志表(ReqLog)实体类
@@ -25,6 +27,9 @@ public class ReqLog implements Serializable {
      * 响应
      */
     private String resp;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date creteTime;
 
     /**
