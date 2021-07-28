@@ -7,7 +7,6 @@ spring:
   profiles:
     active: location
   cloud:
-    #配置中心
     nacos:
       #配置中心
       config:
