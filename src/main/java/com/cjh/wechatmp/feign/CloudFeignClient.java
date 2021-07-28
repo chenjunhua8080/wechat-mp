@@ -165,6 +165,6 @@ public interface CloudFeignClient {
     /**
      * 有家 - 签到
      */
-    @GetMapping("/getBankChinaInfo")
+    @GetMapping("/uhome/sign")
     String uHomeSign(@RequestParam String openId);
 }
