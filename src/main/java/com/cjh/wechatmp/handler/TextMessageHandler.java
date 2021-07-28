@@ -146,6 +146,11 @@ public class TextMessageHandler extends AbstractMessageHandler {
             result = bossService.handleMessage(textInMessage);
         }
 
+        //有家
+        if (result == null) {
+            result = bossService.handleMessage(textInMessage);
+        }
+
         //原样返回
         if (result == null) {
             result = content;
