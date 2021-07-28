@@ -257,4 +257,15 @@ public class CloudService {
         Map<String, Object> resp = feignClient.findGeek(openId);
         return resp;
     }
+
+
+    //##################### UHome API ########################
+
+    /**
+     * 有家 - 签到
+     */
+    public String uHomeSign(String openId) {
+        String bankChinaInfo = feignClient.uHomeSign(openId);
+        return bankChinaInfo;
+    }
 }

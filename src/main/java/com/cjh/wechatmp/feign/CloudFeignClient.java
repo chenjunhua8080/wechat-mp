@@ -161,4 +161,10 @@ public interface CloudFeignClient {
      */
     @GetMapping("/findGeek")
     Map<String, Object> findGeek(@RequestParam String openId);
+
+    /**
+     * 有家 - 签到
+     */
+    @GetMapping("/getBankChinaInfo")
+    String uHomeSign(@RequestParam String openId);
 }

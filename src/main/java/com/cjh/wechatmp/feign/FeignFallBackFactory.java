@@ -129,6 +129,11 @@ public class FeignFallBackFactory implements FallbackFactory<CloudFeignClient> {
             public Map<String, Object> findGeek(String openId) {
                 return null;
             }
+
+            @Override
+            public String uHomeSign(String openId) {
+                return null;
+            }
         };
     }
 }

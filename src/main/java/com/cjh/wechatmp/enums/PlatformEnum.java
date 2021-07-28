@@ -16,6 +16,7 @@ public enum PlatformEnum {
     JD_PETS(4, "京东-宠物"),
     BOSS(5, "BOSS_账号"),
     BOSS_EMAIL(6, "BOSS_邮箱"),
+    UHOME(7, "有家"),
     ;
 
     private int code;
