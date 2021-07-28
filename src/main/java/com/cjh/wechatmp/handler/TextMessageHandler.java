@@ -18,6 +18,7 @@ import com.cjh.wechatmp.redis.RedisConstant;
 import com.cjh.wechatmp.redis.RedisService;
 import com.cjh.wechatmp.service.ReportService;
 import com.cjh.wechatmp.service.UserService;
+import com.cjh.wechatmp.uhome.UHomeService;
 import com.cjh.wechatmp.util.ByteUtil;
 import java.text.ParseException;
 import java.util.Date;
@@ -42,6 +43,7 @@ public class TextMessageHandler extends AbstractMessageHandler {
     private RedisService redisService;
     private UserService userService;
     private BossService bossService;
+    private UHomeService uHomeService;
 
     @Override
     public BaseMessage doHandle(BaseMessage inMessage) {
@@ -148,7 +150,7 @@ public class TextMessageHandler extends AbstractMessageHandler {
 
         //有家
         if (result == null) {
-            result = bossService.handleMessage(textInMessage);
+            result = uHomeService.handleMessage(textInMessage);
         }
 
         //原样返回
