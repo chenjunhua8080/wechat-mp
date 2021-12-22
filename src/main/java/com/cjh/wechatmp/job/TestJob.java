@@ -1,21 +1,17 @@
 package com.cjh.wechatmp.job;
 
-import java.util.Date;
-import lombok.AllArgsConstructor;
+import com.cjh.wechatmp.util.XxlJobUtil;
+import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
 @Component
-@EnableScheduling
 @Slf4j
 public class TestJob {
 
-    @Scheduled(cron = "${job.test}")
+    @XxlJob("job.test.test")
     public void test() {
-        log.info("test job: {}", new Date());
+        XxlJobUtil.showLog("[----- test job ----]");
     }
 
 }

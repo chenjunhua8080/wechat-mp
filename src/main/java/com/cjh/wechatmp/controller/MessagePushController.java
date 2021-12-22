@@ -1,6 +1,7 @@
 package com.cjh.wechatmp.controller;
 
 import com.cjh.wechatmp.message.push.MessagePushService;
+import com.google.common.collect.Lists;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class MessagePushController {
     @GetMapping("/textPush")
     public String textPush(String body) {
         log.info("****************推送消息**********************");
-        String resp = pushService.pushTextByOpenId(body);
+        String resp = pushService.pushTextByOpenId(Lists.newArrayList(), body);
         log.info("****************推送消息结束*******************");
         return resp;
     }

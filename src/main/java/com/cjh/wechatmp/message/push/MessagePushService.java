@@ -30,13 +30,8 @@ public class MessagePushService {
     /**
      * 根据OpenID列表群发【订阅号不可用，服务号认证后可用】
      */
-    public String pushTextByOpenId(String text) {
+    public String pushTextByOpenId(List<String> openIds,String text) {
         String url = WxApi.MESSAGE_SEND_BY_OPENID.replace("ACCESS_TOKEN", tokenService.getBaseToken());
-        ArrayList<String> openIds = new ArrayList<>();
-        List<UserPO> userPOS = userDao.selectList(null);
-        for (UserPO userPO : userPOS) {
-            openIds.add(userPO.getOpenId());
-        }
         Message message = new Message();
         message.setTouser(openIds);
         message.setMsgtype("text");

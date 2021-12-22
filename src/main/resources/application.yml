@@ -20,3 +20,17 @@ mybatis-plus:
   type-aliases-package: com.cjh.wechatmp.po
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# xxl-job
+xxl:
+  job:
+    accessToken: ''
+    admin:
+      addresses: http://127.0.0.1:7001/xxl-job-admin
+    executor:
+      ip: ''
+      address: ''
+      appname: xxl-job-executor-wechat-mp
+      logpath: /home/logs/xxl-job/wechat-mp
+      logretentiondays: 30
+      port: 7102
