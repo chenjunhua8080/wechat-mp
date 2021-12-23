@@ -22,6 +22,11 @@ public class XxlJobUtil {
         XxlJobHelper.log(msg);
     }
 
+    public static void showLog(String msg, Object... var2) {
+        log.info(msg, var2);
+        XxlJobHelper.log(msg);
+    }
+
     /**
      * 本地输出log && xxl-job输出log
      *
