@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="1 seconds">
+
+    <!-- 注意：若需要用 spring 扩展 profile 支持，则文件名应为 logback-spring.xml，而不是 logback.xml。 -->
+    <springProperty scope="context" name="spring.application.name" source="spring.application.name"/>
+    <springProperty scope="context" name="spring.profiles.active" source="spring.profiles.active"/>
+
+
+    <contextName>logback</contextName>
+    <property name="log.path" value="/home/logs/app/${spring.profiles.active}/${spring.application.name}.log"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>aaa %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%15.15(%thread)] %cyan(%-40.40(%logger{40})) : %-30.30(\(%file:%line\)) : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>aaa %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%15.15(%thread)] %-40.40(%logger{40}) : %3(%line) : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </root>
+
+</configuration>
