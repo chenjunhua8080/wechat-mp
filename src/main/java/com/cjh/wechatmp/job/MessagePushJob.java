@@ -98,6 +98,22 @@ public class MessagePushJob {
     }
 
     /**
+     * 定时推送模板消息[雀巢咖啡-爱豆庄园]
+     */
+    @XxlJob("job.push.coffee.farm.log")
+    public void pushCoffeeFarmLog() {
+        XxlJobUtil.showLog("petsPush job: {}", new Date());
+        List<UserPO> list = userService.list();
+        for (UserPO user : list) {
+            String openId = user.getOpenId();
+            String farmLog = farmService.getTodayLog(openId, PlatformEnum.COFFEE.getCode(), false);
+            XxlJobUtil.showLog("尝试推送模板消息: openId -> {}, text -> {}", openId, farmLog);
+            String resp = pushService.pushJobMsg(openId, farmLog);
+            XxlJobUtil.showLog("推送结果: {}", resp);
+        }
+    }
+
+    /**
      * 查询是否绑定
      */
     private boolean notBind(String openId, Integer platformType) {

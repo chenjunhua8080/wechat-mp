@@ -18,6 +18,7 @@ public enum PlatformEnum {
     BOSS_EMAIL(6, "BOSS_邮箱"),
     UHOME(7, "有家"),
     TONGCHENG(8, "同程"),
+    COFFEE(9, "雀巢咖啡"),
     ;
 
     private int code;
