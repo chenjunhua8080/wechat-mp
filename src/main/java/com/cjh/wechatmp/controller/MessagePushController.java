@@ -1,5 +1,6 @@
 package com.cjh.wechatmp.controller;
 
+import com.cjh.wechatmp.farm.FarmService;
 import com.cjh.wechatmp.message.push.MessagePushService;
 import com.google.common.collect.Lists;
 import java.util.Map;
@@ -19,6 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessagePushController {
 
     private MessagePushService pushService;
+
+    private FarmService farmService;
+
+    @GetMapping("/getLog")
+    public String textPush(String openId, int platform, boolean returnNull) {
+        return farmService.getTodayLog(openId, platform, returnNull);
+    }
 
     @GetMapping("/textPush")
     public String textPush(String body) {
