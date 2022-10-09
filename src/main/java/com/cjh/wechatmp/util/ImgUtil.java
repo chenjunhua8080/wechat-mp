@@ -1,5 +1,6 @@
 package com.cjh.wechatmp.util;
 
+import cn.hutool.core.codec.Base64Encoder;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,7 +8,6 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import sun.misc.BASE64Encoder;
 
 /**
  * 图片工具类
@@ -32,8 +32,7 @@ public class ImgUtil {
         try {
             ImageIO.write(image, type, bos);
             byte[] imageBytes = bos.toByteArray();
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString += encoder.encode(imageBytes);
+            imageString += Base64Encoder.encode(imageBytes);
             bos.close();
         } catch (IOException e) {
             log.error("img2base64转换失败: {}", e.getMessage());
