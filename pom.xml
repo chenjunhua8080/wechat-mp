@@ -117,6 +117,16 @@
             <version>2.3.0</version>
         </dependency>
 
+        <!-- JSON
+            Fastjson是一款基于Java的快速JSON解析器/生成器。
+            Fastjson 1.2.83 之前版本存在安全漏洞，该漏洞源于容易绕过默认的 autoType 关闭限制来反序列化不受信任的数据，攻击者利用该漏洞可以攻击远程服务器。
+            noneautotype版本不受影响，请忽略
+         -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.83</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
