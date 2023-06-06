@@ -10,7 +10,6 @@ import com.cjh.wechatmp.po.UserPO;
 import com.cjh.wechatmp.token.TokenService;
 import com.cjh.wechatmp.util.JsonUtil;
 import com.cjh.wechatmp.util.RestTemplateUtil;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +25,10 @@ public class MessagePushService {
     private TokenService tokenService;
     private UserDao userDao;
 
-
     /**
      * 根据OpenID列表群发【订阅号不可用，服务号认证后可用】
      */
-    public String pushTextByOpenId(List<String> openIds,String text) {
+    public String pushTextByOpenId(List<String> openIds, String text) {
         String url = WxApi.MESSAGE_SEND_BY_OPENID.replace("ACCESS_TOKEN", tokenService.getBaseToken());
         Message message = new Message();
         message.setTouser(openIds);
@@ -61,19 +59,31 @@ public class MessagePushService {
         temp.setTemplate_id(tempId);
         temp.setTouser(openId);
         DataBean data = new DataBean();
-        TextBean first = new TextBean();
+        TextBean text1 = new TextBean();
         UserPO userPO = userDao.selectByOpenId(openId);
-        first.setValue("您好：" + userPO.getName() + " \n");
-        first.setColor("#459ae9");
-        TextBean list = new TextBean();
-        list.setValue(body + " \n");
-        list.setColor("#173177");
-        TextBean remark = new TextBean();
-        remark.setValue("bye~" + " \n");
-        remark.setColor("#f24d4d");
-        data.setFirst(first);
-        data.setList(list);
-        data.setRemark(remark);
+        text1.setValue("text1");
+//        text1.setColor("#459ae9");
+        TextBean text2 = new TextBean();
+        text2.setValue(userPO.getName());
+//        text2.setColor("#f24d4d");
+        TextBean text3 = new TextBean();
+        text3.setValue(body);
+//        text3.setColor("#f24d4d");
+//        TextBean text4 = new TextBean();
+//        text4.setValue("text4"+"\n\n");
+//        text3.setColor("#f24d4d");
+//        TextBean text5 = new TextBean();
+//        text5.setValue("text5");
+//        text3.setColor("#f24d4d");
+        TextBean text6 = new TextBean();
+        text6.setValue("bye~");
+        text3.setColor("#f24d4d");
+        data.setText1(text1);
+        data.setText2(text2);
+//        data.setText3(text3);
+//        data.setText4(text4);
+//        data.setText5(text5);
+        data.setText6(text6);
         temp.setData(data);
 
         String resp = RestTemplateUtil.doPost(url, JSONObject.toJSONString(temp));

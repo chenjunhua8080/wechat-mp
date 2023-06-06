@@ -25,9 +25,12 @@ public class Temp {
     @Data
     public static class DataBean {
 
-        private TextBean first;
-        private TextBean list;
-        private TextBean remark;
+        private TextBean text1;
+        private TextBean text2;
+        private TextBean text3;
+        private TextBean text4;
+        private TextBean text5;
+        private TextBean text6;
 
         @NoArgsConstructor
         @Data
