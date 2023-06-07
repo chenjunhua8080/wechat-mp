@@ -65,10 +65,10 @@ public class MessagePushService {
 //        text1.setColor("#459ae9");
         TextBean text2 = new TextBean();
         text2.setValue(userPO.getName());
-//        text2.setColor("#f24d4d");
+        text2.setColor("#f24d4d");
         TextBean text3 = new TextBean();
         text3.setValue(body);
-//        text3.setColor("#f24d4d");
+        text3.setColor("#f24d4d");
 //        TextBean text4 = new TextBean();
 //        text4.setValue("text4"+"\n\n");
 //        text3.setColor("#f24d4d");
@@ -77,10 +77,10 @@ public class MessagePushService {
 //        text3.setColor("#f24d4d");
         TextBean text6 = new TextBean();
         text6.setValue("bye~");
-        text3.setColor("#f24d4d");
+        text6.setColor("#f24d4d");
         data.setText1(text1);
         data.setText2(text2);
-//        data.setText3(text3);
+        data.setText3(text3);
 //        data.setText4(text4);
 //        data.setText5(text5);
         data.setText6(text6);
