@@ -1,7 +1,7 @@
-FROM openjdk:8
-###复制文件到容器app-springboot
-ADD target/wechat-mp-0.0.1-SNAPSHOT.jar /wechat-mp-0.0.1-SNAPSHOT.jar
-###声明启动端口号
-EXPOSE 8057
-###配置容器启动后执行的命令
-ENTRYPOINT ["java","-jar","/wechat-mp-0.0.1-SNAPSHOT.jar"]
+FROM amazoncorretto:11-alpine3.18-jdk
+
+EXPOSE 80
+
+COPY target/*.jar /app/common.jar
+
+CMD java -Dserver.port=80 -Xms512m -Xmx512m -server -jar /app/common.jar --spring.profiles.active=dev
