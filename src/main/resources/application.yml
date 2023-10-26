@@ -4,7 +4,7 @@ spring:
   #mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/wechat_mp?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://yunibobo.cn:13306/wechat_mp?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: wechat_mp
     password: wechat_mp
 #mybatis
@@ -28,7 +28,7 @@ xxl:
   job:
     accessToken: ''
     admin:
-      addresses: http://127.0.0.1:7001/xxl-job-admin
+      addresses: http://xxl-job.yunibobo.cn/xxl-job-admin
     executor:
       ip: ''
       address: ''

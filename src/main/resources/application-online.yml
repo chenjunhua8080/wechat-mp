@@ -3,11 +3,11 @@ spring:
     nacos:
       #服务发现
       discovery:
-        server-addr: 127.0.0.1:8048
+        server-addr: http://nacos.yunibobo.cn
         namespace: dbe63b4c-fa43-4eb0-ab4c-7b6f3cd71c79
   #redis
   redis:
     database: 2
-    host: localhost
-    port: 6379
-    password:
+    host: yunibobo.cn
+    port: 16379
+    password: myredis

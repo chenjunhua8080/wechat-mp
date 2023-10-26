@@ -3,5 +3,5 @@ spring:
     nacos:
       #配置中心
       config:
-        server-addr: 127.0.0.1:8048
+        server-addr: http://nacos.yunibobo.cn
         namespace: dbe63b4c-fa43-4eb0-ab4c-7b6f3cd71c79
